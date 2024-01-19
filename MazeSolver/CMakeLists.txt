@@ -23,6 +23,13 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
     qt_add_executable(MazeSolver
         MANUAL_FINALIZATION
         ${PROJECT_SOURCES}
+        algorithm.h algorithm.cpp
+        maze.h maze.cpp
+        depthfirstsearch.h depthfirstsearch.cpp
+        breadthfirstsearch.h breadthfirstsearch.cpp
+        randomizedmaze.h randomizedmaze.cpp
+        customisablemaze.h customisablemaze.cpp
+        custommaze.h custommaze.cpp
     )
 # Define target properties for Android with Qt 6 as:
 #    set_property(TARGET MazeSolver APPEND PROPERTY QT_ANDROID_PACKAGE_SOURCE_DIR
