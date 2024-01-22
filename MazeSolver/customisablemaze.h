@@ -6,6 +6,7 @@
 class CustomisableMaze : public Maze
 {
 public:
+    CustomisableMaze();
     CustomisableMaze(int width, int height, double complexity);
 
     bool addWallCoords(int x, int y);
