@@ -18,6 +18,8 @@ private:
     array<int, 2> finishCoords;
 
 public:
+    Maze();
+    Maze(int width, int height, int complexity);
     int getWidth();
     int getHeight();
     double getComplexity();
