@@ -1,3 +1,3 @@
 #include "randomizedmaze.h"
 
-RandomizedMaze::RandomizedMaze() {}
+RandomizedMaze::RandomizedMaze() : Maze() {}

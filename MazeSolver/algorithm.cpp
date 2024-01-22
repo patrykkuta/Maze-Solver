@@ -1,3 +1,3 @@
 #include "algorithm.h"
 
-Algorithm::Algorithm() {}
+Algorithm::Algorithm(vector<array<int, 2>> path) {}

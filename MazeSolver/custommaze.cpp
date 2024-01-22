@@ -1,3 +1,3 @@
 #include "custommaze.h"
 
-CustomMaze::CustomMaze() {}
+CustomMaze::CustomMaze(string filePath) : CustomisableMaze() {}

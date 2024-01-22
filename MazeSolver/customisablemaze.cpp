@@ -1,3 +1,3 @@
 #include "customisablemaze.h"
 
-CustomisableMaze::CustomisableMaze() {}
+CustomisableMaze::CustomisableMaze(int width, int height, double complexity) : Maze(width, height, complexity) {}
