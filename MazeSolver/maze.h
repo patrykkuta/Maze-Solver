@@ -19,7 +19,7 @@ private:
 
 public:
     Maze();
-    Maze(int width, int height, int complexity);
+    Maze(int width, int height, double complexity);
     int getWidth();
     int getHeight();
     double getComplexity();
