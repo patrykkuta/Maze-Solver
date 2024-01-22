@@ -7,6 +7,7 @@ class BreadthFirstSearch : public Algorithm
 {
 public:
     BreadthFirstSearch(vector<array<int, 2>> path);
+    ~BreadthFirstSearch();
 
     vector<array<int, 2>> solve(Maze maze);
 };

@@ -9,6 +9,7 @@ class DepthFirstSearch : public Algorithm
 {
 public:
     DepthFirstSearch(vector<array<int, 2>> path);
+    ~DepthFirstSearch();
 
     vector<array<int, 2>> solve(Maze maze);
 };
