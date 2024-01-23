@@ -38,13 +38,15 @@ void RandomizedMaze::generateMaze() {
     Cell* randomCell = randomStart();
     Cell* startingCell = &maze[randomCell->getY()][randomCell->getX()];
 
-    frontier.push_back(startingCell);
+    frontier.insert(startingCell);
 
     while (!frontier.empty()) {
         unsigned short index = randomFrontierPosition();
 
-        Cell* c = frontier[index];
-        frontier.erase(frontier.begin() + index);
+        auto item = next(frontier.begin(), index);
+        Cell* c = *item;
+
+        frontier.erase(item);
 
         c->visit();
 
@@ -52,38 +54,26 @@ void RandomizedMaze::generateMaze() {
 
         // Connect with some opened cell
         connect(c);
-
     }
 
     delete randomCell;
 }
 
 void RandomizedMaze::addUnvisitedNeighbours(Cell* cell) {
-    std::vector<Cell*> neighbors;
-
     if ((cell->getX() > 0) && !maze[cell->getY()][cell->getX() - 1].wasVisited()) {
-        neighbors.push_back(&maze[cell->getY()][cell->getX() - 1]);
+        frontier.insert(&maze[cell->getY()][cell->getX() - 1]);
     }
 
     if ((cell->getX() < width - 1) && !maze[cell->getY()][cell->getX() + 1].wasVisited()) {
-        neighbors.push_back(&maze[cell->getY()][cell->getX() + 1]);
+        frontier.insert(&maze[cell->getY()][cell->getX() + 1]);
     }
 
     if ((cell->getY() > 0) && !maze[cell->getY() - 1][cell->getX()].wasVisited()) {
-        neighbors.push_back(&maze[cell->getY() - 1][cell->getX()]);
+        frontier.insert(&maze[cell->getY() - 1][cell->getX()]);
     }
 
     if ((cell->getY() < height - 1) && !maze[cell->getY() + 1][cell->getX()].wasVisited()) {
-        neighbors.push_back(&maze[cell->getY() + 1][cell->getX()]);
-    }
-
-    // Shuffle the neighbors randomly
-    std::mt19937 gen(rd());
-    std::shuffle(neighbors.begin(), neighbors.end(), gen);
-
-    // Add the shuffled neighbors to the frontier
-    for (Cell* neighbor : neighbors) {
-        frontier.push_back(neighbor);
+        frontier.insert(&maze[cell->getY() + 1][cell->getX()]);
     }
 }
 
@@ -97,38 +87,24 @@ unsigned short RandomizedMaze::randomFrontierPosition() {
 }
 
 void RandomizedMaze::connect(Cell* cell) {
-    // Generate a random order to check neighbors
-    vector<Wall> w = {
-            Wall::NORTH,
-            Wall::SOUTH,
-            Wall::WEST,
-            Wall::EAST
-    };
 
-    shuffle(w.begin(), w.end(), rd);
+    if (cell->getY() < height - 1 && maze[cell->getY() + 1][cell->getX()].wasVisited()) {
+        cell->removeWall(Wall::SOUTH);
+        maze[cell->getY() + 1][cell->getX()].removeWall(Wall::NORTH);
+    }
 
-    if (w.front() == Wall::NORTH) {
-        if ((cell->getY() > 0) && maze[cell->getY() - 1][cell->getX()].wasVisited() && maze[cell->getY() - 1][cell->getX()].getWalls().size() > 1) {
-            cell->removeWall(Wall::NORTH);
-            maze[cell->getY() - 1][cell->getX()].removeWall(Wall::SOUTH);
-        }
+    else if (cell->getX() > 0 && maze[cell->getY()][cell->getX() - 1].wasVisited()) {
+        cell->removeWall(Wall::WEST);
+        maze[cell->getY()][cell->getX() - 1].removeWall(Wall::EAST);
     }
-    else if (w.front() == Wall::SOUTH) {
-        if (cell->getY() < height - 1 && maze[cell->getY() + 1][cell->getX()].wasVisited() && maze[cell->getY() + 1][cell->getX()].getWalls().size() > 1) {
-            cell->removeWall(Wall::SOUTH);
-            maze[cell->getY() + 1][cell->getX()].removeWall(Wall::NORTH);
-        }
+
+    else if (cell->getX() < width - 1 && maze[cell->getY()][cell->getX() + 1].wasVisited()) {
+        cell->removeWall(Wall::EAST);
+        maze[cell->getY()][cell->getX() + 1].removeWall(Wall::WEST);
     }
-    else if (w.front() == Wall::WEST) {
-        if (cell->getX() > 0 && maze[cell->getY()][cell->getX() - 1].wasVisited() && maze[cell->getY()][cell->getX() - 1].getWalls().size() > 1) {
-            cell->removeWall(Wall::WEST);
-            maze[cell->getY()][cell->getX() - 1].removeWall(Wall::EAST);
-        }
-    }
-    else if (w.front() == Wall::EAST) {
-        if (cell->getX() < width - 1 && maze[cell->getY()][cell->getX() + 1].wasVisited() && maze[cell->getY()][cell->getX() + 1].getWalls().size() > 1) {
-            cell->removeWall(Wall::EAST);
-            maze[cell->getY()][cell->getX() + 1].removeWall(Wall::WEST);
-        }
+
+    else if ((cell->getY() > 0) && maze[cell->getY() - 1][cell->getX()].wasVisited()) {
+        cell->removeWall(Wall::NORTH);
+        maze[cell->getY() - 1][cell->getX()].removeWall(Wall::SOUTH);
     }
 }

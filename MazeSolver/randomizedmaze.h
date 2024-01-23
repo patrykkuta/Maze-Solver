@@ -3,13 +3,14 @@
 
 #include "maze.h"
 #include <random>
-#include <numeric>
-#include <iostream>
+#include <set>
+
+using namespace std;
 
 class RandomizedMaze : public Maze
 {
 private:
-    vector<Cell*> frontier;
+    set<Cell*> frontier;
     random_device rd;
 
     Cell* randomStart();

@@ -9,15 +9,8 @@
 
 class CustomRectItem : public QGraphicsRectItem {
 public:
-    CustomRectItem(int x, int y, int width, int height, const vector<Wall> walls, const QString& text)
-            : QGraphicsRectItem(x, y, width, height), walls(walls) {
-
-        // Create a QGraphicsTextItem as a child of the CustomRectItem
-        textItem = new QGraphicsTextItem(text, this);
-        textItem->setDefaultTextColor(Qt::black);
-        textItem->setPos(x + width / 4, y + height / 4); // Adjust the position as needed
-
-    }
+    CustomRectItem(int x, int y, int width, int height, const vector<Wall> walls)
+            : QGraphicsRectItem(x, y, width, height), walls(walls) {}
 
 protected:
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = nullptr) override {
@@ -52,7 +45,6 @@ protected:
     }
 private:
     vector<Wall> walls;
-    QGraphicsTextItem *textItem;
 };
 
 int main(int argc, char *argv[])
@@ -61,14 +53,13 @@ int main(int argc, char *argv[])
 
     QGraphicsScene scene;
 
-    RandomizedMaze maze = RandomizedMaze(10, 10, 0.1);
+    RandomizedMaze maze = RandomizedMaze(5, 5, 0.1);
 
-    const int cellSize = 100;
+    const int cellSize = 30;
 
     for (int y = 0; y < maze.getHeight(); y++) {
         for (int x = 0; x < maze.getWidth(); x++) {
-            QString textInfo = QString("N:%1 S:%2\nW:%3 E:%4\nV:%5").arg(maze.getMaze()[x][y].walls.NORTH).arg(maze.getMaze()[x][y].walls.SOUTH).arg(maze.getMaze()[x][y].walls.WEST).arg(maze.getMaze()[x][y].walls.EAST).arg(maze.getMaze()[x][y].wasVisited());
-            CustomRectItem *rect = new CustomRectItem(y * cellSize, x * cellSize, cellSize, cellSize, maze.getMaze()[x][y].getWalls(), textInfo);
+            CustomRectItem *rect = new CustomRectItem(y * cellSize, x * cellSize, cellSize, cellSize, maze.getMaze()[x][y].getWalls());
 
             // Add the item to the scene
             scene.addItem(rect);
