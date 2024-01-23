@@ -17,7 +17,6 @@ protected:
         Q_UNUSED(option);
         Q_UNUSED(widget);
 
-        // Set the brush and other styles as needed
         painter->setBrush(Qt::white);
         painter->setPen(Qt::NoPen);
 
