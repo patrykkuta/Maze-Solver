@@ -6,10 +6,10 @@
 class BreadthFirstSearch : public Algorithm
 {
 public:
-    BreadthFirstSearch(vector<array<int, 2>> path);
+    BreadthFirstSearch(vector<Cell> path);
     ~BreadthFirstSearch();
 
-    vector<array<int, 2>> solve(Maze maze);
+    vector<Cell> solve(Maze maze);
 };
 
 #endif // BREADTHFIRSTSEARCH_H

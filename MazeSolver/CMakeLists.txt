@@ -17,6 +17,9 @@ set(PROJECT_SOURCES
         mainwindow.cpp
         mainwindow.h
         mainwindow.ui
+        Cell.cpp
+        Cell.h
+        Wall.cpp
 )
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)

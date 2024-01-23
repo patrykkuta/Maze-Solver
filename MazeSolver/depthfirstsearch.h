@@ -8,10 +8,10 @@ using namespace std;
 class DepthFirstSearch : public Algorithm
 {
 public:
-    DepthFirstSearch(vector<array<int, 2>> path);
+    DepthFirstSearch(vector<Cell> path);
     ~DepthFirstSearch();
 
-    vector<array<int, 2>> solve(Maze maze);
+    vector<Cell> solve(Maze maze);
 };
 
 #endif // DEPTHFIRSTSEARCH_H

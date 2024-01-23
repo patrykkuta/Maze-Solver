@@ -2,22 +2,23 @@
 #define ALGORITHM_H
 
 #include <vector>
-#include <array>
+#include <algorithm>
 #include "maze.h"
+#include "Cell.h"
 
 using namespace std;
 
 class Algorithm
 {
 private:
-    vector<array<int, 2>> path;
-    vector<array<int, 2>> visitedCoords;
+    vector<Cell> path;
+    vector<Cell> visitedCells;
 public:
-    Algorithm(vector<array<int, 2>> path);
+    Algorithm(vector<Cell> path);
     virtual ~Algorithm();
 
-    virtual vector<array<int, 2>> solve(Maze maze) = 0;
-    bool addVisitedCoords(array<int, 2> coords);
+    virtual vector<Cell> solve(Maze maze) = 0;
+    bool addVisitedCell(Cell cell);
 };
 
 #endif // ALGORITHM_H

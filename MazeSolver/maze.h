@@ -3,28 +3,27 @@
 
 #include <vector>
 #include <array>
+#include "Cell.h"
 
 using namespace std;
 
 class Maze
 {
-private:
-    int width = 16;
-    int height = 16;
-    double complexity = 0.2;
-    vector<array<int, 2>> walls;
-    vector<array<int, 2>> path;
-    array<int, 2> startCoords;
-    array<int, 2> finishCoords;
+protected:
+    unsigned short width;
+    unsigned short height;
+    double complexity;
+    vector<vector<Cell>> maze;
+    Cell* startCell;
+    Cell* finishCell;
 
 public:
-    Maze();
-    Maze(int width, int height, double complexity);
-    int getWidth();
-    int getHeight();
+    Maze(unsigned short width, unsigned short height, double complexity);
+    ~Maze();
+    unsigned short getWidth();
+    unsigned short getHeight();
     double getComplexity();
-    vector<array<int, 2>> getPath;
-    vector<array<int, 2>> getWalls;
+    vector<vector<Cell>> getMaze();
 };
 
 #endif // MAZE_H
