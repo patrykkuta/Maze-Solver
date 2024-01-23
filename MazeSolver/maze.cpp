@@ -1,9 +1,8 @@
 #include "maze.h"
 
-Maze::Maze(unsigned short width, unsigned short height, double complexity) :
+Maze::Maze(unsigned short width, unsigned short height) :
     width(width),
-    height(height),
-    complexity(complexity) {}
+    height(height) {}
 
 Maze::~Maze() {
     maze.clear();
@@ -14,8 +13,6 @@ Maze::~Maze() {
 unsigned short Maze::getWidth() {return width;}
 
 unsigned short Maze::getHeight() {return height;}
-
-double Maze::getComplexity() {return complexity;}
 
 vector<vector<Cell>> Maze::getMaze() {return maze;}
 

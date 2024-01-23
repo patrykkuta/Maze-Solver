@@ -2,7 +2,6 @@
 #define MAZE_H
 
 #include <vector>
-#include <array>
 #include "Cell.h"
 
 using namespace std;
@@ -12,13 +11,12 @@ class Maze
 protected:
     unsigned short width;
     unsigned short height;
-    double complexity;
     vector<vector<Cell>> maze;
     Cell* startCell;
     Cell* finishCell;
 
 public:
-    Maze(unsigned short width, unsigned short height, double complexity);
+    Maze(unsigned short width, unsigned short height);
     ~Maze();
     unsigned short getWidth();
     unsigned short getHeight();
