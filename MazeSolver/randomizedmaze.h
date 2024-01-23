@@ -13,15 +13,14 @@ private:
     set<Cell*> frontier;
     random_device rd;
 
-    Cell* randomStart();
-    Cell* randomFinish();
+    Cell* randomCell();
     void generateMaze();
     void addUnvisitedNeighbours(Cell* cell);
     unsigned short randomFrontierPosition();
-    void connect(Cell* cell);
+    bool connect(Cell* cell);
 
 public:
-    RandomizedMaze(unsigned short width, unsigned short height, double complexity);
+    RandomizedMaze(unsigned short width, unsigned short height);
 };
 
 #endif // RANDOMIZEDMAZE_H

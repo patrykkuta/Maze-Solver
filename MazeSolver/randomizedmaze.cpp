@@ -1,29 +1,6 @@
 #include "randomizedmaze.h"
 
-RandomizedMaze::RandomizedMaze(unsigned short width, unsigned short height, double complexity) : Maze(width, height, complexity) {
-    startCell = randomStart();
-    finishCell = randomFinish();
-
-    generateMaze();
-}
-
-Cell* RandomizedMaze::randomStart() {
-    mt19937 gen(rd());
-
-    uniform_int_distribution<unsigned short> distributionX(0, getWidth() - 1);
-    unsigned short x = distributionX(gen);
-
-    uniform_int_distribution<unsigned short> distributionY(0, getHeight() - 1);
-    unsigned short y = distributionY(gen);
-
-    return new Cell(x, y);
-}
-
-Cell* RandomizedMaze::randomFinish() {
-    return randomStart();
-}
-
-void RandomizedMaze::generateMaze() {
+RandomizedMaze::RandomizedMaze(unsigned short width, unsigned short height) : Maze(width, height) {
 
     maze.reserve(height * width);
 
@@ -35,8 +12,28 @@ void RandomizedMaze::generateMaze() {
         }
     }
 
-    Cell* randomCell = randomStart();
-    Cell* startingCell = &maze[randomCell->getY()][randomCell->getX()];
+    startCell = &maze[0][0];
+    finishCell = &maze[height - 1][width - 1];
+
+    generateMaze();
+}
+
+Cell* RandomizedMaze::randomCell() {
+    mt19937 gen(rd());
+
+    uniform_int_distribution<unsigned short> distributionX(0, getWidth() - 1);
+    unsigned short x = distributionX(gen);
+
+    uniform_int_distribution<unsigned short> distributionY(0, getHeight() - 1);
+    unsigned short y = distributionY(gen);
+
+    return new Cell(x, y);
+}
+
+void RandomizedMaze::generateMaze() {
+
+    Cell* rc = randomCell();
+    Cell* startingCell = &maze[rc->getY()][rc->getX()];
 
     frontier.insert(startingCell);
 
@@ -56,7 +53,7 @@ void RandomizedMaze::generateMaze() {
         connect(c);
     }
 
-    delete randomCell;
+    delete rc;
 }
 
 void RandomizedMaze::addUnvisitedNeighbours(Cell* cell) {
@@ -86,25 +83,31 @@ unsigned short RandomizedMaze::randomFrontierPosition() {
     return index;
 }
 
-void RandomizedMaze::connect(Cell* cell) {
+bool RandomizedMaze::connect(Cell* cell) {
 
     if (cell->getY() < height - 1 && maze[cell->getY() + 1][cell->getX()].wasVisited()) {
         cell->removeWall(Wall::SOUTH);
         maze[cell->getY() + 1][cell->getX()].removeWall(Wall::NORTH);
+        return true;
     }
 
     else if (cell->getX() > 0 && maze[cell->getY()][cell->getX() - 1].wasVisited()) {
         cell->removeWall(Wall::WEST);
         maze[cell->getY()][cell->getX() - 1].removeWall(Wall::EAST);
+        return true;
     }
 
     else if (cell->getX() < width - 1 && maze[cell->getY()][cell->getX() + 1].wasVisited()) {
         cell->removeWall(Wall::EAST);
         maze[cell->getY()][cell->getX() + 1].removeWall(Wall::WEST);
+        return true;
     }
 
     else if ((cell->getY() > 0) && maze[cell->getY() - 1][cell->getX()].wasVisited()) {
         cell->removeWall(Wall::NORTH);
         maze[cell->getY() - 1][cell->getX()].removeWall(Wall::SOUTH);
+        return true;
     }
+
+    return false;
 }
