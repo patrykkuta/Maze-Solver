@@ -20,13 +20,17 @@ void Cell::removeWall(Wall wall) {
     else if (wall == Wall::EAST) {
         walls.EAST = false;
     }
-    else {
+    else if (wall == Wall::WEST){
         walls.WEST = false;
     }
 }
 
 bool Cell::operator==(const Cell& other) const {
     return (x == other.x) && (y == other.y);
+}
+
+bool Cell::operator!=(const Cell& other) const {
+    return (x != other.x) || (y != other.y);
 }
 
 void Cell::visit() {visited = true;}
@@ -50,4 +54,8 @@ vector<Wall> Cell::getWalls() {
     }
 
     return w;
+}
+
+void Cell::resetVisited() {
+    visited = false;
 }

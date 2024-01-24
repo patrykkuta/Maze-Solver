@@ -21,10 +21,12 @@ public:
     unsigned short getY();
     void removeWall(Wall wall);
     bool operator==(const Cell& other) const;
+    bool operator!=(const Cell& other) const;
     void visit();
     bool wasVisited();
+    void resetVisited();
     vector<Wall> getWalls();
-    struct wall {
+    struct Walls {
         bool NORTH = true;
         bool SOUTH = true;
         bool WEST = true;
