@@ -60,7 +60,7 @@ void MainWindow::createMaze() {
         rectItemCells.emplace_back();
         for (int x = 0; x < maze->getHeight(); x++) {
             Cell* current = maze->getMaze()[x][y];
-            QColor color(255, 255, 255);
+            QColor color = QApplication::palette().color(QPalette::Base);
 
             if (*current == *maze->getStartCell()) color.setRgb(144,238,144);
             else if (*current == *maze->getFinishCell()) color.setRgb(250,128,114);
@@ -104,7 +104,7 @@ void MainWindow::solveMaze() {
             if (!steps.empty()) {
                 Cell* cell = steps.back();
 
-                rectItemCells[cell->getX()][cell->getY()]->setColor(QColor(222, 222, 222));
+                rectItemCells[cell->getX()][cell->getY()]->setBackgroundColor(QColor(222, 222, 222));
                 rectItemCells[cell->getX()][cell->getY()]->update();
 
                 steps.pop_back();
