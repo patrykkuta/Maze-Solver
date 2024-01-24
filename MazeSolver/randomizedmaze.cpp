@@ -8,14 +8,22 @@ RandomizedMaze::RandomizedMaze(unsigned short width, unsigned short height) : Ma
         maze.emplace_back();
 
         for (unsigned short x = 0; x < width; x++) {
-            maze[y].emplace_back(x, y);
+            maze[y].emplace_back(new Cell(x, y));
         }
     }
 
-    startCell = &maze[0][0];
-    finishCell = &maze[height - 1][width - 1];
+    startCell = maze[0][0];
+    finishCell = maze[height - 1][width - 1];
 
     generateMaze();
+}
+
+RandomizedMaze::~RandomizedMaze() {
+    for (auto& row : maze) {
+        for (auto& cellPtr : row) {
+            delete cellPtr;
+        }
+    }
 }
 
 Cell* RandomizedMaze::randomCell() {
@@ -33,7 +41,7 @@ Cell* RandomizedMaze::randomCell() {
 void RandomizedMaze::generateMaze() {
 
     Cell* rc = randomCell();
-    Cell* startingCell = &maze[rc->getY()][rc->getX()];
+    Cell* startingCell = maze[rc->getY()][rc->getX()];
 
     frontier.insert(startingCell);
 
@@ -57,20 +65,20 @@ void RandomizedMaze::generateMaze() {
 }
 
 void RandomizedMaze::addUnvisitedNeighbours(Cell* cell) {
-    if ((cell->getX() > 0) && !maze[cell->getY()][cell->getX() - 1].wasVisited()) {
-        frontier.insert(&maze[cell->getY()][cell->getX() - 1]);
+    if ((cell->getX() > 0) && !maze[cell->getY()][cell->getX() - 1]->wasVisited()) {
+        frontier.insert(maze[cell->getY()][cell->getX() - 1]);
     }
 
-    if ((cell->getX() < width - 1) && !maze[cell->getY()][cell->getX() + 1].wasVisited()) {
-        frontier.insert(&maze[cell->getY()][cell->getX() + 1]);
+    if ((cell->getX() < width - 1) && !maze[cell->getY()][cell->getX() + 1]->wasVisited()) {
+        frontier.insert(maze[cell->getY()][cell->getX() + 1]);
     }
 
-    if ((cell->getY() > 0) && !maze[cell->getY() - 1][cell->getX()].wasVisited()) {
-        frontier.insert(&maze[cell->getY() - 1][cell->getX()]);
+    if ((cell->getY() > 0) && !maze[cell->getY() - 1][cell->getX()]->wasVisited()) {
+        frontier.insert(maze[cell->getY() - 1][cell->getX()]);
     }
 
-    if ((cell->getY() < height - 1) && !maze[cell->getY() + 1][cell->getX()].wasVisited()) {
-        frontier.insert(&maze[cell->getY() + 1][cell->getX()]);
+    if ((cell->getY() < height - 1) && !maze[cell->getY() + 1][cell->getX()]->wasVisited()) {
+        frontier.insert(maze[cell->getY() + 1][cell->getX()]);
     }
 }
 
@@ -85,27 +93,27 @@ unsigned short RandomizedMaze::randomFrontierPosition() {
 
 bool RandomizedMaze::connect(Cell* cell) {
 
-    if (cell->getY() < height - 1 && maze[cell->getY() + 1][cell->getX()].wasVisited()) {
+    if (cell->getY() < height - 1 && maze[cell->getY() + 1][cell->getX()]->wasVisited()) {
         cell->removeWall(Wall::SOUTH);
-        maze[cell->getY() + 1][cell->getX()].removeWall(Wall::NORTH);
+        maze[cell->getY() + 1][cell->getX()]->removeWall(Wall::NORTH);
         return true;
     }
 
-    else if (cell->getX() > 0 && maze[cell->getY()][cell->getX() - 1].wasVisited()) {
+    else if (cell->getX() > 0 && maze[cell->getY()][cell->getX() - 1]->wasVisited()) {
         cell->removeWall(Wall::WEST);
-        maze[cell->getY()][cell->getX() - 1].removeWall(Wall::EAST);
+        maze[cell->getY()][cell->getX() - 1]->removeWall(Wall::EAST);
         return true;
     }
 
-    else if (cell->getX() < width - 1 && maze[cell->getY()][cell->getX() + 1].wasVisited()) {
+    else if (cell->getX() < width - 1 && maze[cell->getY()][cell->getX() + 1]->wasVisited()) {
         cell->removeWall(Wall::EAST);
-        maze[cell->getY()][cell->getX() + 1].removeWall(Wall::WEST);
+        maze[cell->getY()][cell->getX() + 1]->removeWall(Wall::WEST);
         return true;
     }
 
-    else if ((cell->getY() > 0) && maze[cell->getY() - 1][cell->getX()].wasVisited()) {
+    else if ((cell->getY() > 0) && maze[cell->getY() - 1][cell->getX()]->wasVisited()) {
         cell->removeWall(Wall::NORTH);
-        maze[cell->getY() - 1][cell->getX()].removeWall(Wall::SOUTH);
+        maze[cell->getY() - 1][cell->getX()]->removeWall(Wall::SOUTH);
         return true;
     }
 

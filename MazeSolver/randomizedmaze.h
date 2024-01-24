@@ -19,8 +19,10 @@ private:
     unsigned short randomFrontierPosition();
     bool connect(Cell* cell);
 
+
 public:
     RandomizedMaze(unsigned short width, unsigned short height);
+    ~RandomizedMaze();
 };
 
 #endif // RANDOMIZEDMAZE_H
