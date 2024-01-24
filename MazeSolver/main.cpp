@@ -1,76 +1,57 @@
-#include "mainwindow.h"
 #include "randomizedmaze.h"
-#include <QGraphicsView>
-#include <QGraphicsScene>
-#include <QGraphicsRectItem>
-#include <QPen>
+#include "customrectitem.h"
+#include "breadthfirstsearch.h"
+#include "mainwindow.h"
 
+#include <iostream>
+#include <vector>
 #include <QApplication>
 
-class CustomRectItem : public QGraphicsRectItem {
-public:
-    CustomRectItem(int x, int y, int width, int height, const vector<Wall> walls)
-            : QGraphicsRectItem(x, y, width, height), walls(walls) {}
-
-protected:
-    void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = nullptr) override {
-        Q_UNUSED(option);
-        Q_UNUSED(widget);
-
-        painter->setBrush(Qt::white);
-        painter->setPen(Qt::NoPen);
-
-        // Draw the rectangle without specific borders
-        painter->drawRect(rect());
-
-        for (Wall wall: walls) {
-            if (wall == Wall::NORTH) {
-                painter->setPen(Qt::black); // Set the color for the top border
-                painter->drawLine(rect().topLeft(), rect().topRight());
-            }
-            else if (wall == Wall::SOUTH) {
-                painter->setPen(Qt::black); // Set the color for the bottom border
-                painter->drawLine(rect().bottomLeft(), rect().bottomRight());
-            }
-            else if (wall == Wall::WEST) {
-                painter->setPen(Qt::black); // Set the color for the left border
-                painter->drawLine(rect().topLeft(), rect().bottomLeft());
-            }
-            else if (wall == Wall::EAST) {
-                painter->setPen(Qt::black); // Set the color for the right border
-                painter->drawLine(rect().topRight(), rect().bottomRight());
-            }
-        }
-    }
-private:
-    vector<Wall> walls;
-};
 
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
+    // QGraphicsScene scene;
+    // QGraphicsView view(&scene);
 
-    QGraphicsScene scene;
+    // RandomizedMaze maze = RandomizedMaze(4, 4);
 
-    RandomizedMaze maze = RandomizedMaze(5, 5, 0.1);
+    // const int cellSize = 40;
 
-    const int cellSize = 30;
+    // vector<vector<CustomRectItem*>> cells;
 
-    for (int y = 0; y < maze.getHeight(); y++) {
-        for (int x = 0; x < maze.getWidth(); x++) {
-            CustomRectItem *rect = new CustomRectItem(y * cellSize, x * cellSize, cellSize, cellSize, maze.getMaze()[x][y].getWalls());
+    // for (int y = 0; y < maze.getWidth(); y++) {
+    //     cells.emplace_back();
+    //     for (int x = 0; x < maze.getHeight(); x++) {
+    //         Cell* current = maze.getMaze()[x][y];
+    //         QColor color(255, 255, 255);
 
-            // Add the item to the scene
-            scene.addItem(rect);
+    //         if (*current == *maze.getStartCell()) color.setRgb(144,238,144);
+    //         else if (*current == *maze.getFinishCell()) color.setRgb(250,128,114);
 
-        }
-    }
+    //         QString textInfo = QString("(%1, %2)").arg(y).arg(x);
+    //         CustomRectItem *rect = new CustomRectItem(y * cellSize, x * cellSize, cellSize, cellSize, color, *current, textInfo);
+    //         cells[y].push_back(rect);
 
-    QGraphicsView view(&scene);
-    view.show();
+    //         // Add the item to the scene
+    //         scene.addItem(rect);
 
-//    MainWindow w;
-//    w.show();
+    //     }
+    // }
+
+    // view.show();
+
+    // BreadthFirstSearch algorithm = BreadthFirstSearch();
+
+    // for(Cell* cell: algorithm.solve(maze)) {
+    //     cells[cell->getX()][cell->getY()]->setColor(QColor(210, 210, 210));
+    // }
+
+
+
+    MainWindow w;
+    w.show();
+
 
     return a.exec();
 }
