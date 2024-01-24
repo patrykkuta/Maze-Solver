@@ -19,11 +19,11 @@ RandomizedMaze::RandomizedMaze(unsigned short width, unsigned short height) : Ma
 }
 
 RandomizedMaze::~RandomizedMaze() {
-    for (auto& row : maze) {
-        for (auto& cellPtr : row) {
-            delete cellPtr;
-        }
-    }
+    // for (vector<Cell*>& row : maze) {
+    //     for (Cell* cellPtr : row) {
+    //         delete cellPtr;
+    //     }
+    // }
 }
 
 Cell* RandomizedMaze::randomCell() {
