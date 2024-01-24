@@ -5,9 +5,8 @@
 #include <QPen>
 
 #include <QApplication>
-#include <iostream>
 
-CustomRectItem::CustomRectItem(int x, int y, int width, int height, QColor color, const Cell &cell, const QString& text, bool displayText = false)
+CustomRectItem::CustomRectItem(int x, int y, int width, int height, QColor color, const Cell &cell, const QString& text, bool displayText)
     : QGraphicsRectItem(x, y, width, height), cell(cell), color(color), displayText(displayText) {
 
     if(displayText) {
@@ -19,8 +18,6 @@ CustomRectItem::CustomRectItem(int x, int y, int width, int height, QColor color
 }
 
 void CustomRectItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) {
-    Q_UNUSED(option);
-    Q_UNUSED(widget);
 
     painter->setBrush(color);
     painter->setPen(Qt::NoPen);

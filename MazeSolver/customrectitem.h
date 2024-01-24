@@ -11,7 +11,7 @@
 
 class CustomRectItem : public QGraphicsRectItem {
 public:
-    CustomRectItem(int x, int y, int width, int height, QColor color, const Cell &cell, const QString& text, bool displayText);
+    CustomRectItem(int x, int y, int width, int height, QColor color, const Cell &cell, const QString& text, bool displayText = false);
     void setColor(QColor c);
 
 protected:
