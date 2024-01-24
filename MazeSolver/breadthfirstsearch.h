@@ -10,7 +10,8 @@ public:
     BreadthFirstSearch();
     ~BreadthFirstSearch();
 
-    vector<Cell*> solve(Maze &maze);
+    vector<Cell*> solve(Maze &maze) override;
+private:
     vector<Cell*> backtrace(unordered_map<Cell*, Cell*> &path, Cell* startCell, Cell* finishCell);
 };
 
