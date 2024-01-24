@@ -11,7 +11,7 @@ public:
     DepthFirstSearch();
     ~DepthFirstSearch();
 
-    vector<Cell*> solve(Maze maze);
+    vector<Cell*> solve(Maze &maze) override;
 };
 
 #endif // DEPTHFIRSTSEARCH_H
