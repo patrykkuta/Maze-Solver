@@ -104,7 +104,7 @@ void MainWindow::solveMaze() {
             if (!steps.empty()) {
                 Cell* cell = steps.back();
 
-                rectItemCells[cell->getX()][cell->getY()]->setBackgroundColor(QColor(222, 222, 222));
+                rectItemCells[cell->getX()][cell->getY()]->setBackgroundColor(QApplication::palette().color(QPalette::Highlight));
                 rectItemCells[cell->getX()][cell->getY()]->update();
 
                 steps.pop_back();
