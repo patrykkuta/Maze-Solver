@@ -11,17 +11,18 @@ class Maze
 protected:
     unsigned short width;
     unsigned short height;
-    vector<vector<Cell>> maze;
+    vector<vector<Cell*>> maze;
     Cell* startCell;
     Cell* finishCell;
 
 public:
     Maze(unsigned short width, unsigned short height);
-    ~Maze();
+    virtual ~Maze();
     unsigned short getWidth();
     unsigned short getHeight();
-    double getComplexity();
-    vector<vector<Cell>> getMaze();
+    vector<vector<Cell*>> getMaze();
+    Cell* getStartCell();
+    Cell* getFinishCell();
 };
 
 #endif // MAZE_H

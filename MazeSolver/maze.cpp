@@ -14,5 +14,9 @@ unsigned short Maze::getWidth() {return width;}
 
 unsigned short Maze::getHeight() {return height;}
 
-vector<vector<Cell>> Maze::getMaze() {return maze;}
+vector<vector<Cell*>> Maze::getMaze() {return maze;}
+
+Cell* Maze::getStartCell() {return startCell;}
+
+Cell* Maze::getFinishCell() {return finishCell;}
 
