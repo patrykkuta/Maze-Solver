@@ -14,10 +14,10 @@ private:
     vector<Cell> path;
     vector<Cell> visitedCells;
 public:
-    Algorithm(vector<Cell> path);
+    Algorithm();
     virtual ~Algorithm();
 
-    virtual vector<Cell> solve(Maze maze) = 0;
+    virtual vector<Cell*> solve(Maze &maze) = 0;
     bool addVisitedCell(Cell cell);
 };
 
