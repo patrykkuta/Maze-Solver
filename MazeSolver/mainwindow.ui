@@ -10,7 +10,7 @@
     <x>0</x>
     <y>0</y>
     <width>1000</width>
-    <height>670</height>
+    <height>700</height>
    </rect>
   </property>
   <property name="minimumSize">
@@ -52,9 +52,9 @@
      <number>10</number>
     </property>
     <item>
-     <widget class="QGraphicsView" name="graphicsView">
+     <widget class="QGraphicsView" name="mazeView">
       <property name="sizePolicy">
-       <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
+       <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
         <horstretch>0</horstretch>
         <verstretch>0</verstretch>
        </sizepolicy>
@@ -62,7 +62,7 @@
       <property name="minimumSize">
        <size>
         <width>0</width>
-        <height>192</height>
+        <height>0</height>
        </size>
       </property>
       <property name="frameShape">
@@ -91,8 +91,14 @@
        <property name="leftMargin">
         <number>5</number>
        </property>
+       <property name="topMargin">
+        <number>0</number>
+       </property>
        <property name="rightMargin">
         <number>5</number>
+       </property>
+       <property name="bottomMargin">
+        <number>0</number>
        </property>
        <item>
         <widget class="QGroupBox" name="groupBox">
@@ -102,11 +108,19 @@
            <verstretch>0</verstretch>
           </sizepolicy>
          </property>
+         <property name="font">
+          <font>
+           <bold>false</bold>
+          </font>
+         </property>
          <property name="title">
           <string>Maze Parameters</string>
          </property>
          <property name="alignment">
           <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+         </property>
+         <property name="flat">
+          <bool>false</bool>
          </property>
          <layout class="QVBoxLayout" name="verticalLayout_2">
           <item>
@@ -125,7 +139,16 @@
              </widget>
             </item>
             <item>
-             <widget class="QSpinBox" name="spinBox">
+             <widget class="QSpinBox" name="rowsCount">
+              <property name="wrapping">
+               <bool>false</bool>
+              </property>
+              <property name="frame">
+               <bool>true</bool>
+              </property>
+              <property name="buttonSymbols">
+               <enum>QAbstractSpinBox::UpDownArrows</enum>
+              </property>
               <property name="minimum">
                <number>3</number>
               </property>
@@ -155,12 +178,21 @@
              </widget>
             </item>
             <item>
-             <widget class="QSpinBox" name="spinBox_2">
+             <widget class="QSpinBox" name="columnsCount">
               <property name="sizePolicy">
                <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
                 <horstretch>0</horstretch>
                 <verstretch>0</verstretch>
                </sizepolicy>
+              </property>
+              <property name="wrapping">
+               <bool>false</bool>
+              </property>
+              <property name="frame">
+               <bool>true</bool>
+              </property>
+              <property name="buttonSymbols">
+               <enum>QAbstractSpinBox::UpDownArrows</enum>
               </property>
               <property name="minimum">
                <number>3</number>
@@ -179,14 +211,14 @@
         </widget>
        </item>
        <item>
-        <widget class="QPushButton" name="pushButton_3">
+        <widget class="QPushButton" name="generateButton">
          <property name="text">
           <string>Generate</string>
          </property>
         </widget>
        </item>
        <item>
-        <widget class="QGroupBox" name="groupBox_2">
+        <widget class="QGroupBox" name="solveMethodGroupBox">
          <property name="sizePolicy">
           <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
            <horstretch>0</horstretch>
@@ -198,7 +230,7 @@
          </property>
          <layout class="QVBoxLayout" name="verticalLayout_3">
           <item>
-           <widget class="QRadioButton" name="radioButton">
+           <widget class="QRadioButton" name="bfsRButton">
             <property name="text">
              <string>Breadth-First Search Algorithm</string>
             </property>
@@ -208,7 +240,7 @@
            </widget>
           </item>
           <item>
-           <widget class="QRadioButton" name="radioButton_2">
+           <widget class="QRadioButton" name="dfsRButton">
             <property name="text">
              <string>Depth-First Search Algorithm</string>
             </property>
@@ -218,7 +250,7 @@
         </widget>
        </item>
        <item>
-        <widget class="QPushButton" name="pushButton_4">
+        <widget class="QPushButton" name="solveButton">
          <property name="text">
           <string>Solve</string>
          </property>
@@ -239,7 +271,7 @@
              <number>6</number>
             </property>
             <item>
-             <widget class="QLabel" name="label_6">
+             <widget class="QLabel" name="animationSpeedLabel">
               <property name="sizePolicy">
                <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
                 <horstretch>0</horstretch>
@@ -247,7 +279,7 @@
                </sizepolicy>
               </property>
               <property name="text">
-               <string> Speed: x (cells per second)</string>
+               <string> Speed: 10 (cells per second)</string>
               </property>
               <property name="alignment">
                <set>Qt::AlignCenter</set>
@@ -273,7 +305,7 @@
                </widget>
               </item>
               <item>
-               <widget class="QSlider" name="horizontalSlider">
+               <widget class="QSlider" name="animationSpeedSlider">
                 <property name="minimum">
                  <number>1</number>
                 </property>
@@ -313,7 +345,7 @@
              </layout>
             </item>
             <item>
-             <widget class="QPushButton" name="pushButton_5">
+             <widget class="QPushButton" name="animationPlayButton">
               <property name="text">
                <string>Pause/Resume</string>
               </property>
@@ -330,9 +362,9 @@
              <number>6</number>
             </property>
             <item>
-             <widget class="QLabel" name="label_3">
+             <widget class="QLabel" name="animationStepLabel">
               <property name="text">
-               <string>Playback (Step by step)</string>
+               <string>Current step: 1</string>
               </property>
               <property name="alignment">
                <set>Qt::AlignCenter</set>
@@ -352,14 +384,14 @@
                </widget>
               </item>
               <item>
-               <widget class="QSlider" name="horizontalSlider_2">
+               <widget class="QSlider" name="animationStepsSlider">
                 <property name="orientation">
                  <enum>Qt::Horizontal</enum>
                 </property>
                </widget>
               </item>
               <item>
-               <widget class="QLabel" name="label_9">
+               <widget class="QLabel" name="animationMaxStepsLabel">
                 <property name="text">
                  <string>X</string>
                 </property>
@@ -388,7 +420,7 @@
        <item>
         <layout class="QHBoxLayout" name="horizontalLayout_7">
          <item>
-          <widget class="QLabel" name="label_8">
+          <widget class="QLabel" name="visitedCellsLabel">
            <property name="sizePolicy">
             <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
              <horstretch>0</horstretch>
@@ -401,7 +433,7 @@
           </widget>
          </item>
          <item>
-          <widget class="QLabel" name="label_7">
+          <widget class="QLabel" name="pathLengthLabel">
            <property name="sizePolicy">
             <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
              <horstretch>0</horstretch>
@@ -419,14 +451,14 @@
         </layout>
        </item>
        <item>
-        <widget class="QPushButton" name="pushButton_2">
+        <widget class="QPushButton" name="resetButton">
          <property name="text">
           <string>Reset</string>
          </property>
         </widget>
        </item>
        <item>
-        <widget class="QPushButton" name="pushButton">
+        <widget class="QPushButton" name="exitButton">
          <property name="text">
           <string>Exit</string>
          </property>
@@ -453,24 +485,19 @@
     <addaction name="actionNew"/>
     <addaction name="actionOpen"/>
     <addaction name="separator"/>
+    <addaction name="actionExport_as_GIF"/>
+    <addaction name="separator"/>
     <addaction name="actionSave"/>
     <addaction name="actionSave_as"/>
     <addaction name="separator"/>
     <addaction name="actionExit"/>
    </widget>
-   <widget class="QMenu" name="menuHelp">
-    <property name="title">
-     <string>Help</string>
-    </property>
-    <addaction name="actionInfo"/>
-   </widget>
    <addaction name="menuFile"/>
-   <addaction name="menuHelp"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
   <action name="actionSave">
    <property name="text">
-    <string>Save...</string>
+    <string>Save</string>
    </property>
   </action>
   <action name="actionSave_as">
@@ -480,12 +507,12 @@
   </action>
   <action name="actionOpen">
    <property name="text">
-    <string>Open...</string>
+    <string>Open</string>
    </property>
   </action>
   <action name="actionNew">
    <property name="text">
-    <string>New...</string>
+    <string>New</string>
    </property>
   </action>
   <action name="actionExit">
@@ -496,6 +523,11 @@
   <action name="actionInfo">
    <property name="text">
     <string>How it works</string>
+   </property>
+  </action>
+  <action name="actionExport_as_GIF">
+   <property name="text">
+    <string>Export as GIF</string>
    </property>
   </action>
  </widget>

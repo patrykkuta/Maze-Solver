@@ -40,49 +40,49 @@ public:
     QAction *actionNew;
     QAction *actionExit;
     QAction *actionInfo;
+    QAction *actionExport_as_GIF;
     QWidget *centralwidget;
     QHBoxLayout *horizontalLayout_2;
-    QGraphicsView *graphicsView;
+    QGraphicsView *mazeView;
     QWidget *verticalWidget;
     QVBoxLayout *verticalLayout;
     QGroupBox *groupBox;
     QVBoxLayout *verticalLayout_2;
     QHBoxLayout *horizontalLayout_5;
     QLabel *label;
-    QSpinBox *spinBox;
+    QSpinBox *rowsCount;
     QHBoxLayout *horizontalLayout_3;
     QLabel *label_2;
-    QSpinBox *spinBox_2;
-    QPushButton *pushButton_3;
-    QGroupBox *groupBox_2;
+    QSpinBox *columnsCount;
+    QPushButton *generateButton;
+    QGroupBox *solveMethodGroupBox;
     QVBoxLayout *verticalLayout_3;
-    QRadioButton *radioButton;
-    QRadioButton *radioButton_2;
-    QPushButton *pushButton_4;
+    QRadioButton *bfsRButton;
+    QRadioButton *dfsRButton;
+    QPushButton *solveButton;
     QGroupBox *groupBox_3;
     QVBoxLayout *verticalLayout_4;
     QVBoxLayout *verticalLayout_5;
-    QLabel *label_6;
+    QLabel *animationSpeedLabel;
     QHBoxLayout *horizontalLayout_6;
     QLabel *label_4;
-    QSlider *horizontalSlider;
+    QSlider *animationSpeedSlider;
     QLabel *label_5;
-    QPushButton *pushButton_5;
+    QPushButton *animationPlayButton;
     QVBoxLayout *verticalLayout_6;
-    QLabel *label_3;
+    QLabel *animationStepLabel;
     QHBoxLayout *horizontalLayout_8;
     QLabel *label_10;
-    QSlider *horizontalSlider_2;
-    QLabel *label_9;
+    QSlider *animationStepsSlider;
+    QLabel *animationMaxStepsLabel;
     QSpacerItem *verticalSpacer;
     QHBoxLayout *horizontalLayout_7;
-    QLabel *label_8;
-    QLabel *label_7;
-    QPushButton *pushButton_2;
-    QPushButton *pushButton;
+    QLabel *visitedCellsLabel;
+    QLabel *pathLengthLabel;
+    QPushButton *resetButton;
+    QPushButton *exitButton;
     QMenuBar *menubar;
     QMenu *menuFile;
-    QMenu *menuHelp;
     QStatusBar *statusbar;
 
     void setupUi(QMainWindow *MainWindow)
@@ -90,7 +90,7 @@ public:
         if (MainWindow->objectName().isEmpty())
             MainWindow->setObjectName("MainWindow");
         MainWindow->setWindowModality(Qt::WindowModal);
-        MainWindow->resize(1000, 670);
+        MainWindow->resize(1000, 700);
         MainWindow->setMinimumSize(QSize(800, 670));
         MainWindow->setLocale(QLocale(QLocale::English, QLocale::UnitedKingdom));
         MainWindow->setTabShape(QTabWidget::Rounded);
@@ -107,6 +107,8 @@ public:
         actionExit->setObjectName("actionExit");
         actionInfo = new QAction(MainWindow);
         actionInfo->setObjectName("actionInfo");
+        actionExport_as_GIF = new QAction(MainWindow);
+        actionExport_as_GIF->setObjectName("actionExport_as_GIF");
         centralwidget = new QWidget(MainWindow);
         centralwidget->setObjectName("centralwidget");
         QSizePolicy sizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
@@ -117,59 +119,63 @@ public:
         horizontalLayout_2 = new QHBoxLayout(centralwidget);
         horizontalLayout_2->setObjectName("horizontalLayout_2");
         horizontalLayout_2->setContentsMargins(10, 10, 10, 10);
-        graphicsView = new QGraphicsView(centralwidget);
-        graphicsView->setObjectName("graphicsView");
-        QSizePolicy sizePolicy1(QSizePolicy::Minimum, QSizePolicy::Expanding);
-        sizePolicy1.setHorizontalStretch(0);
-        sizePolicy1.setVerticalStretch(0);
-        sizePolicy1.setHeightForWidth(graphicsView->sizePolicy().hasHeightForWidth());
-        graphicsView->setSizePolicy(sizePolicy1);
-        graphicsView->setMinimumSize(QSize(0, 192));
-        graphicsView->setFrameShape(QFrame::StyledPanel);
+        mazeView = new QGraphicsView(centralwidget);
+        mazeView->setObjectName("mazeView");
+        sizePolicy.setHeightForWidth(mazeView->sizePolicy().hasHeightForWidth());
+        mazeView->setSizePolicy(sizePolicy);
+        mazeView->setMinimumSize(QSize(0, 0));
+        mazeView->setFrameShape(QFrame::StyledPanel);
 
-        horizontalLayout_2->addWidget(graphicsView);
+        horizontalLayout_2->addWidget(mazeView);
 
         verticalWidget = new QWidget(centralwidget);
         verticalWidget->setObjectName("verticalWidget");
-        QSizePolicy sizePolicy2(QSizePolicy::Fixed, QSizePolicy::Expanding);
-        sizePolicy2.setHorizontalStretch(0);
-        sizePolicy2.setVerticalStretch(0);
-        sizePolicy2.setHeightForWidth(verticalWidget->sizePolicy().hasHeightForWidth());
-        verticalWidget->setSizePolicy(sizePolicy2);
+        QSizePolicy sizePolicy1(QSizePolicy::Fixed, QSizePolicy::Expanding);
+        sizePolicy1.setHorizontalStretch(0);
+        sizePolicy1.setVerticalStretch(0);
+        sizePolicy1.setHeightForWidth(verticalWidget->sizePolicy().hasHeightForWidth());
+        verticalWidget->setSizePolicy(sizePolicy1);
         verticalWidget->setMinimumSize(QSize(280, 0));
         verticalLayout = new QVBoxLayout(verticalWidget);
         verticalLayout->setSpacing(10);
         verticalLayout->setObjectName("verticalLayout");
-        verticalLayout->setContentsMargins(5, -1, 5, -1);
+        verticalLayout->setContentsMargins(5, 0, 5, 0);
         groupBox = new QGroupBox(verticalWidget);
         groupBox->setObjectName("groupBox");
-        QSizePolicy sizePolicy3(QSizePolicy::Preferred, QSizePolicy::Fixed);
-        sizePolicy3.setHorizontalStretch(0);
-        sizePolicy3.setVerticalStretch(0);
-        sizePolicy3.setHeightForWidth(groupBox->sizePolicy().hasHeightForWidth());
-        groupBox->setSizePolicy(sizePolicy3);
+        QSizePolicy sizePolicy2(QSizePolicy::Preferred, QSizePolicy::Fixed);
+        sizePolicy2.setHorizontalStretch(0);
+        sizePolicy2.setVerticalStretch(0);
+        sizePolicy2.setHeightForWidth(groupBox->sizePolicy().hasHeightForWidth());
+        groupBox->setSizePolicy(sizePolicy2);
+        QFont font;
+        font.setBold(false);
+        groupBox->setFont(font);
         groupBox->setAlignment(Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter);
+        groupBox->setFlat(false);
         verticalLayout_2 = new QVBoxLayout(groupBox);
         verticalLayout_2->setObjectName("verticalLayout_2");
         horizontalLayout_5 = new QHBoxLayout();
         horizontalLayout_5->setObjectName("horizontalLayout_5");
         label = new QLabel(groupBox);
         label->setObjectName("label");
-        QSizePolicy sizePolicy4(QSizePolicy::Fixed, QSizePolicy::Minimum);
-        sizePolicy4.setHorizontalStretch(0);
-        sizePolicy4.setVerticalStretch(0);
-        sizePolicy4.setHeightForWidth(label->sizePolicy().hasHeightForWidth());
-        label->setSizePolicy(sizePolicy4);
+        QSizePolicy sizePolicy3(QSizePolicy::Fixed, QSizePolicy::Minimum);
+        sizePolicy3.setHorizontalStretch(0);
+        sizePolicy3.setVerticalStretch(0);
+        sizePolicy3.setHeightForWidth(label->sizePolicy().hasHeightForWidth());
+        label->setSizePolicy(sizePolicy3);
 
         horizontalLayout_5->addWidget(label);
 
-        spinBox = new QSpinBox(groupBox);
-        spinBox->setObjectName("spinBox");
-        spinBox->setMinimum(3);
-        spinBox->setMaximum(25);
-        spinBox->setValue(5);
+        rowsCount = new QSpinBox(groupBox);
+        rowsCount->setObjectName("rowsCount");
+        rowsCount->setWrapping(false);
+        rowsCount->setFrame(true);
+        rowsCount->setButtonSymbols(QAbstractSpinBox::UpDownArrows);
+        rowsCount->setMinimum(3);
+        rowsCount->setMaximum(25);
+        rowsCount->setValue(5);
 
-        horizontalLayout_5->addWidget(spinBox);
+        horizontalLayout_5->addWidget(rowsCount);
 
 
         verticalLayout_2->addLayout(horizontalLayout_5);
@@ -178,23 +184,26 @@ public:
         horizontalLayout_3->setObjectName("horizontalLayout_3");
         label_2 = new QLabel(groupBox);
         label_2->setObjectName("label_2");
-        sizePolicy4.setHeightForWidth(label_2->sizePolicy().hasHeightForWidth());
-        label_2->setSizePolicy(sizePolicy4);
+        sizePolicy3.setHeightForWidth(label_2->sizePolicy().hasHeightForWidth());
+        label_2->setSizePolicy(sizePolicy3);
 
         horizontalLayout_3->addWidget(label_2);
 
-        spinBox_2 = new QSpinBox(groupBox);
-        spinBox_2->setObjectName("spinBox_2");
-        QSizePolicy sizePolicy5(QSizePolicy::Minimum, QSizePolicy::Fixed);
-        sizePolicy5.setHorizontalStretch(0);
-        sizePolicy5.setVerticalStretch(0);
-        sizePolicy5.setHeightForWidth(spinBox_2->sizePolicy().hasHeightForWidth());
-        spinBox_2->setSizePolicy(sizePolicy5);
-        spinBox_2->setMinimum(3);
-        spinBox_2->setMaximum(25);
-        spinBox_2->setValue(5);
+        columnsCount = new QSpinBox(groupBox);
+        columnsCount->setObjectName("columnsCount");
+        QSizePolicy sizePolicy4(QSizePolicy::Minimum, QSizePolicy::Fixed);
+        sizePolicy4.setHorizontalStretch(0);
+        sizePolicy4.setVerticalStretch(0);
+        sizePolicy4.setHeightForWidth(columnsCount->sizePolicy().hasHeightForWidth());
+        columnsCount->setSizePolicy(sizePolicy4);
+        columnsCount->setWrapping(false);
+        columnsCount->setFrame(true);
+        columnsCount->setButtonSymbols(QAbstractSpinBox::UpDownArrows);
+        columnsCount->setMinimum(3);
+        columnsCount->setMaximum(25);
+        columnsCount->setValue(5);
 
-        horizontalLayout_3->addWidget(spinBox_2);
+        horizontalLayout_3->addWidget(columnsCount);
 
 
         verticalLayout_2->addLayout(horizontalLayout_3);
@@ -202,38 +211,38 @@ public:
 
         verticalLayout->addWidget(groupBox);
 
-        pushButton_3 = new QPushButton(verticalWidget);
-        pushButton_3->setObjectName("pushButton_3");
+        generateButton = new QPushButton(verticalWidget);
+        generateButton->setObjectName("generateButton");
 
-        verticalLayout->addWidget(pushButton_3);
+        verticalLayout->addWidget(generateButton);
 
-        groupBox_2 = new QGroupBox(verticalWidget);
-        groupBox_2->setObjectName("groupBox_2");
-        QSizePolicy sizePolicy6(QSizePolicy::MinimumExpanding, QSizePolicy::Fixed);
-        sizePolicy6.setHorizontalStretch(0);
-        sizePolicy6.setVerticalStretch(0);
-        sizePolicy6.setHeightForWidth(groupBox_2->sizePolicy().hasHeightForWidth());
-        groupBox_2->setSizePolicy(sizePolicy6);
-        verticalLayout_3 = new QVBoxLayout(groupBox_2);
+        solveMethodGroupBox = new QGroupBox(verticalWidget);
+        solveMethodGroupBox->setObjectName("solveMethodGroupBox");
+        QSizePolicy sizePolicy5(QSizePolicy::MinimumExpanding, QSizePolicy::Fixed);
+        sizePolicy5.setHorizontalStretch(0);
+        sizePolicy5.setVerticalStretch(0);
+        sizePolicy5.setHeightForWidth(solveMethodGroupBox->sizePolicy().hasHeightForWidth());
+        solveMethodGroupBox->setSizePolicy(sizePolicy5);
+        verticalLayout_3 = new QVBoxLayout(solveMethodGroupBox);
         verticalLayout_3->setObjectName("verticalLayout_3");
-        radioButton = new QRadioButton(groupBox_2);
-        radioButton->setObjectName("radioButton");
-        radioButton->setChecked(true);
+        bfsRButton = new QRadioButton(solveMethodGroupBox);
+        bfsRButton->setObjectName("bfsRButton");
+        bfsRButton->setChecked(true);
 
-        verticalLayout_3->addWidget(radioButton);
+        verticalLayout_3->addWidget(bfsRButton);
 
-        radioButton_2 = new QRadioButton(groupBox_2);
-        radioButton_2->setObjectName("radioButton_2");
+        dfsRButton = new QRadioButton(solveMethodGroupBox);
+        dfsRButton->setObjectName("dfsRButton");
 
-        verticalLayout_3->addWidget(radioButton_2);
+        verticalLayout_3->addWidget(dfsRButton);
 
 
-        verticalLayout->addWidget(groupBox_2);
+        verticalLayout->addWidget(solveMethodGroupBox);
 
-        pushButton_4 = new QPushButton(verticalWidget);
-        pushButton_4->setObjectName("pushButton_4");
+        solveButton = new QPushButton(verticalWidget);
+        solveButton->setObjectName("solveButton");
 
-        verticalLayout->addWidget(pushButton_4);
+        verticalLayout->addWidget(solveButton);
 
         groupBox_3 = new QGroupBox(verticalWidget);
         groupBox_3->setObjectName("groupBox_3");
@@ -243,14 +252,14 @@ public:
         verticalLayout_5 = new QVBoxLayout();
         verticalLayout_5->setSpacing(6);
         verticalLayout_5->setObjectName("verticalLayout_5");
-        label_6 = new QLabel(groupBox_3);
-        label_6->setObjectName("label_6");
-        sizePolicy3.setHeightForWidth(label_6->sizePolicy().hasHeightForWidth());
-        label_6->setSizePolicy(sizePolicy3);
-        label_6->setAlignment(Qt::AlignCenter);
-        label_6->setMargin(7);
+        animationSpeedLabel = new QLabel(groupBox_3);
+        animationSpeedLabel->setObjectName("animationSpeedLabel");
+        sizePolicy2.setHeightForWidth(animationSpeedLabel->sizePolicy().hasHeightForWidth());
+        animationSpeedLabel->setSizePolicy(sizePolicy2);
+        animationSpeedLabel->setAlignment(Qt::AlignCenter);
+        animationSpeedLabel->setMargin(7);
 
-        verticalLayout_5->addWidget(label_6);
+        verticalLayout_5->addWidget(animationSpeedLabel);
 
         horizontalLayout_6 = new QHBoxLayout();
         horizontalLayout_6->setObjectName("horizontalLayout_6");
@@ -260,19 +269,19 @@ public:
 
         horizontalLayout_6->addWidget(label_4);
 
-        horizontalSlider = new QSlider(groupBox_3);
-        horizontalSlider->setObjectName("horizontalSlider");
-        horizontalSlider->setMinimum(1);
-        horizontalSlider->setMaximum(50);
-        horizontalSlider->setValue(10);
-        horizontalSlider->setTracking(true);
-        horizontalSlider->setOrientation(Qt::Horizontal);
-        horizontalSlider->setInvertedAppearance(false);
-        horizontalSlider->setInvertedControls(false);
-        horizontalSlider->setTickPosition(QSlider::NoTicks);
-        horizontalSlider->setTickInterval(1);
+        animationSpeedSlider = new QSlider(groupBox_3);
+        animationSpeedSlider->setObjectName("animationSpeedSlider");
+        animationSpeedSlider->setMinimum(1);
+        animationSpeedSlider->setMaximum(50);
+        animationSpeedSlider->setValue(10);
+        animationSpeedSlider->setTracking(true);
+        animationSpeedSlider->setOrientation(Qt::Horizontal);
+        animationSpeedSlider->setInvertedAppearance(false);
+        animationSpeedSlider->setInvertedControls(false);
+        animationSpeedSlider->setTickPosition(QSlider::NoTicks);
+        animationSpeedSlider->setTickInterval(1);
 
-        horizontalLayout_6->addWidget(horizontalSlider);
+        horizontalLayout_6->addWidget(animationSpeedSlider);
 
         label_5 = new QLabel(groupBox_3);
         label_5->setObjectName("label_5");
@@ -282,11 +291,11 @@ public:
 
         verticalLayout_5->addLayout(horizontalLayout_6);
 
-        pushButton_5 = new QPushButton(groupBox_3);
-        pushButton_5->setObjectName("pushButton_5");
-        pushButton_5->setFlat(false);
+        animationPlayButton = new QPushButton(groupBox_3);
+        animationPlayButton->setObjectName("animationPlayButton");
+        animationPlayButton->setFlat(false);
 
-        verticalLayout_5->addWidget(pushButton_5);
+        verticalLayout_5->addWidget(animationPlayButton);
 
 
         verticalLayout_4->addLayout(verticalLayout_5);
@@ -294,12 +303,12 @@ public:
         verticalLayout_6 = new QVBoxLayout();
         verticalLayout_6->setSpacing(6);
         verticalLayout_6->setObjectName("verticalLayout_6");
-        label_3 = new QLabel(groupBox_3);
-        label_3->setObjectName("label_3");
-        label_3->setAlignment(Qt::AlignCenter);
-        label_3->setMargin(4);
+        animationStepLabel = new QLabel(groupBox_3);
+        animationStepLabel->setObjectName("animationStepLabel");
+        animationStepLabel->setAlignment(Qt::AlignCenter);
+        animationStepLabel->setMargin(4);
 
-        verticalLayout_6->addWidget(label_3);
+        verticalLayout_6->addWidget(animationStepLabel);
 
         horizontalLayout_8 = new QHBoxLayout();
         horizontalLayout_8->setObjectName("horizontalLayout_8");
@@ -308,16 +317,16 @@ public:
 
         horizontalLayout_8->addWidget(label_10);
 
-        horizontalSlider_2 = new QSlider(groupBox_3);
-        horizontalSlider_2->setObjectName("horizontalSlider_2");
-        horizontalSlider_2->setOrientation(Qt::Horizontal);
+        animationStepsSlider = new QSlider(groupBox_3);
+        animationStepsSlider->setObjectName("animationStepsSlider");
+        animationStepsSlider->setOrientation(Qt::Horizontal);
 
-        horizontalLayout_8->addWidget(horizontalSlider_2);
+        horizontalLayout_8->addWidget(animationStepsSlider);
 
-        label_9 = new QLabel(groupBox_3);
-        label_9->setObjectName("label_9");
+        animationMaxStepsLabel = new QLabel(groupBox_3);
+        animationMaxStepsLabel->setObjectName("animationMaxStepsLabel");
 
-        horizontalLayout_8->addWidget(label_9);
+        horizontalLayout_8->addWidget(animationMaxStepsLabel);
 
 
         verticalLayout_6->addLayout(horizontalLayout_8);
@@ -334,33 +343,33 @@ public:
 
         horizontalLayout_7 = new QHBoxLayout();
         horizontalLayout_7->setObjectName("horizontalLayout_7");
-        label_8 = new QLabel(verticalWidget);
-        label_8->setObjectName("label_8");
-        sizePolicy3.setHeightForWidth(label_8->sizePolicy().hasHeightForWidth());
-        label_8->setSizePolicy(sizePolicy3);
+        visitedCellsLabel = new QLabel(verticalWidget);
+        visitedCellsLabel->setObjectName("visitedCellsLabel");
+        sizePolicy2.setHeightForWidth(visitedCellsLabel->sizePolicy().hasHeightForWidth());
+        visitedCellsLabel->setSizePolicy(sizePolicy2);
 
-        horizontalLayout_7->addWidget(label_8);
+        horizontalLayout_7->addWidget(visitedCellsLabel);
 
-        label_7 = new QLabel(verticalWidget);
-        label_7->setObjectName("label_7");
-        sizePolicy3.setHeightForWidth(label_7->sizePolicy().hasHeightForWidth());
-        label_7->setSizePolicy(sizePolicy3);
-        label_7->setAlignment(Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter);
+        pathLengthLabel = new QLabel(verticalWidget);
+        pathLengthLabel->setObjectName("pathLengthLabel");
+        sizePolicy2.setHeightForWidth(pathLengthLabel->sizePolicy().hasHeightForWidth());
+        pathLengthLabel->setSizePolicy(sizePolicy2);
+        pathLengthLabel->setAlignment(Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter);
 
-        horizontalLayout_7->addWidget(label_7);
+        horizontalLayout_7->addWidget(pathLengthLabel);
 
 
         verticalLayout->addLayout(horizontalLayout_7);
 
-        pushButton_2 = new QPushButton(verticalWidget);
-        pushButton_2->setObjectName("pushButton_2");
+        resetButton = new QPushButton(verticalWidget);
+        resetButton->setObjectName("resetButton");
 
-        verticalLayout->addWidget(pushButton_2);
+        verticalLayout->addWidget(resetButton);
 
-        pushButton = new QPushButton(verticalWidget);
-        pushButton->setObjectName("pushButton");
+        exitButton = new QPushButton(verticalWidget);
+        exitButton->setObjectName("exitButton");
 
-        verticalLayout->addWidget(pushButton);
+        verticalLayout->addWidget(exitButton);
 
 
         horizontalLayout_2->addWidget(verticalWidget);
@@ -372,23 +381,21 @@ public:
         menubar->setGeometry(QRect(0, 0, 1000, 21));
         menuFile = new QMenu(menubar);
         menuFile->setObjectName("menuFile");
-        menuHelp = new QMenu(menubar);
-        menuHelp->setObjectName("menuHelp");
         MainWindow->setMenuBar(menubar);
         statusbar = new QStatusBar(MainWindow);
         statusbar->setObjectName("statusbar");
         MainWindow->setStatusBar(statusbar);
 
         menubar->addAction(menuFile->menuAction());
-        menubar->addAction(menuHelp->menuAction());
         menuFile->addAction(actionNew);
         menuFile->addAction(actionOpen);
+        menuFile->addSeparator();
+        menuFile->addAction(actionExport_as_GIF);
         menuFile->addSeparator();
         menuFile->addAction(actionSave);
         menuFile->addAction(actionSave_as);
         menuFile->addSeparator();
         menuFile->addAction(actionExit);
-        menuHelp->addAction(actionInfo);
 
         retranslateUi(MainWindow);
 
@@ -398,34 +405,34 @@ public:
     void retranslateUi(QMainWindow *MainWindow)
     {
         MainWindow->setWindowTitle(QCoreApplication::translate("MainWindow", "Maze Solver", nullptr));
-        actionSave->setText(QCoreApplication::translate("MainWindow", "Save...", nullptr));
+        actionSave->setText(QCoreApplication::translate("MainWindow", "Save", nullptr));
         actionSave_as->setText(QCoreApplication::translate("MainWindow", "Save as...", nullptr));
-        actionOpen->setText(QCoreApplication::translate("MainWindow", "Open...", nullptr));
-        actionNew->setText(QCoreApplication::translate("MainWindow", "New...", nullptr));
+        actionOpen->setText(QCoreApplication::translate("MainWindow", "Open", nullptr));
+        actionNew->setText(QCoreApplication::translate("MainWindow", "New", nullptr));
         actionExit->setText(QCoreApplication::translate("MainWindow", "Exit", nullptr));
         actionInfo->setText(QCoreApplication::translate("MainWindow", "How it works", nullptr));
+        actionExport_as_GIF->setText(QCoreApplication::translate("MainWindow", "Export as GIF", nullptr));
         groupBox->setTitle(QCoreApplication::translate("MainWindow", "Maze Parameters", nullptr));
         label->setText(QCoreApplication::translate("MainWindow", "Number of rows (3 - 25):", nullptr));
         label_2->setText(QCoreApplication::translate("MainWindow", "Number of columns (3 - 25):", nullptr));
-        pushButton_3->setText(QCoreApplication::translate("MainWindow", "Generate", nullptr));
-        groupBox_2->setTitle(QCoreApplication::translate("MainWindow", "Solve Method", nullptr));
-        radioButton->setText(QCoreApplication::translate("MainWindow", "Breadth-First Search Algorithm", nullptr));
-        radioButton_2->setText(QCoreApplication::translate("MainWindow", "Depth-First Search Algorithm", nullptr));
-        pushButton_4->setText(QCoreApplication::translate("MainWindow", "Solve", nullptr));
+        generateButton->setText(QCoreApplication::translate("MainWindow", "Generate", nullptr));
+        solveMethodGroupBox->setTitle(QCoreApplication::translate("MainWindow", "Solve Method", nullptr));
+        bfsRButton->setText(QCoreApplication::translate("MainWindow", "Breadth-First Search Algorithm", nullptr));
+        dfsRButton->setText(QCoreApplication::translate("MainWindow", "Depth-First Search Algorithm", nullptr));
+        solveButton->setText(QCoreApplication::translate("MainWindow", "Solve", nullptr));
         groupBox_3->setTitle(QCoreApplication::translate("MainWindow", "Animation", nullptr));
-        label_6->setText(QCoreApplication::translate("MainWindow", " Speed: x (cells per second)", nullptr));
+        animationSpeedLabel->setText(QCoreApplication::translate("MainWindow", " Speed: 10 (cells per second)", nullptr));
         label_4->setText(QCoreApplication::translate("MainWindow", "1", nullptr));
         label_5->setText(QCoreApplication::translate("MainWindow", "50", nullptr));
-        pushButton_5->setText(QCoreApplication::translate("MainWindow", "Pause/Resume", nullptr));
-        label_3->setText(QCoreApplication::translate("MainWindow", "Playback (Step by step)", nullptr));
+        animationPlayButton->setText(QCoreApplication::translate("MainWindow", "Pause/Resume", nullptr));
+        animationStepLabel->setText(QCoreApplication::translate("MainWindow", "Current step: 1", nullptr));
         label_10->setText(QCoreApplication::translate("MainWindow", "1", nullptr));
-        label_9->setText(QCoreApplication::translate("MainWindow", "X", nullptr));
-        label_8->setText(QCoreApplication::translate("MainWindow", "Visited cells:", nullptr));
-        label_7->setText(QCoreApplication::translate("MainWindow", "Path length:", nullptr));
-        pushButton_2->setText(QCoreApplication::translate("MainWindow", "Reset", nullptr));
-        pushButton->setText(QCoreApplication::translate("MainWindow", "Exit", nullptr));
+        animationMaxStepsLabel->setText(QCoreApplication::translate("MainWindow", "X", nullptr));
+        visitedCellsLabel->setText(QCoreApplication::translate("MainWindow", "Visited cells:", nullptr));
+        pathLengthLabel->setText(QCoreApplication::translate("MainWindow", "Path length:", nullptr));
+        resetButton->setText(QCoreApplication::translate("MainWindow", "Reset", nullptr));
+        exitButton->setText(QCoreApplication::translate("MainWindow", "Exit", nullptr));
         menuFile->setTitle(QCoreApplication::translate("MainWindow", "File", nullptr));
-        menuHelp->setTitle(QCoreApplication::translate("MainWindow", "Help", nullptr));
     } // retranslateUi
 
 };
