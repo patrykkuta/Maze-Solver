@@ -2,7 +2,7 @@
 #define STEP_H
 
 #include "state.h"
-#include "cell.h"
+#include "Cell.h"
 
 class Step
 {
