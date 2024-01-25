@@ -2,8 +2,6 @@
 
 RandomizedMaze::RandomizedMaze(unsigned short width, unsigned short height) : Maze(width, height) {
 
-    maze.reserve(height * width);
-
     for (unsigned short y = 0; y < height; y++) {
         maze.emplace_back();
 
@@ -15,7 +13,7 @@ RandomizedMaze::RandomizedMaze(unsigned short width, unsigned short height) : Ma
     startCell = maze[0][0];
     finishCell = maze[height - 1][width - 1];
 
-    generateMaze();
+    // generateMaze();
 }
 
 RandomizedMaze::~RandomizedMaze() {
@@ -26,7 +24,7 @@ RandomizedMaze::~RandomizedMaze() {
     // }
 }
 
-Cell* RandomizedMaze::randomCell() {
+Cell* RandomizedMaze::getGenerationStartCell() {
     mt19937 gen(rd());
 
     uniform_int_distribution<unsigned short> distributionX(0, getWidth() - 1);
@@ -40,7 +38,7 @@ Cell* RandomizedMaze::randomCell() {
 
 void RandomizedMaze::generateMaze() {
 
-    Cell* rc = randomCell();
+    Cell* rc = getGenerationStartCell();
     Cell* startingCell = maze[rc->getY()][rc->getX()];
 
     frontier.insert(startingCell);
@@ -50,6 +48,8 @@ void RandomizedMaze::generateMaze() {
 
         auto item = next(frontier.begin(), index);
         Cell* c = *item;
+
+        generationSteps.push(new Step(State::CURRENT, c));
 
         frontier.erase(item);
 
@@ -67,18 +67,22 @@ void RandomizedMaze::generateMaze() {
 void RandomizedMaze::addUnvisitedNeighbours(Cell* cell) {
     if ((cell->getX() > 0) && !maze[cell->getY()][cell->getX() - 1]->wasVisited()) {
         frontier.insert(maze[cell->getY()][cell->getX() - 1]);
+        generationSteps.push(new Step(State::NEIGHBOUR, maze[cell->getY()][cell->getX() - 1]));
     }
 
     if ((cell->getX() < width - 1) && !maze[cell->getY()][cell->getX() + 1]->wasVisited()) {
         frontier.insert(maze[cell->getY()][cell->getX() + 1]);
+        generationSteps.push(new Step(State::NEIGHBOUR, maze[cell->getY()][cell->getX() + 1]));
     }
 
     if ((cell->getY() > 0) && !maze[cell->getY() - 1][cell->getX()]->wasVisited()) {
         frontier.insert(maze[cell->getY() - 1][cell->getX()]);
+        generationSteps.push(new Step(State::NEIGHBOUR, maze[cell->getY() - 1][cell->getX()]));
     }
 
     if ((cell->getY() < height - 1) && !maze[cell->getY() + 1][cell->getX()]->wasVisited()) {
         frontier.insert(maze[cell->getY() + 1][cell->getX()]);
+        generationSteps.push(new Step(State::NEIGHBOUR, maze[cell->getY() + 1][cell->getX()]));
     }
 }
 

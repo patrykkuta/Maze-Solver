@@ -67,7 +67,7 @@ public:
     QHBoxLayout *horizontalLayout_6;
     QLabel *label_4;
     QSlider *animationSpeedSlider;
-    QLabel *label_5;
+    QLabel *animationSpeedMaxLabel;
     QPushButton *animationPlayButton;
     QVBoxLayout *verticalLayout_6;
     QLabel *animationStepLabel;
@@ -172,7 +172,7 @@ public:
         rowsCount->setFrame(true);
         rowsCount->setButtonSymbols(QAbstractSpinBox::UpDownArrows);
         rowsCount->setMinimum(3);
-        rowsCount->setMaximum(25);
+        rowsCount->setMaximum(60);
         rowsCount->setValue(5);
 
         horizontalLayout_5->addWidget(rowsCount);
@@ -200,7 +200,7 @@ public:
         columnsCount->setFrame(true);
         columnsCount->setButtonSymbols(QAbstractSpinBox::UpDownArrows);
         columnsCount->setMinimum(3);
-        columnsCount->setMaximum(25);
+        columnsCount->setMaximum(60);
         columnsCount->setValue(5);
 
         horizontalLayout_3->addWidget(columnsCount);
@@ -272,7 +272,7 @@ public:
         animationSpeedSlider = new QSlider(groupBox_3);
         animationSpeedSlider->setObjectName("animationSpeedSlider");
         animationSpeedSlider->setMinimum(1);
-        animationSpeedSlider->setMaximum(50);
+        animationSpeedSlider->setMaximum(300);
         animationSpeedSlider->setValue(10);
         animationSpeedSlider->setTracking(true);
         animationSpeedSlider->setOrientation(Qt::Horizontal);
@@ -283,10 +283,10 @@ public:
 
         horizontalLayout_6->addWidget(animationSpeedSlider);
 
-        label_5 = new QLabel(groupBox_3);
-        label_5->setObjectName("label_5");
+        animationSpeedMaxLabel = new QLabel(groupBox_3);
+        animationSpeedMaxLabel->setObjectName("animationSpeedMaxLabel");
 
-        horizontalLayout_6->addWidget(label_5);
+        horizontalLayout_6->addWidget(animationSpeedMaxLabel);
 
 
         verticalLayout_5->addLayout(horizontalLayout_6);
@@ -413,8 +413,8 @@ public:
         actionInfo->setText(QCoreApplication::translate("MainWindow", "How it works", nullptr));
         actionExport_as_GIF->setText(QCoreApplication::translate("MainWindow", "Export as GIF", nullptr));
         groupBox->setTitle(QCoreApplication::translate("MainWindow", "Maze Parameters", nullptr));
-        label->setText(QCoreApplication::translate("MainWindow", "Number of rows (3 - 25):", nullptr));
-        label_2->setText(QCoreApplication::translate("MainWindow", "Number of columns (3 - 25):", nullptr));
+        label->setText(QCoreApplication::translate("MainWindow", "Number of rows (3 - 60):", nullptr));
+        label_2->setText(QCoreApplication::translate("MainWindow", "Number of columns (3 - 60):", nullptr));
         generateButton->setText(QCoreApplication::translate("MainWindow", "Generate", nullptr));
         solveMethodGroupBox->setTitle(QCoreApplication::translate("MainWindow", "Solve Method", nullptr));
         bfsRButton->setText(QCoreApplication::translate("MainWindow", "Breadth-First Search Algorithm", nullptr));
@@ -423,13 +423,13 @@ public:
         groupBox_3->setTitle(QCoreApplication::translate("MainWindow", "Animation", nullptr));
         animationSpeedLabel->setText(QCoreApplication::translate("MainWindow", " Speed: 10 (cells per second)", nullptr));
         label_4->setText(QCoreApplication::translate("MainWindow", "1", nullptr));
-        label_5->setText(QCoreApplication::translate("MainWindow", "50", nullptr));
+        animationSpeedMaxLabel->setText(QCoreApplication::translate("MainWindow", "300", nullptr));
         animationPlayButton->setText(QCoreApplication::translate("MainWindow", "Pause/Resume", nullptr));
         animationStepLabel->setText(QCoreApplication::translate("MainWindow", "Current step: 1", nullptr));
         label_10->setText(QCoreApplication::translate("MainWindow", "1", nullptr));
-        animationMaxStepsLabel->setText(QCoreApplication::translate("MainWindow", "X", nullptr));
-        visitedCellsLabel->setText(QCoreApplication::translate("MainWindow", "Visited cells:", nullptr));
-        pathLengthLabel->setText(QCoreApplication::translate("MainWindow", "Path length:", nullptr));
+        animationMaxStepsLabel->setText(QCoreApplication::translate("MainWindow", "\342\210\236", nullptr));
+        visitedCellsLabel->setText(QCoreApplication::translate("MainWindow", "Visited cells: 0", nullptr));
+        pathLengthLabel->setText(QCoreApplication::translate("MainWindow", "Path length: 0", nullptr));
         resetButton->setText(QCoreApplication::translate("MainWindow", "Reset", nullptr));
         exitButton->setText(QCoreApplication::translate("MainWindow", "Exit", nullptr));
         menuFile->setTitle(QCoreApplication::translate("MainWindow", "File", nullptr));

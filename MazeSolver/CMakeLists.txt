@@ -34,6 +34,11 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         customisablemaze.h customisablemaze.cpp
         custommaze.h custommaze.cpp
         customrectitem.h customrectitem.cpp
+        State.cpp state.h
+        step.h step.cpp
+
+
+
     )
 # Define target properties for Android with Qt 6 as:
 #    set_property(TARGET MazeSolver APPEND PROPERTY QT_ANDROID_PACKAGE_SOURCE_DIR

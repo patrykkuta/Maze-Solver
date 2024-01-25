@@ -20,3 +20,7 @@ Cell* Maze::getStartCell() {return startCell;}
 
 Cell* Maze::getFinishCell() {return finishCell;}
 
+queue<Step*> Maze::getGenerationSteps() {
+    return generationSteps;
+}
+

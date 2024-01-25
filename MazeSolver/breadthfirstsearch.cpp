@@ -1,15 +1,16 @@
 #include "breadthfirstsearch.h"
 #include <queue>
-#include <iostream>
 #include <set>
 
 using namespace std;
 
-BreadthFirstSearch::BreadthFirstSearch() {}
+BreadthFirstSearch::BreadthFirstSearch(Maze &maze) {
+    solve(maze);
+}
 
 BreadthFirstSearch::~BreadthFirstSearch() {}
 
-vector<Cell*> BreadthFirstSearch::solve(Maze &maze) {
+void BreadthFirstSearch::solve(Maze &maze) {
 
     for(vector<Cell*> col: maze.getMaze()) {
         for (Cell* cell: col) {
@@ -26,9 +27,12 @@ vector<Cell*> BreadthFirstSearch::solve(Maze &maze) {
         Cell* current = q.front();
         q.pop();
 
+        steps.push(new Step(State::CURRENT, current));
+
         // Check if the current cell is the finish cell
         if (*current == *maze.getFinishCell()) {
-            return backtrace(path, maze.getStartCell(), maze.getFinishCell());
+            solutionPath = backtrace(path, maze.getStartCell(), maze.getFinishCell());
+            break;
         }
 
         current->visit();
@@ -53,28 +57,30 @@ vector<Cell*> BreadthFirstSearch::solve(Maze &maze) {
         if(walls[0] == Wall::NONE && !maze.getMaze()[current->getY() - 1][current->getX()]->wasVisited()) {
             q.push(maze.getMaze()[current->getY() - 1][current->getX()]);
             path.insert(pair<Cell*, Cell*>(maze.getMaze()[current->getY() - 1][current->getX()], current));
+            steps.push(new Step(State::NEIGHBOUR, maze.getMaze()[current->getY() - 1][current->getX()]));
         }
 
         // South
         if(walls[1] == Wall::NONE && !maze.getMaze()[current->getY() + 1][current->getX()]->wasVisited()) {
             q.push(maze.getMaze()[current->getY() + 1][current->getX()]);
             path.insert(pair<Cell*, Cell*>(maze.getMaze()[current->getY() + 1][current->getX()], current));
+            steps.push(new Step(State::NEIGHBOUR, maze.getMaze()[current->getY() + 1][current->getX()]));
         }
 
         // East
         if(walls[2] == Wall::NONE && !maze.getMaze()[current->getY()][current->getX() + 1]->wasVisited()) {
             q.push(maze.getMaze()[current->getY()][current->getX() + 1]);
             path.insert(pair<Cell*, Cell*>(maze.getMaze()[current->getY()][current->getX() + 1], current));
+            steps.push(new Step(State::NEIGHBOUR, maze.getMaze()[current->getY()][current->getX() + 1]));
         }
 
         // West
         if(walls[3] == Wall::NONE && !maze.getMaze()[current->getY()][current->getX() - 1]->wasVisited()) {
             q.push(maze.getMaze()[current->getY()][current->getX() - 1]);
             path.insert(pair<Cell*, Cell*>(maze.getMaze()[current->getY()][current->getX() - 1], current));
+            steps.push(new Step(State::NEIGHBOUR, maze.getMaze()[current->getY()][current->getX() - 1]));
         }
     }
-
-    return *new vector<Cell*>();
 }
 
 vector<Cell*> BreadthFirstSearch::backtrace(unordered_map<Cell*, Cell*> &path, Cell* startCell, Cell* finishCell) {

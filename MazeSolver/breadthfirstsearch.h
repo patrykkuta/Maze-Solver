@@ -7,11 +7,11 @@
 class BreadthFirstSearch : public Algorithm
 {
 public:
-    BreadthFirstSearch();
+    BreadthFirstSearch(Maze &maze);
     ~BreadthFirstSearch();
 
-    vector<Cell*> solve(Maze &maze) override;
 private:
+    void solve(Maze &maze) override;
     vector<Cell*> backtrace(unordered_map<Cell*, Cell*> &path, Cell* startCell, Cell* finishCell);
 };
 

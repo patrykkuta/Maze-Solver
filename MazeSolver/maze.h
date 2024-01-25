@@ -2,6 +2,8 @@
 #define MAZE_H
 
 #include <vector>
+#include <queue>
+#include "step.h"
 #include "Cell.h"
 
 using namespace std;
@@ -14,6 +16,8 @@ protected:
     vector<vector<Cell*>> maze;
     Cell* startCell;
     Cell* finishCell;
+    Cell* generationStartCell;
+    queue<Step*> generationSteps;
 
 public:
     Maze(unsigned short width, unsigned short height);
@@ -23,6 +27,9 @@ public:
     vector<vector<Cell*>> getMaze();
     Cell* getStartCell();
     Cell* getFinishCell();
+    virtual void generateMaze() = 0;
+    virtual Cell* getGenerationStartCell() = 0;
+    queue<Step*> getGenerationSteps();
 };
 
 #endif // MAZE_H

@@ -13,8 +13,7 @@ private:
     set<Cell*> frontier;
     random_device rd;
 
-    Cell* randomCell();
-    void generateMaze();
+    Cell* getGenerationStartCell() override;
     void addUnvisitedNeighbours(Cell* cell);
     unsigned short randomFrontierPosition();
     bool connect(Cell* cell);
@@ -23,6 +22,8 @@ private:
 public:
     RandomizedMaze(unsigned short width, unsigned short height);
     ~RandomizedMaze();
+
+    void generateMaze() override;
 };
 
 #endif // RANDOMIZEDMAZE_H

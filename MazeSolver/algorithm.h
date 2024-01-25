@@ -3,6 +3,8 @@
 
 #include <vector>
 #include <algorithm>
+#include <queue>
+#include "step.h"
 #include "maze.h"
 #include "Cell.h"
 
@@ -11,14 +13,18 @@ using namespace std;
 class Algorithm
 {
 private:
-    vector<Cell> path;
-    vector<Cell> visitedCells;
+    virtual void solve(Maze &maze) = 0;
+
+protected:
+    queue<Step*> steps;
+    vector<Cell*> solutionPath;
+
 public:
     Algorithm();
     virtual ~Algorithm();
 
-    virtual vector<Cell*> solve(Maze &maze) = 0;
-    bool addVisitedCell(Cell cell);
+    queue<Step*> getSteps();
+    vector<Cell*> getSolutionPath();
 };
 
 #endif // ALGORITHM_H

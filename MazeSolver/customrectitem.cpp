@@ -6,15 +6,8 @@
 
 #include <QApplication>
 
-CustomRectItem::CustomRectItem(int x, int y, int width, int height, QColor color, const Cell &cell, const QString& text, bool displayText)
-    : QGraphicsRectItem(x, y, width, height), cell(cell), color(color), displayText(displayText) {
-
-    if(displayText) {
-        textItem = new QGraphicsTextItem(text, this);
-        textItem->setDefaultTextColor(Qt::black);
-        textItem->setPos(x + width / 4, y + height / 4);
-    }
-
+CustomRectItem::CustomRectItem(int x, int y, int width, int height, QColor color, const Cell &cell)
+    : QGraphicsRectItem(x, y, width, height), color(color), cell(cell) {
 }
 
 void CustomRectItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) {
@@ -50,4 +43,10 @@ void CustomRectItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *op
 
 void CustomRectItem::setBackgroundColor(QColor c) {
     color = c;
+    update();
+}
+
+void CustomRectItem::setCell(Cell& newCell) {
+    cell = newCell;
+    update();
 }

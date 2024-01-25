@@ -32,9 +32,19 @@ private:
     bool mazeCreated = false;
     vector<vector<CustomRectItem*>> rectItemCells;
     bool solving;
-    vector<Cell*> steps;
+    bool solved;
+    bool generating;
     int animationSpeed;
-    QTimer* timer = nullptr;
+    QTimer* timerTraverseMaze = nullptr;
+    QTimer* timerShowPath = nullptr;
+    QTimer* timerMazeGeneration = nullptr;
+    queue<Step*> solvingSteps;
+    queue<Step*> generationSteps;
+    vector<Cell*> solutionPath;
+    Cell* lastCurrentSolve = nullptr;
+    Cell* lastCurrentGenerate = nullptr;
+    int visitedCellCount = 0;
+    int pathLength = 0;
 
 };
 #endif // MAINWINDOW_H

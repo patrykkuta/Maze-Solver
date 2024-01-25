@@ -11,11 +11,13 @@
 
 class CustomRectItem : public QGraphicsRectItem {
 public:
-    CustomRectItem(int x, int y, int width, int height, QColor color, const Cell &cell, const QString& text, bool displayText = false);
+    CustomRectItem(int x, int y, int width, int height, QColor color, const Cell &cell);
     void setBackgroundColor(QColor c);
+    void setCell(Cell& cell);
 
 protected:
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = nullptr) override;
+
 private:
     Cell cell;
     QColor color;

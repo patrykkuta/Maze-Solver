@@ -1,12 +1,11 @@
 #include "depthfirstsearch.h"
 
-DepthFirstSearch::DepthFirstSearch() {}
+DepthFirstSearch::DepthFirstSearch(Maze &maze) {
+    solve(maze);
+}
 
 DepthFirstSearch::~DepthFirstSearch() {}
 
-vector<Cell*> DepthFirstSearch::solve(Maze &maze) {
-    vector<Cell*> v;
-    Cell c(10, 20);
-    v.push_back(&c);
-    return v;
+void DepthFirstSearch::solve(Maze &maze) {
+
 }
