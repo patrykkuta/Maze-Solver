@@ -14,6 +14,7 @@ public:
     CustomRectItem(int x, int y, int width, int height, QColor color, const Cell &cell);
     void setBackgroundColor(QColor c);
     void setCell(Cell& cell);
+    Cell* getCell();
 
 protected:
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = nullptr) override;

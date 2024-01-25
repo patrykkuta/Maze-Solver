@@ -50,3 +50,7 @@ void CustomRectItem::setCell(Cell& newCell) {
     cell = newCell;
     update();
 }
+
+Cell* CustomRectItem::getCell() {
+    return &cell;
+}
