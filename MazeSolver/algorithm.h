@@ -12,8 +12,6 @@ using namespace std;
 
 class Algorithm
 {
-private:
-    virtual void solve(Maze &maze) = 0;
 
 protected:
     queue<Step*> steps;
@@ -25,6 +23,8 @@ public:
 
     queue<Step*> getSteps();
     vector<Cell*> getSolutionPath();
+
+    virtual void solve(Maze &maze) = 0;
 };
 
 #endif // ALGORITHM_H
