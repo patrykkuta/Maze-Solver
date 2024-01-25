@@ -1,12 +1,9 @@
 #include "breadthfirstsearch.h"
 #include <queue>
-#include <set>
 
 using namespace std;
 
-BreadthFirstSearch::BreadthFirstSearch(Maze &maze) {
-    solve(maze);
-}
+BreadthFirstSearch::BreadthFirstSearch() {}
 
 BreadthFirstSearch::~BreadthFirstSearch() {}
 
