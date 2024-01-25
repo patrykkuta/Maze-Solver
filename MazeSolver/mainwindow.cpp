@@ -53,6 +53,7 @@ void MainWindow::createMaze() {
             delete ui->mazeView->scene();
         }
 
+        mazeCreated = false;
         generating = true;
         rectItemCells.clear();
         solving = false;
@@ -136,7 +137,7 @@ void MainWindow::createMaze() {
 }
 
 void MainWindow::solveMaze() {
-    if (mazeCreated && !solving && !solved) {
+    if (mazeCreated && !generating && !solving && !solved) {
 
         solving = true;
 
