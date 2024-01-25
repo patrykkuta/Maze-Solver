@@ -29,6 +29,16 @@ MainWindow::MainWindow(QWidget *parent)
             timerMazeGeneration->setInterval(1000 / animationSpeed);
         }
     });
+    connect(ui->bfsRButton, &QRadioButton::toggled, [=](bool checked) {
+        if (checked && solved) {
+            solved = false;
+        }
+    });
+    connect(ui->dfsRButton, &QRadioButton::toggled, [=](bool checked) {
+        if (checked && solved) {
+            solved = false;
+        }
+    });
 
     animationSpeed = ui->animationSpeedSlider->value();
 }
@@ -140,20 +150,22 @@ void MainWindow::solveMaze() {
     if (mazeCreated && !generating && !solving && !solved) {
 
         solving = true;
+        resetMaze();
 
         Algorithm* algorithm = nullptr;
 
         for (QRadioButton* rb: ui->solveMethodGroupBox->findChildren<QRadioButton*>()) {
             if(rb->isChecked()) {
                 if (rb->text() == "Breadth-First Search Algorithm") {
-                    algorithm = new BreadthFirstSearch(*maze);
+                    algorithm = new BreadthFirstSearch();
                 }
-                // else if(rb->text() == "Depth-First Search Algorithm") {
-                //     algorithm = new DepthFirstSearch();
-                // }
+                 else if(rb->text() == "Depth-First Search Algorithm") {
+                     algorithm = new DepthFirstSearch();
+                 }
             }
         }
 
+        algorithm->solve(*maze);
         solvingSteps = algorithm->getSteps();
         solutionPath = algorithm->getSolutionPath();
 
@@ -169,13 +181,12 @@ void MainWindow::solveMaze() {
                     if (step->getStep().first == State::CURRENT && lastCurrentSolve == nullptr) {
                         lastCurrentSolve = step->getStep().second;
 
+                        rectItemCells[step->getStep().second->getX()][step->getStep().second->getY()]->setBackgroundColor(QApplication::palette().color(QPalette::Highlight));
                         ui->visitedCellsLabel->setText(QString("Visited cells: " + QString::number(++visitedCellCount)));
                     }
                     else if (step->getStep().first == State::CURRENT && lastCurrentSolve != nullptr) {
                         rectItemCells[lastCurrentSolve->getX()][lastCurrentSolve->getY()]->setBackgroundColor(QColor(222, 222, 222)); // Color as visited
-                        rectItemCells[lastCurrentSolve->getX()][lastCurrentSolve->getY()]->update();
                         rectItemCells[step->getStep().second->getX()][step->getStep().second->getY()]->setBackgroundColor(QApplication::palette().color(QPalette::Highlight));
-                        rectItemCells[step->getStep().second->getX()][step->getStep().second->getY()]->update();
 
                         lastCurrentSolve = step->getStep().second;
 
@@ -183,13 +194,11 @@ void MainWindow::solveMaze() {
                     }
                     else if (step->getStep().first == State::NEIGHBOUR) {
                         rectItemCells[step->getStep().second->getX()][step->getStep().second->getY()]->setBackgroundColor(QColor(250, 128, 114));
-                        rectItemCells[step->getStep().second->getX()][step->getStep().second->getY()]->update();
                     }
 
                 }
                 else if (step ->getStep().second == maze->getFinishCell()) {
                     rectItemCells[lastCurrentSolve->getX()][lastCurrentSolve->getY()]->setBackgroundColor(QColor(222, 222, 222)); // Color as visited
-                    rectItemCells[lastCurrentSolve->getX()][lastCurrentSolve->getY()]->update();
                 }
 
                 solvingSteps.pop();
@@ -228,4 +237,19 @@ void MainWindow::solveMaze() {
 
         delete algorithm;
     }
+}
+
+void MainWindow::resetMaze() {
+    for(vector<CustomRectItem*>& row: rectItemCells) {
+        for (CustomRectItem* cell: row) {
+            if (*cell->getCell() != *maze->getStartCell() && *cell->getCell() != *maze->getFinishCell()) {
+                cell->setBackgroundColor(QApplication::palette().color(QPalette::Base));
+            }
+        }
+    }
+
+    visitedCellCount = 0;
+    pathLength = 0;
+    ui->visitedCellsLabel->setText(QString("Visited cells: 0"));
+    ui->pathLengthLabel->setText(QString("Path length: 0"));
 }

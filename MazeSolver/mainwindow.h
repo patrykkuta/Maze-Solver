@@ -46,5 +46,7 @@ private:
     int visitedCellCount = 0;
     int pathLength = 0;
 
+    void resetMaze();
+
 };
 #endif // MAINWINDOW_H
