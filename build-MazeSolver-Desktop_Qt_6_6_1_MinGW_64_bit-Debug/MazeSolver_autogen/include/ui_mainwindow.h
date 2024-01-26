@@ -43,7 +43,10 @@ public:
     QAction *actionExport_as_GIF;
     QWidget *centralwidget;
     QHBoxLayout *horizontalLayout_2;
+    QVBoxLayout *verticalLayout_7;
     QGraphicsView *mazeView;
+    QLabel *zoomLabel;
+    QSlider *zoomSlider;
     QWidget *verticalWidget;
     QVBoxLayout *verticalLayout;
     QGroupBox *groupBox;
@@ -119,6 +122,8 @@ public:
         horizontalLayout_2 = new QHBoxLayout(centralwidget);
         horizontalLayout_2->setObjectName("horizontalLayout_2");
         horizontalLayout_2->setContentsMargins(10, 10, 10, 10);
+        verticalLayout_7 = new QVBoxLayout();
+        verticalLayout_7->setObjectName("verticalLayout_7");
         mazeView = new QGraphicsView(centralwidget);
         mazeView->setObjectName("mazeView");
         sizePolicy.setHeightForWidth(mazeView->sizePolicy().hasHeightForWidth());
@@ -126,7 +131,31 @@ public:
         mazeView->setMinimumSize(QSize(0, 0));
         mazeView->setFrameShape(QFrame::StyledPanel);
 
-        horizontalLayout_2->addWidget(mazeView);
+        verticalLayout_7->addWidget(mazeView);
+
+        zoomLabel = new QLabel(centralwidget);
+        zoomLabel->setObjectName("zoomLabel");
+        zoomLabel->setAlignment(Qt::AlignCenter);
+
+        verticalLayout_7->addWidget(zoomLabel);
+
+        zoomSlider = new QSlider(centralwidget);
+        zoomSlider->setObjectName("zoomSlider");
+        zoomSlider->setMinimum(-100);
+        zoomSlider->setMaximum(100);
+        zoomSlider->setSingleStep(1);
+        zoomSlider->setSliderPosition(0);
+        zoomSlider->setTracking(true);
+        zoomSlider->setOrientation(Qt::Horizontal);
+        zoomSlider->setInvertedAppearance(false);
+        zoomSlider->setInvertedControls(false);
+        zoomSlider->setTickPosition(QSlider::TicksAbove);
+        zoomSlider->setTickInterval(100);
+
+        verticalLayout_7->addWidget(zoomSlider);
+
+
+        horizontalLayout_2->addLayout(verticalLayout_7);
 
         verticalWidget = new QWidget(centralwidget);
         verticalWidget->setObjectName("verticalWidget");
@@ -319,6 +348,10 @@ public:
 
         animationStepsSlider = new QSlider(groupBox_3);
         animationStepsSlider->setObjectName("animationStepsSlider");
+        animationStepsSlider->setMinimum(1);
+        animationStepsSlider->setMaximum(1);
+        animationStepsSlider->setPageStep(1);
+        animationStepsSlider->setTracking(true);
         animationStepsSlider->setOrientation(Qt::Horizontal);
 
         horizontalLayout_8->addWidget(animationStepsSlider);
@@ -374,7 +407,6 @@ public:
 
         horizontalLayout_2->addWidget(verticalWidget);
 
-        horizontalLayout_2->setStretch(0, 2);
         MainWindow->setCentralWidget(centralwidget);
         menubar = new QMenuBar(MainWindow);
         menubar->setObjectName("menubar");
@@ -412,6 +444,7 @@ public:
         actionExit->setText(QCoreApplication::translate("MainWindow", "Exit", nullptr));
         actionInfo->setText(QCoreApplication::translate("MainWindow", "How it works", nullptr));
         actionExport_as_GIF->setText(QCoreApplication::translate("MainWindow", "Export as GIF", nullptr));
+        zoomLabel->setText(QCoreApplication::translate("MainWindow", "Zoom: 1.0x", nullptr));
         groupBox->setTitle(QCoreApplication::translate("MainWindow", "Maze Parameters", nullptr));
         label->setText(QCoreApplication::translate("MainWindow", "Number of rows (3 - 60):", nullptr));
         label_2->setText(QCoreApplication::translate("MainWindow", "Number of columns (3 - 60):", nullptr));
@@ -424,7 +457,7 @@ public:
         animationSpeedLabel->setText(QCoreApplication::translate("MainWindow", " Speed: 10 (cells per second)", nullptr));
         label_4->setText(QCoreApplication::translate("MainWindow", "1", nullptr));
         animationSpeedMaxLabel->setText(QCoreApplication::translate("MainWindow", "300", nullptr));
-        animationPlayButton->setText(QCoreApplication::translate("MainWindow", "Pause/Resume", nullptr));
+        animationPlayButton->setText(QCoreApplication::translate("MainWindow", "Pause", nullptr));
         animationStepLabel->setText(QCoreApplication::translate("MainWindow", "Current step: 1", nullptr));
         label_10->setText(QCoreApplication::translate("MainWindow", "1", nullptr));
         animationMaxStepsLabel->setText(QCoreApplication::translate("MainWindow", "\342\210\236", nullptr));
