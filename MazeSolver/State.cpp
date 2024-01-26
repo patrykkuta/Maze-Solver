@@ -1,3 +1,3 @@
 enum State {
-    NEIGHBOUR, CURRENT
+    NEIGHBOUR, CURRENT, SOLUTION
 };

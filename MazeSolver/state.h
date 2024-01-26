@@ -2,7 +2,7 @@
 #define STATE_H
 
 enum State {
-    NEIGHBOUR, CURRENT
+    NEIGHBOUR, CURRENT, SOLUTION
 };
 
 #endif // STATE_H
