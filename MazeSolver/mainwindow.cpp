@@ -15,18 +15,18 @@ MainWindow::MainWindow(QWidget *parent)
     connect(ui->generateButton, SIGNAL(clicked()), this, SLOT(createMaze()));
     connect(ui->solveButton, SIGNAL(clicked()), this, SLOT(solveMaze()));
     connect(ui->exitButton, SIGNAL(clicked()), QApplication::instance(), SLOT(quit()));
-    connect(ui->animationSpeedSlider, &QSlider::valueChanged, [=]() {
+    connect(ui->animationSpeedSlider, &QSlider::sliderMoved, [=](int value) {
 
-        animationSpeed = ui->animationSpeedSlider->value();
+        animationSpeed = value;
 
         ui->animationSpeedLabel->setText(QString("Speed: " + QString::number(animationSpeed) + " (cells per second)"));
 
         if(timerTraverseMaze != nullptr) {
-            timerTraverseMaze->setInterval(1000 / animationSpeed);
+            timerTraverseMaze->setInterval(1000.0 / animationSpeed);
         }
 
         if(timerMazeGeneration != nullptr) {
-            timerMazeGeneration->setInterval(1000 / animationSpeed);
+            timerMazeGeneration->setInterval(1000.0 / animationSpeed);
         }
     });
     connect(ui->bfsRButton, &QRadioButton::toggled, [=](bool checked) {
@@ -38,6 +38,135 @@ MainWindow::MainWindow(QWidget *parent)
         if (checked && solved) {
             solved = false;
         }
+    });
+
+    connect(ui->zoomSlider, &QSlider::valueChanged, [=](int value) {
+        double scaleFactor;
+
+        if (value > 0) {
+            scaleFactor = 1 + value / 20.0;
+        }
+        else {
+            scaleFactor = 1 + value / 100.0;
+        }
+
+        ui->mazeView->setTransform(QTransform::fromScale(scaleFactor, scaleFactor));
+        ui->zoomLabel->setText(QString("Zoom: " + QString::number(scaleFactor) + "x"));
+
+
+    });
+    connect(ui->zoomSlider, &QSlider::sliderMoved, [=](int value) {
+        double scaleFactor;
+
+        if (value > 0) {
+            scaleFactor = 1 + value / 20.0;
+        }
+        else {
+            scaleFactor = 1 + value / 100.0;
+        }
+
+        ui->mazeView->setTransform(QTransform::fromScale(scaleFactor, scaleFactor));
+        ui->zoomLabel->setText(QString("Zoom: " + QString::number(scaleFactor) + "x"));
+    });
+    connect(ui->animationPlayButton, &QPushButton::clicked, [=]() {
+        if(timerTraverseMaze != nullptr) {
+            if(timerTraverseMaze->isActive()) {
+                ui->statusbar->showMessage(QString("Solving paused."));
+                ui->animationPlayButton->setText(QString("Resume"));
+                timerTraverseMaze->stop();
+            }
+            else {
+                ui->statusbar->showMessage(QString("Solving maze..."));
+                ui->animationPlayButton->setText(QString("Pause"));
+                timerTraverseMaze->start();
+            }
+        }
+
+        else if(timerMazeGeneration != nullptr) {
+            if(timerMazeGeneration->isActive()) {
+                ui->statusbar->showMessage(QString("Generating paused."));
+                ui->animationPlayButton->setText(QString("Resume"));
+                timerMazeGeneration->stop();
+            }
+            else {
+                ui->statusbar->showMessage(QString("Generating maze..."));
+                ui->animationPlayButton->setText(QString("Pause"));
+                timerMazeGeneration->start();
+            }
+        }
+
+        else if (timerShowPath != nullptr) {
+            if(timerShowPath->isActive()) {
+                ui->statusbar->showMessage(QString("Finding paused."));
+                ui->animationPlayButton->setText(QString("Resume"));
+                timerShowPath->stop();
+            }
+            else {
+                ui->statusbar->showMessage(QString("Finding path..."));
+                ui->animationPlayButton->setText(QString("Pause"));
+                timerShowPath->start();
+            }
+        }
+    });
+    connect(ui->animationStepsSlider, &QSlider::sliderMoved, [=](int value) {
+
+        // TODO: FIX THIS
+
+        if(lastStepValue > value) { // Decreasing
+            if (!tracableSolvingSteps.empty()) {
+                poppedSteps.push_back(tracableSolvingSteps.back());
+                tracableSolvingSteps.pop_back();
+
+                Step* step = poppedSteps.back();
+                Step* nextStep = tracableSolvingSteps.back();
+
+                if (step->getStep().second != maze->getFinishCell() && nextStep != nullptr && nextStep->getStep().second != maze->getFinishCell() && nextStep->getStep().second != maze->getStartCell()) {
+                    if (step->getStep().first == State::SOLUTION) {
+                        rectItemCells[step->getStep().second->getX()][step->getStep().second->getY()]->setBackgroundColor(QColor(222, 222, 222)); // Color as visited
+                    }
+                    else {
+                        rectItemCells[step->getStep().second->getX()][step->getStep().second->getY()]->setBackgroundColor(QApplication::palette().color(QPalette::Base)); // Color as not visited
+                    }
+
+                    if (nextStep->getStep().first == State::NEIGHBOUR) {
+                        rectItemCells[nextStep->getStep().second->getX()][nextStep->getStep().second->getY()]->setBackgroundColor(QColor(250, 128, 114)); // Color as neighbour
+                    }
+                    else {
+                        rectItemCells[nextStep->getStep().second->getX()][nextStep->getStep().second->getY()]->setBackgroundColor(QApplication::palette().color(QPalette::Highlight)); // Color as current
+                    }
+                }
+
+                qDebug() << "Decreasing. Tracable steps size: " << tracableSolvingSteps.size() << " Popped steps size: " << poppedSteps.size();
+            }
+        }
+        else { // Increasing
+            if (!poppedSteps.empty()) {
+                tracableSolvingSteps.push_back(poppedSteps.back());
+                poppedSteps.pop_back();
+
+                Step* step = tracableSolvingSteps.back();
+
+                if(step->getStep().second != maze->getFinishCell() && step->getStep().second != maze->getStartCell()) {
+                    if (step->getStep().first == State::CURRENT) {
+                        if(lastTracableCurrent != nullptr) rectItemCells[lastTracableCurrent->getX()][lastTracableCurrent->getY()]->setBackgroundColor(QColor(222, 222, 222)); // Color as visited
+                        rectItemCells[step->getStep().second->getX()][step->getStep().second->getY()]->setBackgroundColor(QApplication::palette().color(QPalette::Highlight)); // Color as current
+
+                        lastTracableCurrent = step->getStep().second;
+                    }
+                    else if (step->getStep().first == State::NEIGHBOUR) {
+                        rectItemCells[step->getStep().second->getX()][step->getStep().second->getY()]->setBackgroundColor(QColor(250, 128, 114)); // Color as neighbour
+                    }
+                    else if (step->getStep().first == State::SOLUTION) {
+                        rectItemCells[step->getStep().second->getX()][step->getStep().second->getY()]->setBackgroundColor(QApplication::palette().color(QPalette::Highlight)); // Color as solution
+                    }
+                }
+
+                qDebug() << "Increasing. Tracable steps size: " << tracableSolvingSteps.size() << " Popped steps size: " << poppedSteps.size();
+            }
+        }
+
+        lastStepValue = value;
+        ui->animationStepLabel->setText(QString("Current step: ") + QString::number(value));
     });
 
     animationSpeed = ui->animationSpeedSlider->value();
@@ -63,6 +192,8 @@ void MainWindow::createMaze() {
             delete ui->mazeView->scene();
         }
 
+        ui->statusbar->showMessage(QString("Generating maze..."));
+
         mazeCreated = false;
         generating = true;
         rectItemCells.clear();
@@ -72,6 +203,9 @@ void MainWindow::createMaze() {
         visitedCellCount = 0;
         ui->visitedCellsLabel->setText(QString("Visited cells: 0"));
         ui->pathLengthLabel->setText(QString("Path length: 0"));
+
+        tracableSolvingSteps.clear();
+        poppedSteps.clear();
 
         QGraphicsScene* mazeScene = new QGraphicsScene(this);
 
@@ -133,10 +267,13 @@ void MainWindow::createMaze() {
                 timerMazeGeneration -> stop();
                 mazeCreated = true;
                 generating = false;
+                timerMazeGeneration = nullptr;
 
                 rectItemCells[lastCurrentGenerate->getX()][lastCurrentGenerate->getY()]->setBackgroundColor(QApplication::palette().color(QPalette::Base)); // Color as visited
                 rectItemCells[maze->getStartCell()->getX()][maze->getStartCell()->getY()]->setBackgroundColor(QColor(144,238,144)); // Color start cell
                 rectItemCells[maze->getFinishCell()->getX()][maze->getFinishCell()->getY()]->setBackgroundColor(QColor(255,0,0)); // Color finish cell
+
+                ui->statusbar->showMessage(QString("Maze successfully generated."));
 
                 lastCurrentGenerate = nullptr;
             }
@@ -151,6 +288,10 @@ void MainWindow::solveMaze() {
 
         solving = true;
         resetMaze();
+
+        tracableSolvingSteps.clear();
+
+        ui->statusbar->showMessage(QString("Solving maze..."));
 
         Algorithm* algorithm = nullptr;
 
@@ -175,6 +316,11 @@ void MainWindow::solveMaze() {
         connect(timerTraverseMaze, &QTimer::timeout, [=]() {
             if (!solvingSteps.empty()) {
                 Step* step = solvingSteps.front();
+                tracableSolvingSteps.push_back(step);
+
+                ui->animationMaxStepsLabel->setText(QString::number(tracableSolvingSteps.size()));
+                ui->animationStepsSlider->setMaximum(tracableSolvingSteps.size());
+                ui->animationStepsSlider->setValue(tracableSolvingSteps.size());
 
                 if(step->getStep().second != maze->getStartCell() && step ->getStep().second != maze->getFinishCell()) {
 
@@ -208,9 +354,15 @@ void MainWindow::solveMaze() {
                 timerTraverseMaze = nullptr;
                 lastCurrentSolve = nullptr;
 
+                ui->statusbar->showMessage(QString("Finding path..."));
                 connect(timerShowPath, &QTimer::timeout, [=]() {
                     if (!solutionPath.empty()) {
                         Cell* cell = solutionPath.at(0);
+                        tracableSolvingSteps.push_back(new Step(State::SOLUTION, cell));
+
+                        ui->animationMaxStepsLabel->setText(QString::number(tracableSolvingSteps.size()));
+                        ui->animationStepsSlider->setMaximum(tracableSolvingSteps.size());
+                        ui->animationStepsSlider->setValue(tracableSolvingSteps.size());
 
                         if (cell != maze->getStartCell() && cell != maze->getFinishCell()) {
                             rectItemCells[cell->getX()][cell->getY()]->setBackgroundColor(QApplication::palette().color(QPalette::Highlight)); // Color as visited
@@ -226,6 +378,8 @@ void MainWindow::solveMaze() {
 
                         solving = false;
                         solved = true;
+
+                        ui->statusbar->showMessage(QString("Maze successfully solved."));
                     }
                 });
 

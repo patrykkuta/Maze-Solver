@@ -40,11 +40,15 @@ private:
     QTimer* timerMazeGeneration = nullptr;
     queue<Step*> solvingSteps;
     queue<Step*> generationSteps;
+    vector<Step*> tracableSolvingSteps;
+    vector<Step*> poppedSteps;
     vector<Cell*> solutionPath;
     Cell* lastCurrentSolve = nullptr;
     Cell* lastCurrentGenerate = nullptr;
+    Cell* lastTracableCurrent = nullptr;
     int visitedCellCount = 0;
     int pathLength = 0;
+    int lastStepValue = 1;
 
     void resetMaze();
 
