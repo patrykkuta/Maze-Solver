@@ -26,11 +26,11 @@ void Cell::removeWall(Wall wall) {
 }
 
 bool Cell::operator==(const Cell& other) const {
-    return (x == other.x) && (y == other.y);
+    return (this->x == other.x) && (this->y == other.y);
 }
 
 bool Cell::operator!=(const Cell& other) const {
-    return (x != other.x) || (y != other.y);
+    return (this->x != other.x) || (this->y != other.y);
 }
 
 void Cell::visit() {visited = true;}
