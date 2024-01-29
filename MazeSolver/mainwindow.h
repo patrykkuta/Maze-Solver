@@ -26,6 +26,13 @@ private slots:
     void drawMaze();
     void solveMaze();
     void createNewWindow();
+    void zoom(int value);
+    void controlAnimationPlayback();
+    void changeAnimationSpeed(int value);
+    void resetMaze();
+    bool saveMaze();
+    bool saveMazeAs();
+    void openMaze();
 
 private:
     struct {
@@ -44,7 +51,7 @@ private:
     bool solving;
     bool solved;
     bool generating;
-    int animationSpeed;
+    int animationSpeed = 100;
     QTimer* timerTraverseMaze = nullptr;
     QTimer* timerShowPath = nullptr;
     QTimer* timerMazeGeneration = nullptr;
@@ -55,8 +62,11 @@ private:
     Cell* lastCurrentGenerate = nullptr;
     int visitedCellCount = 0;
     int pathLength = 0;
+    bool hasUnsavedChanges = false;
+    QString currentFileName = "New maze file";
+    QString currentFileDir;
 
-    void resetMaze();
+    void closeEvent(QCloseEvent *event) override;
 
 };
 #endif // MAINWINDOW_H
