@@ -9,7 +9,7 @@ BreadthFirstSearch::~BreadthFirstSearch() {}
 
 void BreadthFirstSearch::solve(Maze &maze) {
 
-    for(vector<Cell*> col: maze.getMaze()) {
+    for(vector<Cell*>& col: maze.getMaze()) {
         for (Cell* cell: col) {
             cell->resetVisited();
         }
@@ -34,45 +34,27 @@ void BreadthFirstSearch::solve(Maze &maze) {
 
         current->visit();
 
-        Wall walls[] = {Wall::NONE, Wall::NONE, Wall::NONE, Wall::NONE};
-        for (Wall wall: current->getWalls()) {
-            if (wall == Wall::NORTH) {
-                walls[0] = Wall::NORTH;
-            }
-            else if (wall == Wall::SOUTH) {
-                walls[1] = Wall::SOUTH;
-            }
-            else if (wall == Wall::EAST) {
-                walls[2] = Wall::EAST;
-            }
-            else if (wall == Wall::WEST) {
-                walls[3] = Wall::WEST;
-            }
-        }
+        map<Wall, bool> walls = current->getWalls();
 
-        // North
-        if(walls[0] == Wall::NONE && !maze.getMaze()[current->getY() - 1][current->getX()]->wasVisited()) {
+        if(!walls[Wall::NORTH] && !maze.getMaze()[current->getY() - 1][current->getX()]->wasVisited()) {
             q.push(maze.getMaze()[current->getY() - 1][current->getX()]);
             path.insert(pair<Cell*, Cell*>(maze.getMaze()[current->getY() - 1][current->getX()], current));
             steps.push(new Step(State::NEIGHBOUR, maze.getMaze()[current->getY() - 1][current->getX()]));
         }
 
-        // South
-        if(walls[1] == Wall::NONE && !maze.getMaze()[current->getY() + 1][current->getX()]->wasVisited()) {
+        if(!walls[Wall::SOUTH] && !maze.getMaze()[current->getY() + 1][current->getX()]->wasVisited()) {
             q.push(maze.getMaze()[current->getY() + 1][current->getX()]);
             path.insert(pair<Cell*, Cell*>(maze.getMaze()[current->getY() + 1][current->getX()], current));
             steps.push(new Step(State::NEIGHBOUR, maze.getMaze()[current->getY() + 1][current->getX()]));
         }
 
-        // East
-        if(walls[2] == Wall::NONE && !maze.getMaze()[current->getY()][current->getX() + 1]->wasVisited()) {
+        if(!walls[Wall::EAST] && !maze.getMaze()[current->getY()][current->getX() + 1]->wasVisited()) {
             q.push(maze.getMaze()[current->getY()][current->getX() + 1]);
             path.insert(pair<Cell*, Cell*>(maze.getMaze()[current->getY()][current->getX() + 1], current));
             steps.push(new Step(State::NEIGHBOUR, maze.getMaze()[current->getY()][current->getX() + 1]));
         }
 
-        // West
-        if(walls[3] == Wall::NONE && !maze.getMaze()[current->getY()][current->getX() - 1]->wasVisited()) {
+        if(!walls[Wall::WEST] && !maze.getMaze()[current->getY()][current->getX() - 1]->wasVisited()) {
             q.push(maze.getMaze()[current->getY()][current->getX() - 1]);
             path.insert(pair<Cell*, Cell*>(maze.getMaze()[current->getY()][current->getX() - 1], current));
             steps.push(new Step(State::NEIGHBOUR, maze.getMaze()[current->getY()][current->getX() - 1]));

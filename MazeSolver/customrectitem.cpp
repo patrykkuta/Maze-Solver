@@ -21,23 +21,23 @@ void CustomRectItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *op
     // Draw the rectangle without specific borders
     painter->drawRect(rect());
 
-    for (Wall wall: cell.getWalls()) {
-        if (wall == Wall::NORTH) {
-            painter->setPen(QPen(penColor, penSize)); // Set the color for the top border
-            painter->drawLine(rect().topLeft(), rect().topRight());
-        }
-        else if (wall == Wall::SOUTH) {
-            painter->setPen(QPen(penColor, penSize)); // Set the color for the bottom border
-            painter->drawLine(rect().bottomLeft(), rect().bottomRight());
-        }
-        else if (wall == Wall::WEST) {
-            painter->setPen(QPen(penColor, penSize)); // Set the color for the left border
-            painter->drawLine(rect().topLeft(), rect().bottomLeft());
-        }
-        else if (wall == Wall::EAST) {
-            painter->setPen(QPen(penColor, penSize)); // Set the color for the right border
-            painter->drawLine(rect().topRight(), rect().bottomRight());
-        }
+    map<Wall, bool> walls = cell.getWalls();
+
+    if (walls[Wall::NORTH]) {
+        painter->setPen(QPen(penColor, penSize)); // Set the color for the top border
+        painter->drawLine(rect().topLeft(), rect().topRight());
+    }
+    if (walls[Wall::SOUTH]) {
+        painter->setPen(QPen(penColor, penSize)); // Set the color for the bottom border
+        painter->drawLine(rect().bottomLeft(), rect().bottomRight());
+    }
+    if (walls[Wall::WEST]) {
+        painter->setPen(QPen(penColor, penSize)); // Set the color for the left border
+        painter->drawLine(rect().topLeft(), rect().bottomLeft());
+    }
+    if (walls[Wall::EAST]) {
+        painter->setPen(QPen(penColor, penSize)); // Set the color for the right border
+        painter->drawLine(rect().topRight(), rect().bottomRight());
     }
 }
 
