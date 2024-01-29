@@ -26,7 +26,7 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
     qt_add_executable(MazeSolver
         MANUAL_FINALIZATION
         ${PROJECT_SOURCES}
-        algorithm.h algorithm.cpp
+
         maze.h maze.cpp
         depthfirstsearch.h depthfirstsearch.cpp
         breadthfirstsearch.h breadthfirstsearch.cpp
@@ -36,7 +36,9 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         customrectitem.h customrectitem.cpp
         State.cpp state.h
         step.h step.cpp
-
+        astarsearch.h astarsearch.cpp
+        pathfindingalgorithm.h pathfindingalgorithm.cpp
+        mazefilehandler.h mazefilehandler.cpp
 
 
     )
