@@ -4,7 +4,7 @@
 #include <QMainWindow>
 #include <QGraphicsScene>
 #include <QResizeEvent>
-#include "algorithm.h"
+#include "pathfindingalgorithm.h"
 #include "customrectitem.h"
 
 
@@ -25,8 +25,18 @@ public:
 private slots:
     void drawMaze();
     void solveMaze();
+    void createNewWindow();
 
 private:
+    struct {
+        const QColor VISITED = QColor(222, 222, 222);
+        const QColor START = QColor(144,238,144);
+        const QColor FINISH = QColor(255,0,0);
+        const QColor CURRENT = QApplication::palette().color(QPalette::Highlight);
+        const QColor EMPTY = QApplication::palette().color(QPalette::Base);
+        const QColor NEIGHBOUR = QColor(250, 128, 114);
+    } colours;
+
     Ui::MainWindow *ui;
     Maze* maze = nullptr;
     bool mazeCreated = false;
