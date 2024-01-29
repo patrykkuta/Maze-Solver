@@ -72,12 +72,6 @@ public:
     QSlider *animationSpeedSlider;
     QLabel *animationSpeedMaxLabel;
     QPushButton *animationPlayButton;
-    QVBoxLayout *verticalLayout_6;
-    QLabel *animationStepLabel;
-    QHBoxLayout *horizontalLayout_8;
-    QLabel *label_10;
-    QSlider *animationStepsSlider;
-    QLabel *animationMaxStepsLabel;
     QSpacerItem *verticalSpacer;
     QHBoxLayout *horizontalLayout_7;
     QLabel *visitedCellsLabel;
@@ -301,7 +295,7 @@ public:
         animationSpeedSlider = new QSlider(groupBox_3);
         animationSpeedSlider->setObjectName("animationSpeedSlider");
         animationSpeedSlider->setMinimum(1);
-        animationSpeedSlider->setMaximum(300);
+        animationSpeedSlider->setMaximum(700);
         animationSpeedSlider->setValue(10);
         animationSpeedSlider->setTracking(true);
         animationSpeedSlider->setOrientation(Qt::Horizontal);
@@ -328,44 +322,6 @@ public:
 
 
         verticalLayout_4->addLayout(verticalLayout_5);
-
-        verticalLayout_6 = new QVBoxLayout();
-        verticalLayout_6->setSpacing(6);
-        verticalLayout_6->setObjectName("verticalLayout_6");
-        animationStepLabel = new QLabel(groupBox_3);
-        animationStepLabel->setObjectName("animationStepLabel");
-        animationStepLabel->setAlignment(Qt::AlignCenter);
-        animationStepLabel->setMargin(4);
-
-        verticalLayout_6->addWidget(animationStepLabel);
-
-        horizontalLayout_8 = new QHBoxLayout();
-        horizontalLayout_8->setObjectName("horizontalLayout_8");
-        label_10 = new QLabel(groupBox_3);
-        label_10->setObjectName("label_10");
-
-        horizontalLayout_8->addWidget(label_10);
-
-        animationStepsSlider = new QSlider(groupBox_3);
-        animationStepsSlider->setObjectName("animationStepsSlider");
-        animationStepsSlider->setMinimum(1);
-        animationStepsSlider->setMaximum(1);
-        animationStepsSlider->setPageStep(1);
-        animationStepsSlider->setTracking(true);
-        animationStepsSlider->setOrientation(Qt::Horizontal);
-
-        horizontalLayout_8->addWidget(animationStepsSlider);
-
-        animationMaxStepsLabel = new QLabel(groupBox_3);
-        animationMaxStepsLabel->setObjectName("animationMaxStepsLabel");
-
-        horizontalLayout_8->addWidget(animationMaxStepsLabel);
-
-
-        verticalLayout_6->addLayout(horizontalLayout_8);
-
-
-        verticalLayout_4->addLayout(verticalLayout_6);
 
 
         verticalLayout->addWidget(groupBox_3);
@@ -454,13 +410,10 @@ public:
         dfsRButton->setText(QCoreApplication::translate("MainWindow", "Depth-First Search Algorithm", nullptr));
         solveButton->setText(QCoreApplication::translate("MainWindow", "Solve", nullptr));
         groupBox_3->setTitle(QCoreApplication::translate("MainWindow", "Animation", nullptr));
-        animationSpeedLabel->setText(QCoreApplication::translate("MainWindow", " Speed: 10 (cells per second)", nullptr));
+        animationSpeedLabel->setText(QCoreApplication::translate("MainWindow", " Speed: 10 (steps per second)", nullptr));
         label_4->setText(QCoreApplication::translate("MainWindow", "1", nullptr));
-        animationSpeedMaxLabel->setText(QCoreApplication::translate("MainWindow", "300", nullptr));
+        animationSpeedMaxLabel->setText(QCoreApplication::translate("MainWindow", "700", nullptr));
         animationPlayButton->setText(QCoreApplication::translate("MainWindow", "Pause", nullptr));
-        animationStepLabel->setText(QCoreApplication::translate("MainWindow", "Current step: 1", nullptr));
-        label_10->setText(QCoreApplication::translate("MainWindow", "1", nullptr));
-        animationMaxStepsLabel->setText(QCoreApplication::translate("MainWindow", "\342\210\236", nullptr));
         visitedCellsLabel->setText(QCoreApplication::translate("MainWindow", "Visited cells: 0", nullptr));
         pathLengthLabel->setText(QCoreApplication::translate("MainWindow", "Path length: 0", nullptr));
         resetButton->setText(QCoreApplication::translate("MainWindow", "Reset", nullptr));
