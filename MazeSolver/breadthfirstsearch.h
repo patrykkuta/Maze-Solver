@@ -1,19 +1,16 @@
 #ifndef BREADTHFIRSTSEARCH_H
 #define BREADTHFIRSTSEARCH_H
 
-#include "algorithm.h"
+#include "pathfindingalgorithm.h"
 #include <unordered_map>
 
-class BreadthFirstSearch : public Algorithm
+class BreadthFirstSearch : public PathFindingAlgorithm
 {
 public:
     BreadthFirstSearch();
     ~BreadthFirstSearch();
 
     void solve(Maze &maze) override;
-
-private:
-    vector<Cell*> backtrace(unordered_map<Cell*, Cell*> &path, Cell* startCell, Cell* finishCell);
 };
 
 #endif // BREADTHFIRSTSEARCH_H
