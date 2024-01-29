@@ -16,10 +16,10 @@ protected:
     vector<vector<Cell*>> maze;
     Cell* startCell;
     Cell* finishCell;
-    Cell* generationStartCell;
     vector<Step> generationSteps;
 
 public:
+    Maze();
     Maze(unsigned short width, unsigned short height);
     virtual ~Maze();
     unsigned short getWidth();
@@ -28,7 +28,6 @@ public:
     Cell* getStartCell();
     Cell* getFinishCell();
     virtual void generateMaze() = 0;
-    virtual Cell* getGenerationStartCell() = 0;
     vector<Step> getGenerationSteps();
 };
 

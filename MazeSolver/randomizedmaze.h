@@ -14,7 +14,7 @@ private:
     set<Cell*> frontier;
     random_device rd;
 
-    Cell* getGenerationStartCell() override;
+    Cell* getGenerationStartCell();
     void addUnvisitedNeighbours(Cell* cell);
     unsigned short randomFrontierPosition();
     bool connect(Cell* cell);
