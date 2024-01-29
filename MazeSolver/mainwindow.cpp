@@ -26,7 +26,6 @@ MainWindow::MainWindow(QWidget *parent)
     ui->currentCellColour->setPalette(colours.CURRENT);
     ui->notVisitedCellColour->setPalette(colours.EMPTY);
     ui->neighbourCellColour->setPalette(colours.NEIGHBOUR);
-    ui->statusbar->showMessage("New file created.");
 
     // Shortcuts
     ui->actionSave->setShortcut(QKeySequence(Qt::CTRL | Qt::Key_S));
