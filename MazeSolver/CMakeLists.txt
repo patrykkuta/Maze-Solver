@@ -31,7 +31,7 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         depthfirstsearch.h depthfirstsearch.cpp
         breadthfirstsearch.h breadthfirstsearch.cpp
         randomizedmaze.h randomizedmaze.cpp
-        customisablemaze.h customisablemaze.cpp
+
         custommaze.h custommaze.cpp
         customrectitem.h customrectitem.cpp
         State.cpp state.h
