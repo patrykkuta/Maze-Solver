@@ -8,7 +8,9 @@ class Step
 {
 public:
     Step(State state, Cell* cell);
-    pair<State, Cell*> getStep();
+    State state();
+    Cell* cell();
+    bool operator==(const Step& other) const;
 private:
     pair<State, Cell*> step;
 };

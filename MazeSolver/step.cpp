@@ -5,6 +5,14 @@ Step::Step(State state, Cell* cell) {
     step.second = cell;
 }
 
-pair<State, Cell*> Step::getStep() {
-    return step;
+State Step::state() {
+    return step.first;
+}
+
+Cell* Step::cell() {
+    return step.second;
+}
+
+bool Step::operator==(const Step& other) const {
+    return (other.step.first == step.first) && (other.step.second == step.second);
 }
