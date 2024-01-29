@@ -1,7 +1,6 @@
 #include "randomizedmaze.h"
 
 RandomizedMaze::RandomizedMaze(unsigned short width, unsigned short height) : Maze(width, height) {
-
     for (unsigned short y = 0; y < height; y++) {
         maze.emplace_back();
 
@@ -12,8 +11,6 @@ RandomizedMaze::RandomizedMaze(unsigned short width, unsigned short height) : Ma
 
     startCell = maze[0][0];
     finishCell = maze[height - 1][width - 1];
-
-    // generateMaze();
 }
 
 RandomizedMaze::~RandomizedMaze() {
