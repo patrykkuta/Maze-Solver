@@ -1,5 +1,7 @@
 #include "maze.h"
 
+Maze::Maze() {}
+
 Maze::Maze(unsigned short width, unsigned short height) :
     width(width),
     height(height) {}
