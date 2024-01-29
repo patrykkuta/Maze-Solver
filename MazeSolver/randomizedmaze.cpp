@@ -49,7 +49,8 @@ void RandomizedMaze::generateMaze() {
         auto item = next(frontier.begin(), index);
         Cell* c = *item;
 
-        generationSteps.push(new Step(State::CURRENT, c));
+        Step step(State::CURRENT, c);
+        generationSteps.push_back(step);
 
         frontier.erase(item);
 
@@ -67,22 +68,38 @@ void RandomizedMaze::generateMaze() {
 void RandomizedMaze::addUnvisitedNeighbours(Cell* cell) {
     if ((cell->getX() > 0) && !maze[cell->getY()][cell->getX() - 1]->wasVisited()) {
         frontier.insert(maze[cell->getY()][cell->getX() - 1]);
-        generationSteps.push(new Step(State::NEIGHBOUR, maze[cell->getY()][cell->getX() - 1]));
+
+        Step step(State::NEIGHBOUR, maze[cell->getY()][cell->getX() - 1]);
+        if (find(generationSteps.begin(), generationSteps.end(), step) == generationSteps.end()) {
+            generationSteps.push_back(step);
+        }
     }
 
     if ((cell->getX() < width - 1) && !maze[cell->getY()][cell->getX() + 1]->wasVisited()) {
         frontier.insert(maze[cell->getY()][cell->getX() + 1]);
-        generationSteps.push(new Step(State::NEIGHBOUR, maze[cell->getY()][cell->getX() + 1]));
+
+        Step step(State::NEIGHBOUR, maze[cell->getY()][cell->getX() + 1]);
+        if (find(generationSteps.begin(), generationSteps.end(), step) == generationSteps.end()) {
+            generationSteps.push_back(step);
+        }
     }
 
     if ((cell->getY() > 0) && !maze[cell->getY() - 1][cell->getX()]->wasVisited()) {
         frontier.insert(maze[cell->getY() - 1][cell->getX()]);
-        generationSteps.push(new Step(State::NEIGHBOUR, maze[cell->getY() - 1][cell->getX()]));
+
+        Step step(State::NEIGHBOUR, maze[cell->getY() - 1][cell->getX()]);
+        if (find(generationSteps.begin(), generationSteps.end(), step) == generationSteps.end()) {
+            generationSteps.push_back(step);
+        }
     }
 
     if ((cell->getY() < height - 1) && !maze[cell->getY() + 1][cell->getX()]->wasVisited()) {
         frontier.insert(maze[cell->getY() + 1][cell->getX()]);
-        generationSteps.push(new Step(State::NEIGHBOUR, maze[cell->getY() + 1][cell->getX()]));
+
+        Step step(State::NEIGHBOUR, maze[cell->getY() + 1][cell->getX()]);
+        if (find(generationSteps.begin(), generationSteps.end(), step) == generationSteps.end()) {
+            generationSteps.push_back(step);
+        }
     }
 }
 
