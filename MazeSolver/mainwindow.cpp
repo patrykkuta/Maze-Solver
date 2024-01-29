@@ -4,7 +4,11 @@
 #include "customrectitem.h"
 #include "breadthfirstsearch.h"
 #include "depthfirstsearch.h"
+#include "astarsearch.h"
 #include <QTimer>
+#include <QProcess>
+#include <QFileDialog>
+#include <QMessageBox>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -12,14 +16,24 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
 
+    ui->visitedCellColour->setPalette(colours.VISITED);
+    ui->startCellColour->setPalette(colours.START);
+    ui->finishCellColour->setPalette(colours.FINISH);
+    ui->currentCellColour->setPalette(colours.CURRENT);
+    ui->notVisitedCellColour->setPalette(colours.EMPTY);
+    ui->neighbourCellColour->setPalette(colours.NEIGHBOUR);
+
+
+    connect(ui->actionExit, SIGNAL(triggered()), QApplication::instance(), SLOT(quit()), Qt::QueuedConnection);
+    connect(ui->actionNew, SIGNAL(triggered()), this, SLOT(createNewWindow()));
     connect(ui->generateButton, SIGNAL(clicked()), this, SLOT(drawMaze()));
     connect(ui->solveButton, SIGNAL(clicked()), this, SLOT(solveMaze()));
-    connect(ui->exitButton, SIGNAL(clicked()), QApplication::instance(), SLOT(quit()));
+    connect(ui->exitButton, SIGNAL(clicked()), QApplication::instance(), SLOT(quit()), Qt::QueuedConnection);
     connect(ui->animationSpeedSlider, &QSlider::valueChanged, [=](int value) {
 
         animationSpeed = value;
 
-        ui->animationSpeedLabel->setText(QString("Speed: " + QString::number(animationSpeed) + " (cells per second)"));
+        ui->animationSpeedLabel->setText(QString("Speed: " + QString::number(animationSpeed) + " (steps per second)"));
 
         if(timerTraverseMaze != nullptr) {
             timerTraverseMaze->setInterval(1000.0 / animationSpeed);
@@ -27,16 +41,6 @@ MainWindow::MainWindow(QWidget *parent)
 
         if(timerMazeGeneration != nullptr) {
             timerMazeGeneration->setInterval(1000.0 / animationSpeed);
-        }
-    });
-    connect(ui->bfsRButton, &QRadioButton::toggled, [=](bool checked) {
-        if (checked && solved) {
-            solved = false;
-        }
-    });
-    connect(ui->dfsRButton, &QRadioButton::toggled, [=](bool checked) {
-        if (checked && solved) {
-            solved = false;
         }
     });
 
@@ -147,18 +151,17 @@ void MainWindow::drawMaze() {
         QGraphicsScene* mazeScene = new QGraphicsScene(this);
 
         // Not generated maze
-        maze = new RandomizedMaze(ui->rowsCount->value(), ui->columnsCount->value());
+        maze = new RandomizedMaze(ui->columnsCount->value(), ui->rowsCount->value());
 
-        int cellSize = qMin(ui->mazeView->width() / maze->getWidth(), ui->mazeView->height() / maze->getHeight()) - 5/maze->getMaze().size();
+        int cellSize = qMin(ui->mazeView->width() / maze->getWidth(), ui->mazeView->height() / maze->getHeight()) - (50 / maze->getMaze().size());
 
         // Display not generated maze
         for (int y = 0; y < maze->getWidth(); y++) {
             rectItemCells.emplace_back();
             for (int x = 0; x < maze->getHeight(); x++) {
                 Cell* current = maze->getMaze()[x][y];
-                QColor color = QApplication::palette().color(QPalette::Base);
 
-                CustomRectItem *rect = new CustomRectItem(y * cellSize, x * cellSize, cellSize, cellSize, color, *current);
+                CustomRectItem *rect = new CustomRectItem(y * cellSize, x * cellSize, cellSize, cellSize, colours.EMPTY, *current);
                 rectItemCells[y].push_back(rect);
 
                 // Add the item to the scene
@@ -183,19 +186,19 @@ void MainWindow::drawMaze() {
                     lastCurrentGenerate = step->cell();
 
                     rectItemCells[step->cell()->getX()][step->cell()->getY()]->setCell(*step->cell());
-                    rectItemCells[step->cell()->getX()][step->cell()->getY()]->setBackgroundColor(QApplication::palette().color(QPalette::Highlight)); // Color as current
+                    rectItemCells[step->cell()->getX()][step->cell()->getY()]->setBackgroundColor(colours.CURRENT); // Color as current
                 }
                 else if (step->state() == State::CURRENT && lastCurrentGenerate != nullptr) {
                     rectItemCells[lastCurrentGenerate->getX()][lastCurrentGenerate->getY()]->setCell(*lastCurrentGenerate);
-                    rectItemCells[lastCurrentGenerate->getX()][lastCurrentGenerate->getY()]->setBackgroundColor(QApplication::palette().color(QPalette::Base)); // Color as visited
+                    rectItemCells[lastCurrentGenerate->getX()][lastCurrentGenerate->getY()]->setBackgroundColor(colours.EMPTY); // Color as empty
 
                     rectItemCells[step->cell()->getX()][step->cell()->getY()]->setCell(*step->cell());
-                    rectItemCells[step->cell()->getX()][step->cell()->getY()]->setBackgroundColor(QApplication::palette().color(QPalette::Highlight)); // Color as current
+                    rectItemCells[step->cell()->getX()][step->cell()->getY()]->setBackgroundColor(colours.CURRENT); // Color as current
 
                     lastCurrentGenerate = step->cell();
                 }
                 else if (step->state() == State::NEIGHBOUR) {
-                    rectItemCells[step->cell()->getX()][step->cell()->getY()]->setBackgroundColor(QColor(250, 128, 114)); // Color as neighbour
+                    rectItemCells[step->cell()->getX()][step->cell()->getY()]->setBackgroundColor(colours.NEIGHBOUR); // Color as neighbour
                 }
 
                 generationSteps.erase(generationSteps.begin());
@@ -207,9 +210,9 @@ void MainWindow::drawMaze() {
                 generating = false;
                 timerMazeGeneration = nullptr;
 
-                rectItemCells[lastCurrentGenerate->getX()][lastCurrentGenerate->getY()]->setBackgroundColor(QApplication::palette().color(QPalette::Base)); // Color as visited
-                rectItemCells[maze->getStartCell()->getX()][maze->getStartCell()->getY()]->setBackgroundColor(QColor(144,238,144)); // Color start cell
-                rectItemCells[maze->getFinishCell()->getX()][maze->getFinishCell()->getY()]->setBackgroundColor(QColor(255,0,0)); // Color finish cell
+                rectItemCells[lastCurrentGenerate->getX()][lastCurrentGenerate->getY()]->setBackgroundColor(colours.EMPTY); // Color as visited
+                rectItemCells[maze->getStartCell()->getX()][maze->getStartCell()->getY()]->setBackgroundColor(colours.START); // Color start cell
+                rectItemCells[maze->getFinishCell()->getX()][maze->getFinishCell()->getY()]->setBackgroundColor(colours.FINISH); // Color finish cell
 
                 ui->statusbar->showMessage(QString("Maze successfully generated."));
 
@@ -222,29 +225,32 @@ void MainWindow::drawMaze() {
 }
 
 void MainWindow::solveMaze() {
-    if (mazeCreated && !generating && !solving && !solved) {
+    if (mazeCreated && !generating && !solving) {
 
         solving = true;
         resetMaze();
 
         ui->statusbar->showMessage(QString("Solving maze..."));
 
-        Algorithm* algorithm;
+        PathFindingAlgorithm* algorithm;
 
         for (QRadioButton* rb: ui->solveMethodGroupBox->findChildren<QRadioButton*>()) {
             if(rb->isChecked()) {
                 if (rb->text() == "Breadth-First Search Algorithm") {
                     algorithm = new BreadthFirstSearch();
                 }
-                 else if(rb->text() == "Depth-First Search Algorithm") {
-                     algorithm = new DepthFirstSearch();
-                 }
+                else if (rb->text() == "Depth-First Search Algorithm") {
+                    algorithm = new DepthFirstSearch();
+                }
+                else if (rb->text() == "A* Search") {
+                    algorithm = new AStarSearch();
+                }
             }
         }
 
         algorithm->solve(*maze);
-        solvingSteps = algorithm->getSteps();
-        solutionPath = algorithm->getSolutionPath();
+        solvingSteps = algorithm->getSolvingSteps();
+        solutionPath = algorithm->getSolution();
 
         timerTraverseMaze = new QTimer(this);
         timerShowPath = new QTimer(this);
@@ -258,24 +264,24 @@ void MainWindow::solveMaze() {
                     if (step->state() == State::CURRENT && lastCurrentSolve == nullptr) {
                         lastCurrentSolve = step->cell();
 
-                        rectItemCells[step->cell()->getX()][step->cell()->getY()]->setBackgroundColor(QApplication::palette().color(QPalette::Highlight));
+                        rectItemCells[step->cell()->getX()][step->cell()->getY()]->setBackgroundColor(colours.CURRENT);
                         ui->visitedCellsLabel->setText(QString("Visited cells: " + QString::number(++visitedCellCount)));
                     }
                     else if (step->state() == State::CURRENT && lastCurrentSolve != nullptr) {
-                        rectItemCells[lastCurrentSolve->getX()][lastCurrentSolve->getY()]->setBackgroundColor(QColor(222, 222, 222)); // Color as visited
-                        rectItemCells[step->cell()->getX()][step->cell()->getY()]->setBackgroundColor(QApplication::palette().color(QPalette::Highlight));
+                        rectItemCells[lastCurrentSolve->getX()][lastCurrentSolve->getY()]->setBackgroundColor(colours.VISITED); // Color as visited
+                        rectItemCells[step->cell()->getX()][step->cell()->getY()]->setBackgroundColor(colours.CURRENT);
 
                         lastCurrentSolve = step->cell();
 
                         ui->visitedCellsLabel->setText(QString("Visited cells: " + QString::number(++visitedCellCount)));
                     }
                     else if (step->state() == State::NEIGHBOUR) {
-                        rectItemCells[step->cell()->getX()][step->cell()->getY()]->setBackgroundColor(QColor(250, 128, 114));
+                        rectItemCells[step->cell()->getX()][step->cell()->getY()]->setBackgroundColor(colours.NEIGHBOUR);
                     }
 
                 }
                 else if (step->cell() == maze->getFinishCell()) {
-                    rectItemCells[lastCurrentSolve->getX()][lastCurrentSolve->getY()]->setBackgroundColor(QColor(222, 222, 222)); // Color as visited
+                    rectItemCells[lastCurrentSolve->getX()][lastCurrentSolve->getY()]->setBackgroundColor(colours.VISITED); // Color as visited
                 }
 
                 solvingSteps.pop();
@@ -291,7 +297,7 @@ void MainWindow::solveMaze() {
                         Cell* cell = solutionPath.at(0);
 
                         if (cell != maze->getStartCell() && cell != maze->getFinishCell()) {
-                            rectItemCells[cell->getX()][cell->getY()]->setBackgroundColor(QApplication::palette().color(QPalette::Highlight)); // Color as visited
+                            rectItemCells[cell->getX()][cell->getY()]->setBackgroundColor(colours.CURRENT); // Color as solution
                             rectItemCells[cell->getX()][cell->getY()]->update();
                         }
 
@@ -323,7 +329,7 @@ void MainWindow::resetMaze() {
     for(vector<CustomRectItem*>& row: rectItemCells) {
         for (CustomRectItem* cell: row) {
             if (*cell->getCell() != *maze->getStartCell() && *cell->getCell() != *maze->getFinishCell()) {
-                cell->setBackgroundColor(QApplication::palette().color(QPalette::Base));
+                cell->setBackgroundColor(colours.EMPTY);
             }
         }
     }
@@ -332,4 +338,11 @@ void MainWindow::resetMaze() {
     pathLength = 0;
     ui->visitedCellsLabel->setText(QString("Visited cells: 0"));
     ui->pathLengthLabel->setText(QString("Path length: 0"));
+}
+
+void MainWindow::createNewWindow() {
+    QString appPath = QApplication::applicationFilePath();
+
+    QProcess::startDetached(appPath);
+    QApplication::quit();
 }
