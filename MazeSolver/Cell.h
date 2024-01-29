@@ -7,12 +7,17 @@
 
 #include "Wall.cpp"
 #include <vector>
+#include <map>
 
 using namespace std;
 
 class Cell {
 private:
     unsigned short x, y;
+    map<Wall, bool> walls = {{Wall::NORTH, true},
+                             {Wall::SOUTH, true},
+                             {Wall::WEST, true},
+                             {Wall::EAST, true}};
 
     bool visited = false;
 public:
@@ -25,13 +30,7 @@ public:
     void visit();
     bool wasVisited();
     void resetVisited();
-    vector<Wall> getWalls();
-    struct Walls {
-        bool NORTH = true;
-        bool SOUTH = true;
-        bool WEST = true;
-        bool EAST = true;
-    } walls;
+    map<Wall, bool> getWalls();
 };
 
 
