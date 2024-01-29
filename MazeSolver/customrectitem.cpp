@@ -16,27 +16,29 @@ void CustomRectItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *op
     painter->setPen(Qt::NoPen);
 
     QColor penColor = QApplication::palette().color(QPalette::WindowText);
-    int penSize = 3;
+    double penSize = 2.2;
 
     // Draw the rectangle without specific borders
     painter->drawRect(rect());
 
     map<Wall, bool> walls = cell.getWalls();
 
+    QPen pen(penColor, penSize);
+
     if (walls[Wall::NORTH]) {
-        painter->setPen(QPen(penColor, penSize)); // Set the color for the top border
+        painter->setPen(pen); // Set the color for the top border
         painter->drawLine(rect().topLeft(), rect().topRight());
     }
     if (walls[Wall::SOUTH]) {
-        painter->setPen(QPen(penColor, penSize)); // Set the color for the bottom border
+        painter->setPen(pen); // Set the color for the bottom border
         painter->drawLine(rect().bottomLeft(), rect().bottomRight());
     }
     if (walls[Wall::WEST]) {
-        painter->setPen(QPen(penColor, penSize)); // Set the color for the left border
+        painter->setPen(pen); // Set the color for the left border
         painter->drawLine(rect().topLeft(), rect().bottomLeft());
     }
     if (walls[Wall::EAST]) {
-        painter->setPen(QPen(penColor, penSize)); // Set the color for the right border
+        painter->setPen(pen); // Set the color for the right border
         painter->drawLine(rect().topRight(), rect().bottomRight());
     }
 }
