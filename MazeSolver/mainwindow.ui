@@ -20,7 +20,7 @@
    </size>
   </property>
   <property name="windowTitle">
-   <string>Maze Solver</string>
+   <string>New maze file - Maze Solver</string>
   </property>
   <property name="locale">
    <locale language="English" country="UnitedKingdom"/>
@@ -770,6 +770,9 @@
   <action name="actionExit">
    <property name="text">
     <string>Exit</string>
+   </property>
+   <property name="menuRole">
+    <enum>QAction::QuitRole</enum>
    </property>
   </action>
   <action name="actionInfo">
