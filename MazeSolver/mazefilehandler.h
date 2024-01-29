@@ -4,7 +4,7 @@
 #include <string>
 #include <iostream>
 #include <fstream>
-#include "cell.h"
+#include "Cell.h"
 #include "maze.h"
 
 using namespace std;
