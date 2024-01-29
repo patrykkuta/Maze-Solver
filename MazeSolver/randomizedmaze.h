@@ -2,6 +2,7 @@
 #define RANDOMIZEDMAZE_H
 
 #include "maze.h"
+#include <algorithm>
 #include <random>
 #include <set>
 
