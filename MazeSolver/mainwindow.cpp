@@ -20,7 +20,7 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
 
-    setWindowIcon(QIcon(":/assets/icon128.ico"));
+    setWindowIcon(QIcon(":/assets/icon128.png"));
 
     ui->visitedCellColour->setPalette(colours.VISITED);
     ui->startCellColour->setPalette(colours.START);
