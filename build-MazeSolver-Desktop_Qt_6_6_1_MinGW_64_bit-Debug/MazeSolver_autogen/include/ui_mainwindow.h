@@ -17,6 +17,7 @@
 #include <QtWidgets/QGridLayout>
 #include <QtWidgets/QGroupBox>
 #include <QtWidgets/QHBoxLayout>
+#include <QtWidgets/QHeaderView>
 #include <QtWidgets/QLabel>
 #include <QtWidgets/QMainWindow>
 #include <QtWidgets/QMenu>
@@ -27,6 +28,7 @@
 #include <QtWidgets/QSpacerItem>
 #include <QtWidgets/QSpinBox>
 #include <QtWidgets/QStatusBar>
+#include <QtWidgets/QTableWidget>
 #include <QtWidgets/QVBoxLayout>
 #include <QtWidgets/QWidget>
 
@@ -44,6 +46,7 @@ public:
     QAction *actionExport_as_GIF;
     QWidget *centralwidget;
     QHBoxLayout *horizontalLayout_2;
+    QTableWidget *stepsTable;
     QVBoxLayout *verticalLayout_7;
     QGraphicsView *mazeView;
     QLabel *zoomLabel;
@@ -109,8 +112,8 @@ public:
         if (MainWindow->objectName().isEmpty())
             MainWindow->setObjectName("MainWindow");
         MainWindow->setWindowModality(Qt::WindowModal);
-        MainWindow->resize(1000, 750);
-        MainWindow->setMinimumSize(QSize(800, 750));
+        MainWindow->resize(1400, 750);
+        MainWindow->setMinimumSize(QSize(1300, 750));
         MainWindow->setLocale(QLocale(QLocale::English, QLocale::UnitedKingdom));
         MainWindow->setTabShape(QTabWidget::Rounded);
         MainWindow->setUnifiedTitleAndToolBarOnMac(false);
@@ -124,6 +127,7 @@ public:
         actionNew->setObjectName("actionNew");
         actionExit = new QAction(MainWindow);
         actionExit->setObjectName("actionExit");
+        actionExit->setMenuRole(QAction::QuitRole);
         actionInfo = new QAction(MainWindow);
         actionInfo->setObjectName("actionInfo");
         actionExport_as_GIF = new QAction(MainWindow);
@@ -138,6 +142,33 @@ public:
         horizontalLayout_2 = new QHBoxLayout(centralwidget);
         horizontalLayout_2->setObjectName("horizontalLayout_2");
         horizontalLayout_2->setContentsMargins(10, 10, 10, 10);
+        stepsTable = new QTableWidget(centralwidget);
+        if (stepsTable->columnCount() < 3)
+            stepsTable->setColumnCount(3);
+        QTableWidgetItem *__qtablewidgetitem = new QTableWidgetItem();
+        __qtablewidgetitem->setTextAlignment(Qt::AlignLeading|Qt::AlignVCenter);
+        stepsTable->setHorizontalHeaderItem(0, __qtablewidgetitem);
+        QTableWidgetItem *__qtablewidgetitem1 = new QTableWidgetItem();
+        __qtablewidgetitem1->setTextAlignment(Qt::AlignLeading|Qt::AlignVCenter);
+        stepsTable->setHorizontalHeaderItem(1, __qtablewidgetitem1);
+        QTableWidgetItem *__qtablewidgetitem2 = new QTableWidgetItem();
+        __qtablewidgetitem2->setTextAlignment(Qt::AlignLeading|Qt::AlignVCenter);
+        stepsTable->setHorizontalHeaderItem(2, __qtablewidgetitem2);
+        stepsTable->setObjectName("stepsTable");
+        QSizePolicy sizePolicy1(QSizePolicy::Fixed, QSizePolicy::Expanding);
+        sizePolicy1.setHorizontalStretch(0);
+        sizePolicy1.setVerticalStretch(0);
+        sizePolicy1.setHeightForWidth(stepsTable->sizePolicy().hasHeightForWidth());
+        stepsTable->setSizePolicy(sizePolicy1);
+        stepsTable->setMinimumSize(QSize(300, 0));
+        stepsTable->setMaximumSize(QSize(300, 16777215));
+        stepsTable->setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
+        stepsTable->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+        stepsTable->setSizeAdjustPolicy(QAbstractScrollArea::AdjustToContents);
+        stepsTable->setColumnCount(3);
+
+        horizontalLayout_2->addWidget(stepsTable);
+
         verticalLayout_7 = new QVBoxLayout();
         verticalLayout_7->setObjectName("verticalLayout_7");
         mazeView = new QGraphicsView(centralwidget);
@@ -178,9 +209,6 @@ public:
 
         verticalWidget = new QWidget(centralwidget);
         verticalWidget->setObjectName("verticalWidget");
-        QSizePolicy sizePolicy1(QSizePolicy::Fixed, QSizePolicy::Expanding);
-        sizePolicy1.setHorizontalStretch(0);
-        sizePolicy1.setVerticalStretch(0);
         sizePolicy1.setHeightForWidth(verticalWidget->sizePolicy().hasHeightForWidth());
         verticalWidget->setSizePolicy(sizePolicy1);
         verticalWidget->setMinimumSize(QSize(280, 0));
@@ -529,7 +557,7 @@ public:
         MainWindow->setCentralWidget(centralwidget);
         menubar = new QMenuBar(MainWindow);
         menubar->setObjectName("menubar");
-        menubar->setGeometry(QRect(0, 0, 1000, 21));
+        menubar->setGeometry(QRect(0, 0, 1400, 21));
         menuFile = new QMenu(menubar);
         menuFile->setObjectName("menuFile");
         MainWindow->setMenuBar(menubar);
@@ -554,7 +582,7 @@ public:
 
     void retranslateUi(QMainWindow *MainWindow)
     {
-        MainWindow->setWindowTitle(QCoreApplication::translate("MainWindow", "Maze Solver", nullptr));
+        MainWindow->setWindowTitle(QCoreApplication::translate("MainWindow", "New maze file - Maze Solver", nullptr));
         actionSave->setText(QCoreApplication::translate("MainWindow", "Save", nullptr));
         actionSave_as->setText(QCoreApplication::translate("MainWindow", "Save as...", nullptr));
         actionOpen->setText(QCoreApplication::translate("MainWindow", "Open", nullptr));
@@ -562,6 +590,12 @@ public:
         actionExit->setText(QCoreApplication::translate("MainWindow", "Exit", nullptr));
         actionInfo->setText(QCoreApplication::translate("MainWindow", "How it works", nullptr));
         actionExport_as_GIF->setText(QCoreApplication::translate("MainWindow", "Export as GIF", nullptr));
+        QTableWidgetItem *___qtablewidgetitem = stepsTable->horizontalHeaderItem(0);
+        ___qtablewidgetitem->setText(QCoreApplication::translate("MainWindow", "Step", nullptr));
+        QTableWidgetItem *___qtablewidgetitem1 = stepsTable->horizontalHeaderItem(1);
+        ___qtablewidgetitem1->setText(QCoreApplication::translate("MainWindow", "Active cell", nullptr));
+        QTableWidgetItem *___qtablewidgetitem2 = stepsTable->horizontalHeaderItem(2);
+        ___qtablewidgetitem2->setText(QCoreApplication::translate("MainWindow", "Action", nullptr));
         zoomLabel->setText(QCoreApplication::translate("MainWindow", "Zoom: 1.0x", nullptr));
         mazeParametersGroupBox->setTitle(QCoreApplication::translate("MainWindow", "Maze Parameters", nullptr));
         label->setText(QCoreApplication::translate("MainWindow", "Number of rows (3 - 60):", nullptr));
