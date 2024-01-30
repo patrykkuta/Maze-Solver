@@ -33,7 +33,6 @@ private slots:
     bool saveMaze();
     bool saveMazeAs();
     void openMaze();
-    void changeMazeState(int row, int column);
 
 private:
     struct {
@@ -66,8 +65,6 @@ private:
     bool hasUnsavedChanges = false;
     QString currentFileName = "New maze file";
     QString currentFileDir;
-    vector<vector<QGraphicsItem*>> mazeStates;
-    vector<QGraphicsItem*> state;
 
     void closeEvent(QCloseEvent *event) override;
 

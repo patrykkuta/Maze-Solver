@@ -9,13 +9,13 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1400</width>
+    <width>1000</width>
     <height>750</height>
    </rect>
   </property>
   <property name="minimumSize">
    <size>
-    <width>1300</width>
+    <width>1000</width>
     <height>750</height>
    </size>
   </property>
@@ -38,7 +38,7 @@
      <verstretch>0</verstretch>
     </sizepolicy>
    </property>
-   <layout class="QHBoxLayout" name="horizontalLayout_2" stretch="0,0,0">
+   <layout class="QHBoxLayout" name="horizontalLayout_2" stretch="0,0">
     <property name="leftMargin">
      <number>10</number>
     </property>
@@ -51,64 +51,6 @@
     <property name="bottomMargin">
      <number>10</number>
     </property>
-    <item>
-     <widget class="QTableWidget" name="stepsTable">
-      <property name="sizePolicy">
-       <sizepolicy hsizetype="Fixed" vsizetype="Expanding">
-        <horstretch>0</horstretch>
-        <verstretch>0</verstretch>
-       </sizepolicy>
-      </property>
-      <property name="minimumSize">
-       <size>
-        <width>300</width>
-        <height>0</height>
-       </size>
-      </property>
-      <property name="maximumSize">
-       <size>
-        <width>300</width>
-        <height>16777215</height>
-       </size>
-      </property>
-      <property name="verticalScrollBarPolicy">
-       <enum>Qt::ScrollBarAsNeeded</enum>
-      </property>
-      <property name="horizontalScrollBarPolicy">
-       <enum>Qt::ScrollBarAlwaysOff</enum>
-      </property>
-      <property name="sizeAdjustPolicy">
-       <enum>QAbstractScrollArea::AdjustToContents</enum>
-      </property>
-      <property name="columnCount">
-       <number>3</number>
-      </property>
-      <column>
-       <property name="text">
-        <string>Step</string>
-       </property>
-       <property name="textAlignment">
-        <set>AlignLeading|AlignVCenter</set>
-       </property>
-      </column>
-      <column>
-       <property name="text">
-        <string>Active cell</string>
-       </property>
-       <property name="textAlignment">
-        <set>AlignLeading|AlignVCenter</set>
-       </property>
-      </column>
-      <column>
-       <property name="text">
-        <string>Action</string>
-       </property>
-       <property name="textAlignment">
-        <set>AlignLeading|AlignVCenter</set>
-       </property>
-      </column>
-     </widget>
-    </item>
     <item>
      <layout class="QVBoxLayout" name="verticalLayout_7">
       <item>
@@ -785,7 +727,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1400</width>
+     <width>1000</width>
      <height>21</height>
     </rect>
    </property>
@@ -831,16 +773,6 @@
    </property>
    <property name="menuRole">
     <enum>QAction::QuitRole</enum>
-   </property>
-  </action>
-  <action name="actionInfo">
-   <property name="text">
-    <string>How it works</string>
-   </property>
-  </action>
-  <action name="actionExport_as_GIF">
-   <property name="text">
-    <string>Export as GIF</string>
    </property>
   </action>
  </widget>

@@ -20,6 +20,8 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
 
+    setWindowIcon(QIcon(":/assets/icon128.ico"));
+
     ui->visitedCellColour->setPalette(colours.VISITED);
     ui->startCellColour->setPalette(colours.START);
     ui->finishCellColour->setPalette(colours.FINISH);
@@ -46,7 +48,6 @@ MainWindow::MainWindow(QWidget *parent)
     connect(ui->actionSave_as, SIGNAL(triggered()), this, SLOT(saveMazeAs()));
     connect(ui->actionSave, SIGNAL(triggered()), this, SLOT(saveMaze()));
     connect(ui->actionOpen, SIGNAL(triggered()), this, SLOT(openMaze()));
-    connect(ui->stepsTable, SIGNAL(cellClicked(int,int)), this, SLOT(changeMazeState(int,int)), Qt::QueuedConnection);
 }
 
 MainWindow::~MainWindow()
@@ -81,9 +82,6 @@ void MainWindow::drawMaze() {
         solved = false;
         pathLength = 0;
         visitedCellCount = 0;
-        state.clear();
-        mazeStates.clear();
-
         ui->visitedCellsLabel->setText(QString("Visited cells: 0"));
         ui->pathLengthLabel->setText(QString("Path length: 0"));
 
@@ -141,12 +139,6 @@ void MainWindow::drawMaze() {
                 }
 
                 generationSteps.erase(generationSteps.begin());
-
-                state.push_back(rectItemCells[step->cell()->getX()][step->cell()->getY()]);
-                mazeStates.push_back(state);
-
-                ui->stepsTable->insertRow(ui->stepsTable->rowCount());
-                ui->stepsTable->setItem(ui->stepsTable->rowCount(), 1, new QTableWidgetItem(QString("ui->stepsTable->rowCount()")));
 
             }
             else {
@@ -218,8 +210,6 @@ void MainWindow::solveMaze() {
                         rectItemCells[step->cell()->getX()][step->cell()->getY()]->setBackgroundColor(colours.CURRENT);
 
                         lastCurrentSolve = step->cell();
-
-                        ui->visitedCellsLabel->setText(QString("Visited cells: " + QString::number(++visitedCellCount)));
                     }
                     else if (step->state() == State::NEIGHBOUR) {
                         rectItemCells[step->cell()->getX()][step->cell()->getY()]->setBackgroundColor(colours.NEIGHBOUR);
@@ -231,6 +221,7 @@ void MainWindow::solveMaze() {
                 }
 
                 solvingSteps.pop();
+                ui->visitedCellsLabel->setText(QString("Visited cells: " + QString::number(++visitedCellCount)));
             }
             else {
                 timerTraverseMaze->stop();
@@ -365,7 +356,7 @@ void MainWindow::changeAnimationSpeed(int value) {
     }
 
     if(timerMazeGeneration != nullptr) {
-        timerMazeGeneration->setInterval(100.0 / animationSpeed);
+        timerMazeGeneration->setInterval(1000.0 / animationSpeed);
     }
 }
 
@@ -577,18 +568,4 @@ void MainWindow::closeEvent(QCloseEvent *event) {
     else {
         event->accept();
     }
-}
-
-void MainWindow::changeMazeState(int row, int column) {
-    for (QGraphicsItem* item: ui->mazeView->scene()->items()) {
-        ui->mazeView->scene()->removeItem(item);
-        delete item;
-    }
-
-    for (QGraphicsItem* item: mazeStates[row]) {
-        ui->mazeView->scene()->addItem(item);
-    }
-
-    ui->mazeView->update();
-
 }
