@@ -5,6 +5,7 @@
 #include <QGraphicsScene>
 #include <QResizeEvent>
 #include "pathfindingalgorithm.h"
+#include "primsalgorithm.h"
 #include "customrectitem.h"
 
 

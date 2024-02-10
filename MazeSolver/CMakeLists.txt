@@ -39,6 +39,8 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         astarsearch.h astarsearch.cpp
         pathfindingalgorithm.h pathfindingalgorithm.cpp
         mazefilehandler.h mazefilehandler.cpp
+        generatingalgorithm.h generatingalgorithm.cpp
+        primsalgorithm.h primsalgorithm.cpp
 
     )
 

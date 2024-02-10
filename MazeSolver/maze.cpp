@@ -2,9 +2,10 @@
 
 Maze::Maze() {}
 
-Maze::Maze(unsigned short width, unsigned short height) :
+Maze::Maze(unsigned short width, unsigned short height, GeneratingAlgorithm* algorithm) :
     width(width),
-    height(height) {}
+    height(height),
+    generatingAlgorithm(algorithm) {}
 
 Maze::~Maze() {
     maze.clear();
@@ -22,7 +23,4 @@ Cell* Maze::getStartCell() {return startCell;}
 
 Cell* Maze::getFinishCell() {return finishCell;}
 
-vector<Step> Maze::getGenerationSteps() {
-    return generationSteps;
-}
-
+GeneratingAlgorithm* Maze::getGeneratingAlgorithm() {return generatingAlgorithm;}
