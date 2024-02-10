@@ -5,6 +5,7 @@
 #include <queue>
 #include "step.h"
 #include "Cell.h"
+#include "generatingalgorithm.h"
 
 using namespace std;
 
@@ -16,11 +17,11 @@ protected:
     vector<vector<Cell*>> maze;
     Cell* startCell;
     Cell* finishCell;
-    vector<Step> generationSteps;
+    GeneratingAlgorithm* generatingAlgorithm;
 
 public:
     Maze();
-    Maze(unsigned short width, unsigned short height);
+    Maze(unsigned short width, unsigned short height, GeneratingAlgorithm* algorithm);
     virtual ~Maze();
     unsigned short getWidth();
     unsigned short getHeight();
@@ -28,7 +29,8 @@ public:
     Cell* getStartCell();
     Cell* getFinishCell();
     virtual void generateMaze() = 0;
-    vector<Step> getGenerationSteps();
+    GeneratingAlgorithm* getGeneratingAlgorithm();
+
 };
 
 #endif // MAZE_H
