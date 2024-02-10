@@ -12,7 +12,6 @@
 #include <QtCore/QLocale>
 #include <QtCore/QVariant>
 #include <QtGui/QAction>
-#include <QtGui/QIcon>
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QGraphicsView>
 #include <QtWidgets/QGridLayout>
@@ -110,9 +109,6 @@ public:
         MainWindow->setWindowModality(Qt::WindowModal);
         MainWindow->resize(1000, 750);
         MainWindow->setMinimumSize(QSize(1000, 750));
-        QIcon icon;
-        icon.addFile(QString::fromUtf8("assets/icon128.ico"), QSize(), QIcon::Normal, QIcon::Off);
-        MainWindow->setWindowIcon(icon);
         MainWindow->setLocale(QLocale(QLocale::English, QLocale::UnitedKingdom));
         MainWindow->setTabShape(QTabWidget::Rounded);
         MainWindow->setUnifiedTitleAndToolBarOnMac(false);

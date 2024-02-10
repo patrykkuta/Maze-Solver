@@ -20,8 +20,6 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
 
-    setWindowIcon(QIcon(":/assets/icon128.png"));
-
     ui->visitedCellColour->setPalette(colours.VISITED);
     ui->startCellColour->setPalette(colours.START);
     ui->finishCellColour->setPalette(colours.FINISH);
@@ -48,6 +46,8 @@ MainWindow::MainWindow(QWidget *parent)
     connect(ui->actionSave_as, SIGNAL(triggered()), this, SLOT(saveMazeAs()));
     connect(ui->actionSave, SIGNAL(triggered()), this, SLOT(saveMaze()));
     connect(ui->actionOpen, SIGNAL(triggered()), this, SLOT(openMaze()));
+
+    shouldQuit = false;
 }
 
 MainWindow::~MainWindow()
@@ -69,7 +69,7 @@ void MainWindow::drawMaze() {
             delete maze;
         }
 
-        if (ui->mazeView->scene()) {
+        if (ui->mazeView->scene() != nullptr) {
             delete ui->mazeView->scene();
         }
 
@@ -284,10 +284,14 @@ void MainWindow::resetMaze() {
 }
 
 void MainWindow::createNewWindow() {
-    QString appPath = QApplication::applicationFilePath();
 
-    QProcess::startDetached(appPath);
     QApplication::quit();
+
+    if(shouldQuit) {
+        QString appPath = QApplication::applicationFilePath();
+        QProcess::startDetached(appPath);
+    }
+
 }
 
 void MainWindow::zoom(int value) {
@@ -553,10 +557,14 @@ void MainWindow::closeEvent(QCloseEvent *event) {
 
         switch (userChoice) {
         case QMessageBox::Save:
-            if(saveMazeAs()) event->accept();
+            if(saveMazeAs()) {
+                shouldQuit = true;
+                event->accept();
+            }
             break;
 
         case QMessageBox::Discard:
+            shouldQuit = true;
             event->accept();
             break;
 
@@ -566,6 +574,7 @@ void MainWindow::closeEvent(QCloseEvent *event) {
         }
     }
     else {
+        shouldQuit = true;
         event->accept();
     }
 }

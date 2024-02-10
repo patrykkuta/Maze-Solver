@@ -42,9 +42,8 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         generatingalgorithm.h generatingalgorithm.cpp
         primsalgorithm.h primsalgorithm.cpp
 
-
-
     )
+
 # Define target properties for Android with Qt 6 as:
 #    set_property(TARGET MazeSolver APPEND PROPERTY QT_ANDROID_PACKAGE_SOURCE_DIR
 #                 ${CMAKE_CURRENT_SOURCE_DIR}/android)
