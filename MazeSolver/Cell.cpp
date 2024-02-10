@@ -1,6 +1,7 @@
-//
-// Created by Patryk Kuta on 22/01/2024.
-//
+/**
+ * @file Cell.cpp
+ * @brief Implementation of the Cell class methods.
+ */
 
 #include "Cell.h"
 

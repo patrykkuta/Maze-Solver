@@ -1,8 +1,10 @@
-#include "primsalgorithm.h"
+#include "randomizedprimsalgorithm.h"
 
-PrimsAlgorithm::PrimsAlgorithm(unsigned short width, unsigned short height) : GeneratingAlgorithm(width, height) {}
+RandomizedPrimsAlgorithm::RandomizedPrimsAlgorithm(unsigned short width, unsigned short height) : GeneratingAlgorithm(width, height) {}
 
-Cell* PrimsAlgorithm::getGenerationStartCell() {
+RandomizedPrimsAlgorithm::~RandomizedPrimsAlgorithm() {}
+
+Cell* RandomizedPrimsAlgorithm::getGenerationStartCell() {
     mt19937 gen(rd());
 
     uniform_int_distribution<unsigned short> distributionX(0, mazeWidth - 1);
@@ -14,7 +16,7 @@ Cell* PrimsAlgorithm::getGenerationStartCell() {
     return new Cell(x, y);
 }
 
-vector<vector<Cell*>> PrimsAlgorithm::generate() {
+vector<vector<Cell*>> RandomizedPrimsAlgorithm::generate() {
 
     Cell* randomCell = getGenerationStartCell();
     Cell* startingCell = maze[randomCell->getY()][randomCell->getX()];
@@ -36,7 +38,7 @@ vector<vector<Cell*>> PrimsAlgorithm::generate() {
 
         addUnvisitedNeighbours(c);
 
-        // Connect with some opened cell
+        // Connect with some visited cell
         connect(c);
     }
 
@@ -44,7 +46,7 @@ vector<vector<Cell*>> PrimsAlgorithm::generate() {
     return maze;
 }
 
-unsigned short PrimsAlgorithm::randomFrontierPosition() {
+unsigned short RandomizedPrimsAlgorithm::randomFrontierPosition() {
     mt19937 gen(rd());
 
     uniform_int_distribution<unsigned short> dist(0, frontier.size() - 1);
@@ -53,7 +55,7 @@ unsigned short PrimsAlgorithm::randomFrontierPosition() {
     return index;
 }
 
-void PrimsAlgorithm::addUnvisitedNeighbours(Cell* cell) {
+void RandomizedPrimsAlgorithm::addUnvisitedNeighbours(Cell* cell) {
     if ((cell->getX() > 0) && !maze[cell->getY()][cell->getX() - 1]->wasVisited()) {
         frontier.insert(maze[cell->getY()][cell->getX() - 1]);
 

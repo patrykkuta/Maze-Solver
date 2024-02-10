@@ -1,6 +1,12 @@
+/**
+ * @file RandomizedMaze.cpp
+ * @brief Implementation of the RandomizedMaze class methods.
+ */
+
 #include "randomizedmaze.h"
 
-RandomizedMaze::RandomizedMaze(unsigned short width, unsigned short height, GeneratingAlgorithm* algorithm) : Maze(width, height, algorithm) {
+RandomizedMaze::RandomizedMaze(unsigned short width, unsigned short height, GeneratingAlgorithm* algorithm)
+    : Maze(width, height, algorithm) {
     for (unsigned short y = 0; y < height; y++) {
         maze.emplace_back();
 

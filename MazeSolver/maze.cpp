@@ -1,3 +1,8 @@
+/**
+ * @file Maze.cpp
+ * @brief Implementation of the Maze class methods.
+ */
+
 #include "maze.h"
 
 Maze::Maze() {}

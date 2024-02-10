@@ -1,3 +1,8 @@
+/**
+ * @file BreadthFirstSearch.cpp
+ * @brief Implementation of the BreadthFirstSearch class methods.
+ */
+
 #include "breadthfirstsearch.h"
 #include <queue>
 
@@ -8,21 +13,23 @@ BreadthFirstSearch::BreadthFirstSearch() {}
 BreadthFirstSearch::~BreadthFirstSearch() {}
 
 void BreadthFirstSearch::solve(Maze &maze) {
-
-    for(vector<Cell*>& col: maze.getMaze()) {
-        for (Cell* cell: col) {
+    // Reset the visited state of all cells in the maze
+    for (vector<Cell*>& col : maze.getMaze()) {
+        for (Cell* cell : col) {
             cell->resetVisited();
         }
     }
 
-    queue<Cell*> q;
+    // Initialize a frontier (queue), and a path for backtracking
+    queue<Cell*> frontier;
     unordered_map<Cell*, Cell*> path;
 
-    q.push(maze.getStartCell());
+    // Start BFS from the start cell
+    frontier.push(maze.getStartCell());
 
-    while (!q.empty()) {
-        Cell* current = q.front();
-        q.pop();
+    while (!frontier.empty()) {
+        Cell* current = frontier.front();
+        frontier.pop();
 
         solvingSteps.push(new Step(State::CURRENT, current));
 
@@ -36,26 +43,27 @@ void BreadthFirstSearch::solve(Maze &maze) {
 
         map<Wall, bool> walls = current->getWalls();
 
-        if(!walls[Wall::NORTH] && !maze.getMaze()[current->getY() - 1][current->getX()]->wasVisited()) {
-            q.push(maze.getMaze()[current->getY() - 1][current->getX()]);
+        // Explore neighboring cells and update the path
+        if (!walls[Wall::NORTH] && !maze.getMaze()[current->getY() - 1][current->getX()]->wasVisited()) {
+            frontier.push(maze.getMaze()[current->getY() - 1][current->getX()]);
             path.insert(pair<Cell*, Cell*>(maze.getMaze()[current->getY() - 1][current->getX()], current));
             solvingSteps.push(new Step(State::NEIGHBOUR, maze.getMaze()[current->getY() - 1][current->getX()]));
         }
 
-        if(!walls[Wall::SOUTH] && !maze.getMaze()[current->getY() + 1][current->getX()]->wasVisited()) {
-            q.push(maze.getMaze()[current->getY() + 1][current->getX()]);
+        if (!walls[Wall::SOUTH] && !maze.getMaze()[current->getY() + 1][current->getX()]->wasVisited()) {
+            frontier.push(maze.getMaze()[current->getY() + 1][current->getX()]);
             path.insert(pair<Cell*, Cell*>(maze.getMaze()[current->getY() + 1][current->getX()], current));
             solvingSteps.push(new Step(State::NEIGHBOUR, maze.getMaze()[current->getY() + 1][current->getX()]));
         }
 
-        if(!walls[Wall::EAST] && !maze.getMaze()[current->getY()][current->getX() + 1]->wasVisited()) {
-            q.push(maze.getMaze()[current->getY()][current->getX() + 1]);
+        if (!walls[Wall::EAST] && !maze.getMaze()[current->getY()][current->getX() + 1]->wasVisited()) {
+            frontier.push(maze.getMaze()[current->getY()][current->getX() + 1]);
             path.insert(pair<Cell*, Cell*>(maze.getMaze()[current->getY()][current->getX() + 1], current));
             solvingSteps.push(new Step(State::NEIGHBOUR, maze.getMaze()[current->getY()][current->getX() + 1]));
         }
 
-        if(!walls[Wall::WEST] && !maze.getMaze()[current->getY()][current->getX() - 1]->wasVisited()) {
-            q.push(maze.getMaze()[current->getY()][current->getX() - 1]);
+        if (!walls[Wall::WEST] && !maze.getMaze()[current->getY()][current->getX() - 1]->wasVisited()) {
+            frontier.push(maze.getMaze()[current->getY()][current->getX() - 1]);
             path.insert(pair<Cell*, Cell*>(maze.getMaze()[current->getY()][current->getX() - 1], current));
             solvingSteps.push(new Step(State::NEIGHBOUR, maze.getMaze()[current->getY()][current->getX() - 1]));
         }

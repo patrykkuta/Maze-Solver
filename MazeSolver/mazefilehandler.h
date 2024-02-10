@@ -1,3 +1,7 @@
+/**
+ * @file MazeFileHandler.h
+ * @brief Declaration of the MazeFileHandler class, responsible for handling maze file operations.
+ */
 #ifndef MAZEFILEHANDLER_H
 #define MAZEFILEHANDLER_H
 
@@ -9,15 +13,27 @@
 
 using namespace std;
 
-class MazeFileHandler
-{
+/**
+ * @class MazeFileHandler
+ * @brief Handles maze file operations, such as saving a maze to a file.
+ */
+class MazeFileHandler {
 public:
+    /**
+     * @brief Constructor for the MazeFileHandler class.
+     * @param filePath The file path for the maze file.
+     */
     MazeFileHandler(string filePath);
 
-    bool saveMaze(Maze *maze);
+    /**
+     * @brief Saves the maze to a file.
+     * @param maze A pointer to the maze to be saved.
+     * @return True if the save operation is successful, false otherwise.
+     */
+    bool saveMaze(Maze* maze);
 
 private:
-    string filePath;
-
+    string filePath; /**< The file path for the maze file. */
 };
+
 #endif // MAZEFILEHANDLER_H

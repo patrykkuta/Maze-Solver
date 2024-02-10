@@ -1,17 +1,37 @@
+/**
+ * @file CustomMaze.h
+ * @brief Declaration of the CustomMaze class, a derived class from the Maze class.
+ */
 #ifndef CUSTOMMAZE_H
 #define CUSTOMMAZE_H
 
 #include "maze.h"
 #include <string>
 
-class CustomMaze : public Maze
-{
+using namespace std;
+
+/**
+ * @class CustomMaze
+ * @brief Represents a custom maze loaded from a file, inheriting from the Maze class.
+ */
+class CustomMaze : public Maze {
 private:
-    string filePath;
+    string filePath; /**< The file path to load the custom maze. */
+
+    /**
+     * @brief Generates the custom maze by reading data from the specified file.
+     *
+     * Reads maze dimensions, cell information, and walls from the file.
+     * Constructs the maze and sets the start and finish cells.
+     */
     void generateMaze() override;
 
 public:
-   CustomMaze(string filePath);
+    /**
+     * @brief Constructor for the CustomMaze class.
+     * @param filePath The file path to load the custom maze.
+     */
+    CustomMaze(string filePath);
 };
 
 #endif // CUSTOMMAZE_H

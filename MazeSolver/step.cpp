@@ -1,3 +1,8 @@
+/**
+ * @file Step.cpp
+ * @brief Definition of the Step class methods representing a step in maze algorithms.
+ */
+
 #include "step.h"
 
 Step::Step(State state, Cell* cell) {
