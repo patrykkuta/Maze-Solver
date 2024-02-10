@@ -88,7 +88,7 @@ void MainWindow::drawMaze() {
         QGraphicsScene* mazeScene = new QGraphicsScene(this);
 
         // Not generated maze
-        maze = new RandomizedMaze(ui->columnsCount->value(), ui->rowsCount->value());
+        maze = new RandomizedMaze(ui->columnsCount->value(), ui->rowsCount->value(), new PrimsAlgorithm(ui->columnsCount->value(), ui->rowsCount->value()));
 
         int cellSize = qMin(ui->mazeView->width() / maze->getWidth(), ui->mazeView->height() / maze->getHeight()) - (50 / maze->getMaze().size());
 
@@ -111,7 +111,7 @@ void MainWindow::drawMaze() {
         // Generate maze
         maze->generateMaze();
 
-        generationSteps = maze->getGenerationSteps();
+        generationSteps = maze->getGeneratingAlgorithm()->getGenerationSteps();
 
         timerMazeGeneration = new QTimer(this);
 
