@@ -1,3 +1,0 @@
-enum State {
-    NEIGHBOUR, CURRENT, SOLUTION
-};

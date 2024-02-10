@@ -19,7 +19,7 @@ set(PROJECT_SOURCES
         mainwindow.ui
         Cell.cpp
         Cell.h
-        Wall.cpp
+        Wall.h
 )
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
@@ -34,13 +34,13 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
 
         custommaze.h custommaze.cpp
         customrectitem.h customrectitem.cpp
-        State.cpp state.h
+        state.h
         step.h step.cpp
         astarsearch.h astarsearch.cpp
         pathfindingalgorithm.h pathfindingalgorithm.cpp
         mazefilehandler.h mazefilehandler.cpp
         generatingalgorithm.h generatingalgorithm.cpp
-        primsalgorithm.h primsalgorithm.cpp
+        randomizedprimsalgorithm.h randomizedprimsalgorithm.cpp
 
     )
 
