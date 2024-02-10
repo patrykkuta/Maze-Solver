@@ -1,5 +1,5 @@
 #include "custommaze.h"
-#include "cell.h"
+#include "Cell.h"
 #include <iostream>
 #include <fstream>
 #include <sstream>
