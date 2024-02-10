@@ -65,6 +65,7 @@ private:
     bool hasUnsavedChanges = false;
     QString currentFileName = "New maze file";
     QString currentFileDir;
+    bool shouldQuit = false;
 
     void closeEvent(QCloseEvent *event) override;
 
