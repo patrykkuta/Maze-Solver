@@ -1,8 +1,3 @@
-/**
- * @file GeneratingAlgorithm.cpp
- * @brief Implementation of the GeneratingAlgorithm class methods.
- */
-
 #include "generatingalgorithm.h"
 
 GeneratingAlgorithm::GeneratingAlgorithm(unsigned short width, unsigned short height) : mazeWidth(width), mazeHeight(height) {
@@ -40,6 +35,4 @@ bool GeneratingAlgorithm::connect(Cell* cell) {
     return false;
 }
 
-vector<Step> GeneratingAlgorithm::getGenerationSteps() {
-    return generationSteps;
-}
+
