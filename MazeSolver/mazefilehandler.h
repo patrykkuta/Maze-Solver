@@ -1,7 +1,3 @@
-/**
- * @file MazeFileHandler.h
- * @brief Declaration of the MazeFileHandler class, responsible for handling maze file operations.
- */
 #ifndef MAZEFILEHANDLER_H
 #define MAZEFILEHANDLER_H
 

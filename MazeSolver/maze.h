@@ -1,7 +1,3 @@
-/**
- * @file Maze.h
- * @brief Declaration of the Maze class, an abstract base class for maze representations.
- */
 #ifndef MAZE_H
 #define MAZE_H
 

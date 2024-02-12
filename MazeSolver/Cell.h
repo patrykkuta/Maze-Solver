@@ -1,7 +1,3 @@
-/**
- * @file Cell.h
- * @brief Declaration of the Cell class, representing a cell in a grid for maze generation and traversal.
- */
 #ifndef CELL_H
 #define CELL_H
 

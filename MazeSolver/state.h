@@ -1,7 +1,3 @@
-/**
- * @file State.h
- * @brief Declaration of the State enumeration representing different cell states.
- */
 #ifndef STATE_H
 #define STATE_H
 

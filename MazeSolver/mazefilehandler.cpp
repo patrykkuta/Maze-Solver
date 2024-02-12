@@ -1,8 +1,3 @@
-/**
- * @file MazeFileHandler.cpp
- * @brief Implementation of the MazeFileHandler class methods.
- */
-
 #include "mazefilehandler.h"
 
 MazeFileHandler::MazeFileHandler(string filePath) : filePath(filePath) {}

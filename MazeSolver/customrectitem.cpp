@@ -1,8 +1,3 @@
-/**
- * @file CustomRectItem.cpp
- * @brief Implementation of the CustomRectItem class methods.
- */
-
 #include "customrectitem.h"
 #include <QGraphicsView>
 #include <QGraphicsScene>

@@ -1,7 +1,3 @@
-/**
- * @file CustomRectItem.h
- * @brief Declaration of the CustomRectItem class, a QGraphicsRectItem representing a cell in a maze.
- */
 #ifndef CUSTOMRECTITEM_H
 #define CUSTOMRECTITEM_H
 

@@ -1,7 +1,3 @@
-/**
- * @file CustomMaze.h
- * @brief Declaration of the CustomMaze class, a derived class from the Maze class.
- */
 #ifndef CUSTOMMAZE_H
 #define CUSTOMMAZE_H
 

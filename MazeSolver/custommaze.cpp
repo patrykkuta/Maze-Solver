@@ -1,8 +1,3 @@
-/**
- * @file CustomMaze.cpp
- * @brief Implementation of the CustomMaze class methods.
- */
-
 #include "custommaze.h"
 #include "Cell.h"
 #include <iostream>
