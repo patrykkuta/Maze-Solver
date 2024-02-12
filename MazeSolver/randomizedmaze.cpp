@@ -1,10 +1,4 @@
-/**
- * @file RandomizedMaze.cpp
- * @brief Implementation of the RandomizedMaze class methods.
- */
-
 #include "randomizedmaze.h"
-
 RandomizedMaze::RandomizedMaze(unsigned short width, unsigned short height, GeneratingAlgorithm* algorithm)
     : Maze(width, height, algorithm) {
     for (unsigned short y = 0; y < height; y++) {
@@ -14,14 +8,6 @@ RandomizedMaze::RandomizedMaze(unsigned short width, unsigned short height, Gene
             maze[y].emplace_back(new Cell(x, y));
         }
     }
-}
-
-RandomizedMaze::~RandomizedMaze() {
-    // for (vector<Cell*>& row : maze) {
-    //     for (Cell* cellPtr : row) {
-    //         delete cellPtr;
-    //     }
-    // }
 }
 
 void RandomizedMaze::generateMaze() {

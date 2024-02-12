@@ -1,8 +1,3 @@
-/**
- * @file Cell.cpp
- * @brief Implementation of the Cell class methods.
- */
-
 #include "Cell.h"
 
 Cell::Cell(unsigned short x, unsigned short y) : x(x), y(y) {}

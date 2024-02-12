@@ -27,19 +27,19 @@ vector<vector<Cell*>> RandomizedPrimsAlgorithm::generate() {
         unsigned short index = randomFrontierPosition();
 
         auto item = next(frontier.begin(), index);
-        Cell* c = *item;
+        Cell* cell = *item;
 
-        Step step(State::CURRENT, c);
-        generationSteps.push_back(step);
+        Step step(State::CURRENT, cell);
+        steps.push_back(step);
 
         frontier.erase(item);
 
-        c->visit();
+        cell->visit();
 
-        addUnvisitedNeighbours(c);
+        addUnvisitedNeighbours(cell);
 
         // Connect with some visited cell
-        connect(c);
+        connect(cell);
     }
 
     delete randomCell;
@@ -60,8 +60,8 @@ void RandomizedPrimsAlgorithm::addUnvisitedNeighbours(Cell* cell) {
         frontier.insert(maze[cell->getY()][cell->getX() - 1]);
 
         Step step(State::NEIGHBOUR, maze[cell->getY()][cell->getX() - 1]);
-        if (find(generationSteps.begin(), generationSteps.end(), step) == generationSteps.end()) {
-            generationSteps.push_back(step);
+        if (find(steps.begin(), steps.end(), step) == steps.end()) {
+            steps.push_back(step);
         }
     }
 
@@ -69,8 +69,8 @@ void RandomizedPrimsAlgorithm::addUnvisitedNeighbours(Cell* cell) {
         frontier.insert(maze[cell->getY()][cell->getX() + 1]);
 
         Step step(State::NEIGHBOUR, maze[cell->getY()][cell->getX() + 1]);
-        if (find(generationSteps.begin(), generationSteps.end(), step) == generationSteps.end()) {
-            generationSteps.push_back(step);
+        if (find(steps.begin(), steps.end(), step) == steps.end()) {
+            steps.push_back(step);
         }
     }
 
@@ -78,8 +78,8 @@ void RandomizedPrimsAlgorithm::addUnvisitedNeighbours(Cell* cell) {
         frontier.insert(maze[cell->getY() - 1][cell->getX()]);
 
         Step step(State::NEIGHBOUR, maze[cell->getY() - 1][cell->getX()]);
-        if (find(generationSteps.begin(), generationSteps.end(), step) == generationSteps.end()) {
-            generationSteps.push_back(step);
+        if (find(steps.begin(), steps.end(), step) == steps.end()) {
+            steps.push_back(step);
         }
     }
 
@@ -87,8 +87,8 @@ void RandomizedPrimsAlgorithm::addUnvisitedNeighbours(Cell* cell) {
         frontier.insert(maze[cell->getY() + 1][cell->getX()]);
 
         Step step(State::NEIGHBOUR, maze[cell->getY() + 1][cell->getX()]);
-        if (find(generationSteps.begin(), generationSteps.end(), step) == generationSteps.end()) {
-            generationSteps.push_back(step);
+        if (find(steps.begin(), steps.end(), step) == steps.end()) {
+            steps.push_back(step);
         }
     }
 }

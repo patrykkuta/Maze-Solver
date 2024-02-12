@@ -1,13 +1,10 @@
-/**
- * @file RandomizedPrimsAlgorithm.h
- * @brief Declaration of the RandomizedPrimsAlgorithm class, an implementation of a randomized version of the Prim's algorithm for maze generation.
- */
 #ifndef RANDOMIZEDPRIMSALGORITHM_H
 #define RANDOMIZEDPRIMSALGORITHM_H
 
 #include "generatingalgorithm.h"
 #include <random>
 #include <algorithm>
+#include <set>
 
 /**
  * @class RandomizedPrimsAlgorithm
@@ -16,6 +13,7 @@
 class RandomizedPrimsAlgorithm : public GeneratingAlgorithm {
 private:
     random_device rd; /**< Random device for generating random numbers. */
+    set<Cell*> frontier; /**< Set of frontier cells for the generation process. */
 
     /**
      * @brief Generates a random position within the frontier.
@@ -23,18 +21,14 @@ private:
      */
     unsigned short randomFrontierPosition();
 
+protected:
+    Cell* getGenerationStartCell() override;
+
     /**
      * @brief Adds unvisited neighbours of a cell to the frontier.
      * @param cell The cell whose unvisited neighbours will be added to the frontier.
      */
-    void addUnvisitedNeighbours(Cell* cell);
-
-protected:
-    /**
-     * @brief Gets the starting cell for maze generation.
-     * @return A pointer to the starting cell.
-     */
-    Cell* getGenerationStartCell() override;
+    void addUnvisitedNeighbours(Cell* cell) override;
 
 public:
     /**

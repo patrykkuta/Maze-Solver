@@ -1,8 +1,3 @@
-/**
- * @file astarsearch.h
- * @brief Header file for AStarSearch class, a derived class of PathFindingAlgorithm.
- */
-
 #ifndef ASTARSEARCH_H
 #define ASTARSEARCH_H
 
@@ -29,7 +24,13 @@ public:
      * @brief Solves the given maze using the A* search algorithm.
      * @param maze The maze to be solved.
      */
-    void solve(Maze &maze) override;
+    void solve(Maze* maze) override;
+protected:
+    /**
+     * @brief Adds unvisited neighbours of a cell to the frontier.
+     * @param cell The cell whose unvisited neighbours will be added to the frontier.
+     */
+    void addUnvisitedNeighbours(Cell* cell) override;
 
 private:
     /**
@@ -48,6 +49,10 @@ private:
             return pair1.second > pair2.second; // Compare the Manhattan distance to the finish cell
         }
     };
+
+    priority_queue<pair<Cell*, int>, vector<pair<Cell*, int>>, Comparator> frontier; /**< Priority queue storing cells to be explored by the algorithm sorted ascendingly by their Manhattan distance to the finish cell. */
+    Cell* startCell; /**< Represents the starting cell for the pathfinding algorithm. */
+    Cell* finishCell; /**< Represents the destination cell for the pathfinding algorithm. */
 
     /**
      * @brief Calculates the Manhattan distance between two cells.

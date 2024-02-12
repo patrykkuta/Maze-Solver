@@ -1,9 +1,5 @@
-/**
- * @file Maze.cpp
- * @brief Implementation of the Maze class methods.
- */
-
 #include "maze.h"
+#include <iostream>
 
 Maze::Maze() {}
 
@@ -13,9 +9,13 @@ Maze::Maze(unsigned short width, unsigned short height, GeneratingAlgorithm* alg
     generatingAlgorithm(algorithm) {}
 
 Maze::~Maze() {
-    maze.clear();
-    delete startCell;
-    delete finishCell;
+    for (unsigned short y = 0; y < height; y++) {
+        for (unsigned short x = 0; x < width; x++) {
+            delete maze[x][y];
+        }
+    }
+
+    delete generatingAlgorithm;
 }
 
 unsigned short Maze::getWidth() {return width;}

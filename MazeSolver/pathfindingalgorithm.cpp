@@ -1,17 +1,8 @@
-/**
- * @file PathFindingAlgorithm.cpp
- * @brief Implementation of the PathFindingAlgorithm class methods.
- */
-
 #include "pathfindingalgorithm.h"
 
 PathFindingAlgorithm::PathFindingAlgorithm() {}
 
 PathFindingAlgorithm::~PathFindingAlgorithm() {}
-
-queue<Step*> PathFindingAlgorithm::getSolvingSteps() {
-    return solvingSteps;
-}
 
 vector<Cell*> PathFindingAlgorithm::getSolution() {
     return solution;

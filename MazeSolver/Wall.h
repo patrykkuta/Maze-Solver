@@ -1,7 +1,3 @@
-/**
- * @file Wall.h
- * @brief Declaration of the Wall enumeration representing different walls in a cell.
- */
 #ifndef WALL_H
 #define WALL_H
 

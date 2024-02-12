@@ -1,7 +1,3 @@
-/**
- * @file Step.h
- * @brief Declaration of the Step class representing a step in maze algorithms.
- */
 #ifndef STEP_H
 #define STEP_H
 
