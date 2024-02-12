@@ -41,6 +41,7 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         mazefilehandler.h mazefilehandler.cpp
         generatingalgorithm.h generatingalgorithm.cpp
         randomizedprimsalgorithm.h randomizedprimsalgorithm.cpp
+        algorithm.h algorithm.cpp
 
     )
 
