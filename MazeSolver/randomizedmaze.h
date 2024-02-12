@@ -1,7 +1,3 @@
-/**
- * @file RandomizedMaze.h
- * @brief Declaration of the RandomizedMaze class, a random maze generated using a maze generation algorithm.
- */
 #ifndef RANDOMIZEDMAZE_H
 #define RANDOMIZEDMAZE_H
 
@@ -20,11 +16,6 @@ public:
      * @param algorithm The generating algorithm to be used.
      */
     RandomizedMaze(unsigned short width, unsigned short height, GeneratingAlgorithm* algorithm);
-
-    /**
-     * @brief Destructor for the RandomizedMaze class.
-     */
-    ~RandomizedMaze();
 
     /**
      * @brief Generates the maze using the maze generation algorithm specified by the Maze class generationAlgorithm member.
