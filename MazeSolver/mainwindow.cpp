@@ -76,6 +76,8 @@ MainWindow::~MainWindow()
     delete ui->mazeView->scene();
     delete maze;
     delete ui;
+    delete lastCurrentSolve;
+    delete lastCurrentGenerate;
 }
 
 void MainWindow::drawMaze() {
@@ -84,15 +86,6 @@ void MainWindow::drawMaze() {
         // Indicate that the file has changed and there are unsaved changes
         setWindowTitle(currentFileName + "* - Maze Solver");
         hasUnsavedChanges = true;
-
-        // Clean up existing maze and scene
-        if (maze != nullptr) {
-            delete maze;
-        }
-
-        if (ui->mazeView->scene() != nullptr) {
-            delete ui->mazeView->scene();
-        }
 
         // Display status message
         ui->statusbar->showMessage(QString("Generating maze..."));
@@ -107,11 +100,18 @@ void MainWindow::drawMaze() {
         ui->visitedCellsLabel->setText(QString("Visited cells: 0"));
         ui->pathLengthLabel->setText(QString("Path length: 0"));
 
+        // Free the memory
+        if (timerMazeGeneration != nullptr) delete timerMazeGeneration;
+        if (ui->mazeView->scene() != nullptr) delete ui->mazeView->scene();
+        if (maze != nullptr) delete maze;
+
         // Create a new QGraphicsScene to display the maze
         QGraphicsScene* mazeScene = new QGraphicsScene(this);
 
+        GeneratingAlgorithm* generatingAlgorithm = new RandomizedPrimsAlgorithm(ui->columnsCount->value(), ui->rowsCount->value());
+
         // Create a new RandomizedMaze with specified dimensions and algorithm
-        maze = new RandomizedMaze(ui->columnsCount->value(), ui->rowsCount->value(), new RandomizedPrimsAlgorithm(ui->columnsCount->value(), ui->rowsCount->value()));
+        maze = new RandomizedMaze(ui->columnsCount->value(), ui->rowsCount->value(), generatingAlgorithm);
 
         // Calculate the size of each maze cell
         int cellSize = qMin(ui->mazeView->width() / maze->getWidth(), ui->mazeView->height() / maze->getHeight()) - (50 / maze->getMaze().size());
@@ -138,7 +138,7 @@ void MainWindow::drawMaze() {
         maze->generateMaze();
 
         // Get the maze generation steps
-        generationSteps = maze->getGeneratingAlgorithm()->getGenerationSteps();
+        generationSteps = maze->getGeneratingAlgorithm()->getSteps();
 
         // Create a timer for animating the maze generation process
         timerMazeGeneration = new QTimer(this);
@@ -146,8 +146,8 @@ void MainWindow::drawMaze() {
         // Connect the timer to the timeout signal
         connect(timerMazeGeneration, &QTimer::timeout, [=]() {
             // Check if there are still generation steps
-            if (!generationSteps.empty()) {
-                Step* step = &generationSteps.at(0);
+            if (!generationSteps->empty()) {
+                Step* step = &generationSteps->front();
 
                 // Handle different states of the generation step
                 if (step->state() == State::CURRENT && lastCurrentGenerate == nullptr) {
@@ -172,7 +172,7 @@ void MainWindow::drawMaze() {
                 }
 
                 // Remove the processed step from the vector
-                generationSteps.erase(generationSteps.begin());
+                generationSteps->erase(generationSteps->begin());
             }
             else {
                 // Maze generation completed
@@ -210,8 +210,12 @@ void MainWindow::solveMaze() {
         // Display solving status in the status bar
         ui->statusbar->showMessage(QString("Solving maze..."));
 
+        // Free the memory
+        if (timerTraverseMaze != nullptr) delete timerTraverseMaze;
+        if (timerShowPath != nullptr) delete timerShowPath;
+
         // Initialize a pointer to a pathfinding algorithm
-        PathFindingAlgorithm* algorithm = nullptr;
+        PathFindingAlgorithm* algorithm;
 
         // Iterate through radio buttons to find what algorithm was selected
         for (QRadioButton* rb: ui->solveMethodGroupBox->findChildren<QRadioButton*>()) {
@@ -230,8 +234,8 @@ void MainWindow::solveMaze() {
         }
 
         // Solve the maze using the selected algorithm
-        algorithm->solve(*maze);
-        solvingSteps = algorithm->getSolvingSteps();
+        algorithm->solve(maze);
+        solvingSteps = algorithm->getSteps();
         solutionPath = algorithm->getSolution();
 
         // Create timers for animating the solving process and displaying the final path
@@ -240,9 +244,9 @@ void MainWindow::solveMaze() {
 
         // Connect the timeout signal of the traverse maze timer
         connect(timerTraverseMaze, &QTimer::timeout, [=]() {
-            if (!solvingSteps.empty()) {
+            if (!solvingSteps->empty()) {
                 // Process the next solving step
-                Step* step = solvingSteps.front();
+                Step* step = &solvingSteps->front();
 
                 if (step->cell() != maze->getStartCell() && step->cell() != maze->getFinishCell()) {
                     if (step->state() == State::CURRENT && lastCurrentSolve == nullptr) {
@@ -261,9 +265,13 @@ void MainWindow::solveMaze() {
                         rectItemCells[step->cell()->getX()][step->cell()->getY()]->setBackgroundColor(colours.NEIGHBOUR);
                     }
                 }
+                else if (step->cell() == maze->getFinishCell()) {
+                    // Colour the last current step as visited and current step as current
+                    rectItemCells[lastCurrentSolve->getX()][lastCurrentSolve->getY()]->setBackgroundColor(colours.VISITED);
+                }
 
                 // Remove the processed step from the queue
-                solvingSteps.pop();
+                solvingSteps->erase(solvingSteps->begin());
 
                 // Update visited cell count if the step is a current state
                 if (step->state() == State::CURRENT) {
@@ -301,6 +309,9 @@ void MainWindow::solveMaze() {
                         solving = false;
                         solved = true;
                         ui->statusbar->showMessage(QString("Maze successfully solved."));
+
+                        // Delete the allocated algorithm object
+                        delete algorithm;
                     }
                 });
 
@@ -311,9 +322,6 @@ void MainWindow::solveMaze() {
 
         // Start the traverse maze timer with the specified animation speed
         timerTraverseMaze->start(1000 / animationSpeed);
-
-        // Delete the allocated algorithm object to avoid memory leaks
-        delete algorithm;
     }
 }
 
@@ -448,11 +456,6 @@ bool MainWindow::saveMaze() {
     if (currentFileDir.isEmpty()) {
         return saveMazeAs();
     }
-    // Check if the maze has not been created and display an error message
-    else if (!mazeCreated) {
-        QMessageBox::critical(this, "Error", "Cannot save an empty maze. Please create a maze first.");
-        return false;
-    }
     // Check if the current file directory is not empty and not null
     else if (!currentFileDir.isEmpty() && !currentFileDir.isNull()) {
         // Create a MazeFileHandler object for saving the maze
@@ -480,7 +483,7 @@ bool MainWindow::saveMaze() {
 bool MainWindow::saveMazeAs() {
     // Check if the maze has not been created and display an error message
     if (!mazeCreated) {
-        QMessageBox::critical(this, "Error", "Cannot save an empty maze. Please create a maze first.");
+        QMessageBox::critical(this, "Error", "Cannot save an empty maze.\n\nPlease generate a maze first.\n");
         return false;
     }
 
@@ -533,6 +536,11 @@ void MainWindow::openMaze() {
         // Check if the user canceled the operation
         if (currentFileDir.isEmpty()) return;
 
+        // Free the memory of the existing maze
+        if (maze != nullptr) {
+            delete maze;
+        }
+
         // Create a CustomMaze object and generate the maze
         maze = new CustomMaze(currentFileDir.toStdString());
         maze->generateMaze();
@@ -578,17 +586,7 @@ void MainWindow::openMaze() {
     }
     // Check if there are unsaved changes
     else {
-        // Prompt the user to save unsaved changes
-        QMessageBox msgBox;
-        msgBox.setIcon(QMessageBox::Question);
-        msgBox.setText("There are unsaved changes. Do you want to save them?");
-        msgBox.setStandardButtons(QMessageBox::Save | QMessageBox::Discard | QMessageBox::Cancel);
-        msgBox.setDefaultButton(QMessageBox::Save);
-
-        // Get user's choice
-        int userChoice = msgBox.exec();
-
-        switch (userChoice) {
+        switch (promptForSave()) {
         case QMessageBox::Save:
             // Save the maze if the user chooses to save
             if (saveMaze()) {
@@ -602,6 +600,11 @@ void MainWindow::openMaze() {
             currentFileDir = QFileDialog::getOpenFileName(this, "Open Maze", QString(), "Maze Files (*.maze)");
 
             if (currentFileDir.isEmpty()) return;
+
+            // Free the memory of the existing maze
+            if (maze != nullptr) {
+                delete maze;
+            }
 
             maze = new CustomMaze(currentFileDir.toStdString());
             maze->generateMaze();
@@ -652,23 +655,19 @@ void MainWindow::openMaze() {
 }
 
 void MainWindow::closeEvent(QCloseEvent *event) {
+    if (solving || generating) {
+        event->ignore();
+        return;
+    }
+
     // Check if there are unsaved changes
     if (hasUnsavedChanges) {
-        // Prompt the user to save unsaved changes
-        QMessageBox msgBox;
-        msgBox.setIcon(QMessageBox::Question);
-        msgBox.setText("There are unsaved changes. Do you want to save them?");
-        msgBox.setStandardButtons(QMessageBox::Save | QMessageBox::Discard | QMessageBox::Cancel);
-        msgBox.setDefaultButton(QMessageBox::Save);
-
-        // Get user's choice
-        int userChoice = msgBox.exec();
-
-        switch (userChoice) {
+        switch (promptForSave()) {
         case QMessageBox::Save:
             // Save the maze if the user chooses to save, allow the window to close
             if (saveMazeAs()) {
                 shouldQuit = true;
+                QMessageBox::information(this, QString("Saving successful"), QString("The file was successfully saved."));
                 event->accept();
             }
             break;
@@ -690,4 +689,18 @@ void MainWindow::closeEvent(QCloseEvent *event) {
         shouldQuit = true;
         event->accept();
     }
+}
+
+int MainWindow::promptForSave() {
+    // Prompt the user to save unsaved changes
+    QMessageBox savePrompt;
+    savePrompt.setWindowTitle(QString("Unsaved changes"));
+    savePrompt.setIcon(QMessageBox::Question);
+    savePrompt.setText("The file has unsaved changes.\n\nDo you want to save them?\n");
+    savePrompt.setStandardButtons(QMessageBox::Save | QMessageBox::Discard | QMessageBox::Cancel);
+    savePrompt.setDefaultButton(QMessageBox::Save);
+
+    // Get user's choice
+    int userChoice = savePrompt.exec();
+    return userChoice;
 }

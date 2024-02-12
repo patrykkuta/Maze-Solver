@@ -1,8 +1,3 @@
-/**
- * @file mainwindow.h
- * @brief Declaration of the MainWindow class representing the main application window.
- */
-
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
@@ -125,8 +120,8 @@ private:
     QTimer *timerTraverseMaze;    /**< Timer for maze traversal animation. */
     QTimer *timerShowPath;        /**< Timer for displaying the solution path animation. */
     QTimer *timerMazeGeneration;  /**< Timer for maze generation animation. */
-    queue<Step*> solvingSteps;    /**< Queue of steps for maze solving. */
-    vector<Step> generationSteps; /**< Vector of steps for maze generation. */
+    vector<Step>* solvingSteps;    /**< Queue of steps for maze solving. */
+    vector<Step>* generationSteps; /**< Vector of steps for maze generation. */
     vector<Cell*> solutionPath;   /**< Vector representing the solution path. */
     Cell *lastCurrentSolve;       /**< Pointer to the last current cell during maze solving. */
     Cell *lastCurrentGenerate;    /**< Pointer to the last current cell during maze generation. */
@@ -136,6 +131,12 @@ private:
     QString currentFileName;      /**< Current filename of the maze file. */
     QString currentFileDir;       /**< Directory of the current maze file. */
     bool shouldQuit;              /**< Flag indicating whether the application should quit. */
+
+    /**
+     * @brief promptForSave Displays a QMessageBox prompting user to Save or Discard changes, or Cancel the exiting process.
+     * @return Integer value corresponding to user choice
+     */
+    int promptForSave();
 
     /**
      * @brief Overridden closeEvent function to handle the closing of the main window.
