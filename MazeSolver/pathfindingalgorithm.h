@@ -1,7 +1,3 @@
-/**
- * @file PathFindingAlgorithm.h
- * @brief Declaration of the PathFindingAlgorithm class, an abstract base class for pathfinding algorithms.
- */
 #ifndef PATHFINDINGALGORITHM_H
 #define PATHFINDINGALGORITHM_H
 
@@ -11,15 +7,17 @@
 #include "step.h"
 #include "maze.h"
 #include "Cell.h"
+#include "algorithm.h"
 
 /**
  * @class PathFindingAlgorithm
- * @brief Abstract base class for pathfinding algorithms.
+ * @brief Abstract class for pathfinding algorithms.
  */
-class PathFindingAlgorithm {
+class PathFindingAlgorithm : public Algorithm {
 protected:
-    queue<Step*> solvingSteps; /**< Queue to store the steps taken during the solving process. */
     vector<Cell*> solution; /**< Vector to store the solution path. */
+    unordered_map<Cell*, Cell*> path; /**< Unordered map to store relationships between cells for path reconstruction. */
+    Maze *maze; /**< Pointer to a maze to solve */
 
     /**
      * @brief Backtraces the solution path from the finish cell to the start cell.
@@ -29,6 +27,8 @@ protected:
      * @return A vector of Cell pointers representing the backtraced path.
      */
     vector<Cell*> backtrace(unordered_map<Cell*, Cell*>& path, Cell* startCell, Cell* finishCell);
+
+    virtual void addUnvisitedNeighbours(Cell* cell) = 0;
 
 public:
     /**
@@ -42,12 +42,6 @@ public:
     virtual ~PathFindingAlgorithm();
 
     /**
-     * @brief Gets the solving steps taken during the solving process.
-     * @return A queue of Step objects representing the solving steps.
-     */
-    queue<Step*> getSolvingSteps();
-
-    /**
      * @brief Gets the solution path found by the algorithm.
      * @return A vector of Cell pointers representing the solution path.
      */
@@ -57,7 +51,7 @@ public:
      * @brief Abstract function to solve the maze.
      * @param maze The maze to be solved.
      */
-    virtual void solve(Maze& maze) = 0;
+    virtual void solve(Maze* maze) = 0;
 };
 
 #endif // PATHFINDINGALGORITHM_H
