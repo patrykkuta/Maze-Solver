@@ -4,6 +4,7 @@
 #include <vector>
 #include <algorithm>
 #include <queue>
+#include <unordered_map>
 #include "step.h"
 #include "maze.h"
 #include "Cell.h"
