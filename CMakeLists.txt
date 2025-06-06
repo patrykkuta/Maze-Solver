@@ -14,12 +14,11 @@ find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Widgets)
 
 set(PROJECT_SOURCES
         main.cpp
-        mainwindow.cpp
-        mainwindow.h
-        mainwindow.ui
-        Cell.cpp
-        Cell.h
-        Wall.h
+
+        # UI
+        ui/mainwindow.cpp
+        ui/mainwindow.h
+        ui/mainwindow.ui
 )
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
@@ -27,22 +26,31 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         MANUAL_FINALIZATION
         ${PROJECT_SOURCES}
 
-        maze.h maze.cpp
-        depthfirstsearch.h depthfirstsearch.cpp
-        breadthfirstsearch.h breadthfirstsearch.cpp
-        randomizedmaze.h randomizedmaze.cpp
+        # Maze
+        maze/maze.h maze/maze.cpp
+        maze/Cell.h maze/Cell.cpp
+        maze/Wall.h
+        maze/randomizedmaze.h maze/randomizedmaze.cpp
+        maze/custommaze.h maze/custommaze.cpp
+        maze/state.h
+        maze/step.h maze/step.cpp
+        maze/mazefilehandler.h maze/mazefilehandler.cpp
 
-        custommaze.h custommaze.cpp
-        customrectitem.h customrectitem.cpp
-        state.h
-        step.h step.cpp
-        astarsearch.h astarsearch.cpp
-        pathfindingalgorithm.h pathfindingalgorithm.cpp
-        mazefilehandler.h mazefilehandler.cpp
-        generatingalgorithm.h generatingalgorithm.cpp
-        randomizedprimsalgorithm.h randomizedprimsalgorithm.cpp
-        algorithm.h algorithm.cpp
+        # Algorithms
+        algorithms/algorithm.h algorithms/algorithm.cpp
 
+        # Path Finding Algorithms
+        algorithms/solving/depthfirstsearch.h algorithms/solving/depthfirstsearch.cpp
+        algorithms/solving/breadthfirstsearch.h algorithms/solving/breadthfirstsearch.cpp
+        algorithms/solving/astarsearch.h algorithms/solving/astarsearch.cpp
+        algorithms/solving/pathfindingalgorithm.h algorithms/solving/pathfindingalgorithm.cpp
+
+        # Generating Algorithms
+        algorithms/generating/generatingalgorithm.h algorithms/generating/generatingalgorithm.cpp
+        algorithms/generating/randomizedprimsalgorithm.h algorithms/generating/randomizedprimsalgorithm.cpp
+
+        # UI
+        ui/customrectitem.h ui/customrectitem.cpp
     )
 
 # Define target properties for Android with Qt 6 as:
@@ -62,6 +70,15 @@ else()
         )
     endif()
 endif()
+
+target_include_directories(MazeSolver PRIVATE
+    ${CMAKE_CURRENT_SOURCE_DIR}/ui
+    ${CMAKE_CURRENT_SOURCE_DIR}/maze
+    ${CMAKE_CURRENT_SOURCE_DIR}/algorithms
+    ${CMAKE_CURRENT_SOURCE_DIR}/algorithms/solving
+    ${CMAKE_CURRENT_SOURCE_DIR}/algorithms/generating
+)
+
 
 target_link_libraries(MazeSolver PRIVATE Qt${QT_VERSION_MAJOR}::Widgets)
 
