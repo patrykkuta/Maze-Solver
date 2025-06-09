@@ -103,6 +103,16 @@ install(TARGETS MazeSolver
     RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
 )
 
+if(WIN32)
+    find_program(WINDEPLOYQT_EXECUTABLE windeployqt HINTS ${Qt${QT_VERSION_MAJOR}_DIR}/../../../bin)
+    
+    if(WINDEPLOYQT_EXECUTABLE)
+        add_custom_command(TARGET MazeSolver POST_BUILD
+            COMMAND ${WINDEPLOYQT_EXECUTABLE} $<TARGET_FILE:MazeSolver>
+            COMMENT "Deploying Qt libraries")
+    endif()
+endif()
+
 if(QT_VERSION_MAJOR EQUAL 6)
     qt_finalize_executable(MazeSolver)
 endif()
