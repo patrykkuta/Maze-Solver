@@ -1,5 +1,7 @@
 <p align="center">
-  <img src="docs/images/logo.png" alt="Maze Solver Logo" width="100%"/>
+  <br/>
+  <img src="docs/images/logo.png" alt="Maze Solver Logo" width="50%"/>
+  <br/><br/>
 </p>
 
 <p align="center">
